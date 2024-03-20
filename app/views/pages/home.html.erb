@@ -1,4 +1,10 @@
 <h1>Home page</h1>
-<p>Welcome, <%= current_user.first_name || current_user.full_name %>
+
+<% if current_user.first_name.blank? %>
+  <p>Welcome, <%= current_user.full_name %></p>
+<% else %>
+  <p>Welcome, <%= current_user.first_name %></p>
+<% end %>
+
 
 <%= button_to "Logout", destroy_user_session_path, method: :delete %>
