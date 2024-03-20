@@ -14,6 +14,7 @@ gem 'omniauth-rails_csrf_protection', '~> 1.0'
 gem 'pg', '~> 1.1'
 gem 'puma', '>= 5.0'
 gem 'sprockets-rails'
+gem "shadcn-ui", "~> 0.0.12"
 gem 'stimulus-rails'
 gem 'turbo-rails'
 gem 'tzinfo-data', platforms: %i[ windows jruby ]
@@ -26,4 +27,3 @@ end
 group :development do
   gem 'web-console'
 end
-
