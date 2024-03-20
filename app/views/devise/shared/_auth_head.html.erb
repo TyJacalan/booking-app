@@ -1,0 +1,21 @@
+<% content_for(:auth_header) do %>
+  <% if devise_mapping.registerable? && controller_name != 'registrations' %>
+    <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-muted-foreground">Sign In</h2>
+    <p class="mt-2 text-center text-sm text-muted-foreground">
+    Or
+    <%= link_to "create your free account", 
+      new_registration_path(resource_name), 
+      class: "font-medium text-primary/90 hover:text-primary"
+    %>
+  </p>
+<% else %>
+  <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-muted-foreground">Sign Up</h2>
+  <p class="mt-2 text-center text-sm text-muted-foreground">
+  Already have an account?
+  <%= link_to "Login", 
+    new_session_path(resource_name), 
+    class: "font-medium text-primary/75 hover:text-primary"
+  %>
+</p>
+  <% end %>
+<% end %>
