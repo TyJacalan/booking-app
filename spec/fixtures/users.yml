@@ -1,5 +1,34 @@
-test:
-  email: test@example.com
-  first_name: Test
-  last_name: User
-  encrypted_password: <%= Devise::Encryptor.digest(User, 'Password123!') %>
+# spec/fixtures/users.yml
+valid_user:
+  email: valid_user@example.com
+  first_name: Valid
+  
+missing_first_name_user:
+  email: missing_firstname@example.com
+
+short_first_name_user:
+  email: short_firstname@example.com
+  first_name: S
+
+long_first_name_user:
+  email: long_firstname@example.com
+  first_name: Looooooooooooooooooooooooooooooooooooooooooooong
+  last_name: LongFirstName
+
+missing_last_name_user:
+  email: missing_lastname@example.com
+  first_name: MissingLastName
+
+short_last_name_user:
+  email: short_lastname@example.com
+  first_name: ShortLastName
+  last_name: S
+
+long_last_name_user:
+  email: long_lastname@example.com
+  first_name: LongLastName
+  last_name: Looooooooooooooooooooooooooooooooooooooooooooong
+
+invalid_email_user:
+  email: invalid_email_example.com
+  first_name: InvalidEmail
