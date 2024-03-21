@@ -11,14 +11,9 @@
   </head>
 
   <body class="flex flex-col dark bg-background">
-    <% if notice %>
-      <%= render_toast header: "Test", id: "default_toast", description: notice %>
-    <% end %>
-
-    <% if alert %>
-      <%= render_toast description: alert, id: "alert_toast", variant: :destructive %>
-    <% end %>
-
+    <%= render 'components/layout/toast_messages' %>
+    <%= render 'components/layout/navbar' %>
+    <%= render 'components/layout/footer' %>
     <%= yield %>
   </body>
 </html>
