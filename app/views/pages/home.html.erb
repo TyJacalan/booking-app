@@ -1,10 +1,14 @@
-<h1 class="text-red-400">Home page</h1>
+<div class="flex w-full items-start justify-center my-10">
+  <div class="flex flex-col max-w-md"
+    <h1 class="text-red-400">Home page</h1>
 
-<% if current_user.first_name.blank? %>
-  <p>Welcome, <%= current_user.full_name %></p>
-<% else %>
-  <p>Welcome, <%= current_user.first_name %></p>
-<% end %>
+    <% if current_user.first_name.blank? %>
+      <p>Welcome, <%= current_user.full_name %></p>
+    <% else %>
+      <p>Welcome, <%= current_user.first_name %></p>
+    <% end %>
+    
+    <%= button_to "Logout", destroy_user_session_path, method: :delete %>
 
-
-<%= button_to "Logout", destroy_user_session_path, method: :delete %>
+  </div>
+</div>
