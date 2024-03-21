@@ -18,7 +18,7 @@
   <% end %>
 
   <% if devise_mapping.recoverable? && controller_name == 'passwords' %>
-    <% if action_name == 'new' %>
+    <% if action_name == 'new' || action_name == 'create' %>
       <%= render 'components/text/header' do %>Forgot your password?<% end %>
       <%= render 'components/text/text_with_link',
         text: 'Remember your password?',

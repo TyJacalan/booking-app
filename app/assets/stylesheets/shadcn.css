@@ -53,3 +53,9 @@
 	}
 
 }
+
+@layer utilities {
+  .error {
+    @apply border-destructive border-solid border-t-2;
+  }
+}
