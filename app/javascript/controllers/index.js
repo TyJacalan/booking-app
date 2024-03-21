@@ -4,5 +4,5 @@
 
 import { application } from "./application"
 
-import HelloController from "./hello_controller"
-application.register("hello", HelloController)
+import Ui__ToastController from "./ui/toast_controller"
+application.register("ui--toast", Ui__ToastController)

@@ -11,8 +11,13 @@
   </head>
 
   <body class="flex flex-col dark bg-background">
-    <p class="notice"><%= notice %></p>
-    <p class="alert"><%= alert %></p>
+    <% if notice %>
+      <%= render_toast header: "Test", id: "default_toast", description: notice %>
+    <% end %>
+
+    <% if alert %>
+      <%= render_toast description: alert, id: "alert_toast", variant: :destructive %>
+    <% end %>
 
     <%= yield %>
   </body>
