@@ -4,5 +4,8 @@
 
 import { application } from "./application"
 
+import Ui__PopoverController from "./ui/popover_controller"
+application.register("ui--popover", Ui__PopoverController)
+
 import Ui__ToastController from "./ui/toast_controller"
 application.register("ui--toast", Ui__ToastController)

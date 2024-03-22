@@ -10,6 +10,7 @@
     "@hotwired/turbo-rails": "^8.0.4",
     "autoprefixer": "latest",
     "postcss": "latest",
+    "stimulus-use": "^0.52.2",
     "tailwindcss": "latest"
   },
   "devDependencies": {

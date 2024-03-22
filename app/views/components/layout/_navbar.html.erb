@@ -1,14 +1,6 @@
 <header class="bg-background">
   <nav class="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8 aria-label="Global">
-    <div class="flex lg:flex-1">
-      <a href="/" class="-m-1.5 p-1.5">
-        <span class="sr-only">Rails Auth Starter</span>
-        <img class="h-8 w-auto"
-        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600" alt="">
-      </a>
-    </div>
-    <div>
-      <%= render_avatar src: current_user.avatar_url %>
-    </div>
+    <%= render 'components/layout/partials/navbar_logo' %>
+    <%= render 'components/layout/partials/navbar_profile' %> 
   </nav>
 </header>
