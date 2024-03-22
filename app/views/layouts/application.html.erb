@@ -10,10 +10,11 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body class="flex flex-col bg-background">
+  <body class="flex h-full w-full min-h-screen flex-col">
     <%= render 'components/layout/toast_messages' %>
     <%= render 'components/layout/navbar' %>
-    <%= render 'components/layout/footer' %>
     <%= yield %>
+    <%= render 'components/layout/footer' %>
   </body>
 </html>
+

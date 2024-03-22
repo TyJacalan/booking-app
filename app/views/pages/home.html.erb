@@ -1,14 +1,27 @@
-<div class="flex w-full items-start justify-center my-10">
-  <div class="flex flex-col max-w-md"
-    <h1 class="text-red-400">Home page</h1>
-
-    <% if current_user.first_name.blank? %>
-      <p>Welcome, <%= current_user.full_name %></p>
-    <% else %>
-      <p>Welcome, <%= current_user.first_name %></p>
-    <% end %>
-    
-    <%= button_to "Logout", destroy_user_session_path, method: :delete %>
-
+<div class="flex-1 relative overflow-hidden py-24 sm:py-32">
+  <div class="mx-auto max-w-9xl px-6 lg:px-8">
+    <div class="flex flex-col gap-8 mx-auto lg:mx-0">
+        <h2 class="text-xl sm:text-4xl font-bold tracking-tight text-foreground">
+          Welcome, <%= current_user.full_name || current_user.first_name %>
+        </h2>
+        <h1 class="text-6xl text-primary tracking-tight font-bold">Rails Jump Starter</h1>
+        <div class="flex h-52 w-full flex-row items-center justify-between gap-8">
+          <%= render_card title: "Authentication",
+            body: "Uses a devise configuration for a user, inclusive of authentication, model testing, and views.",
+            footer: "",
+            class: "h-full"
+          %>
+          <%= render_card title: "Interface",
+            body: "Built with tailwind CSS, Shadcn/ui components, and Hotwire Stimulus. Has a theme toggle out of the box!",
+            footer: "",
+            class: "h-full"
+          %>
+          <%= render_card title: "Testing",
+            body: "Uses Rspec for testing, including a spec helper module, as well as a configuration for generators and paths.",
+            footer: "",
+            class: "h-full"
+          %>
+        </div>
+    </div>
   </div>
 </div>

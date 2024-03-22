@@ -12,5 +12,8 @@
     <%= dropdown_menu_item do %>
       <%= link_to "Settings" %>
     <% end %>
+    <%= dropdown_menu_item do %>
+      <%= button_to "Logout", destroy_user_session_path, method: :delete %>
+    <% end %>
   <% end %>
 <% end %>

@@ -1,0 +1,20 @@
+<div class="relative rounded-lg ring-1 ring-white/5 text-card-foreground shadow-sm w-[350px] <%= options[:class] %>">
+  <% if title || subtitle %>
+  <div class="relative flex flex-col space-y-1.5 p-6 z-10">
+    <% if title %>
+    <h3 class="text-2xl font-semibold leading-none tracking-tight"><%= title %></h3>
+    <% end %> <% if subtitle %>
+    <p class="text-sm text-muted-foreground"><%= subtitle %></p>
+    <% end %>
+  </div>
+  <% end %>
+  <% if !block && !title %>
+    <%= content_tag( :div, class: "relative p-6 z-10" ){ body } %>
+  <% elsif !block %>
+    <%= content_tag( :div, class: "relative px-6 z-10" ){ body } %>
+  <% else %>
+    <%= body %>
+  <% end %>
+  <% if footer %><footer class="relative mx-6 mb-6 z-10"><%= footer %></footer><% end %>
+  <div class="absolute top-0 left-0 h-full w-full rounded-lg bg-white/5 opacity-20 blur-sm z-0"></div>
+</div>
