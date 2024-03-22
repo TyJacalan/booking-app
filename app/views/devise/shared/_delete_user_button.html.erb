@@ -1,0 +1,21 @@
+<%= render_form_for("delete_user", url: registration_path(resource_name), method: :delete) do |f| %>
+  <%= render_alert_dialog do %>
+    <%= alert_dialog_trigger do %>
+      <%= render_button "Delete my account", variant: :destructive, class: 'w-full' %>
+    <% end %>
+
+    <%= alert_dialog_content do %>
+      <div class="flex flex-col space-y-2 text-center sm:text-left">
+        <h2 class="text-lg font-semibold">Are you absolutely sure?</h2>
+        <p class="text-sm text-muted-foreground">
+        This action cannot be undone. This will permanently delete your account and remove your data from our servers.
+        </p>
+      </div>
+      
+      <div class="flex w-full flex-row items-center justify-end gap-2 mt-4">
+        <%= render_button "Cancel", variant: :outline, data: { action: "ui--dialog#close" } %>
+        <%= f.submit "Delete", variant: :destructive %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>

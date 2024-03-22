@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import Ui__DialogController from "./ui/dialog_controller"
+application.register("ui--dialog", Ui__DialogController)
+
 import Ui__PopoverController from "./ui/popover_controller"
 application.register("ui--popover", Ui__PopoverController)
 
