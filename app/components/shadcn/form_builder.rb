@@ -52,15 +52,15 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
     method_name = method.to_s.capitalize.gsub('_', ' ')
     error_message = @object.errors[method].to_sentence
 
-    content_tag(:p, "#{method_name} #{error_message}", 
-      options.merge(class: 'text-destructive')
-    )
+    content_tag(:p, "#{method_name} #{error_message}",
+                options.merge(class: 'text-destructive'))
   end
 
   private
 
   def label_for(object, method)
     return method.capitalize if object.nil?
+
     object.class.human_attribute_name(method)
   end
 end

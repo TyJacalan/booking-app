@@ -63,5 +63,5 @@ module RailsAuthStarter
 
     # GZip all responses
     config.middleware.use Rack::Deflater
-    end
+  end
 end

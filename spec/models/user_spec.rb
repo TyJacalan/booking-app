@@ -17,11 +17,11 @@ RSpec.describe User, type: :model do
       end
     end
 
-    context 'when first name is invalid' do 
+    context 'when first name is invalid' do
       it 'is invalid without a first name' do
         expect(user_missing_first_name).to be_invalid
       end
-      
+
       it 'is invalid with a short first name' do
         expect(user_short_first_name).to be_invalid
       end
@@ -31,7 +31,7 @@ RSpec.describe User, type: :model do
       end
     end
 
-      context 'when last name is invalid' do
+    context 'when last name is invalid' do
       it 'is invalid with a short last name' do
         expect(user_short_last_name).to be_invalid
       end
