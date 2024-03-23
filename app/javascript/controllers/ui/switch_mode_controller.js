@@ -13,7 +13,6 @@ export default class UIToggleModeController extends UIToggleController {
 
   setDark() {
     this.systemTheme = "dark";
-    console.log("set dark: ", this.systemTheme);
     this.setTheme(); 
     this.toggle();
   }

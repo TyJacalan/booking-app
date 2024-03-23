@@ -77,4 +77,10 @@ Rails.application.configure do
   # Raise error when a before_action's only/except options reference missing actions
   config.action_controller.raise_on_missing_callback_actions = true
 
+  # Render public facing errors in development rather than the exception and stack trace
+  if Rails.root.join("tmp/errors-dev.txt").exist?
+    config.consider_all_requests_local = false
+  else
+    config.consider_all_requests_local = true
+  end
 end

@@ -1,0 +1,7 @@
+<%= render partial: 'errors/template',
+  locals: { status_code: @status_code,
+            status_header: @status_header,
+            status_body: @status_body,
+  }
+%>
+<%= render_button "Go back home", as: :link, href: "/" %>
