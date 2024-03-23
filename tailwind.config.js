@@ -1,4 +1,4 @@
-const shadcnConfig = require("./shadcn.tailwind.js");
+const shadcnConfig = require("./config/shadcn.tailwind.js");
 
 module.exports = {
   ...shadcnConfig,
