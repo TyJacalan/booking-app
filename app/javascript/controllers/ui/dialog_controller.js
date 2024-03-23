@@ -1,6 +1,5 @@
 // Inspired by https://github.com/kanety/stimulus-dialog
 import { Controller } from "@hotwired/stimulus";
-import "stimulus-use";
 
 export default class UIDialog extends Controller {
   static targets = ["dialog", "modal", "focus", "drag", "backdrop", "closeButton"];
