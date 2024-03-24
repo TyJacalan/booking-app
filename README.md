@@ -1,3 +1,5 @@
+# RAILS AUTH STARTER
+
 A starter template for a rails application that includes [Devise](https://github.com/heartcombo/devise) user authentication and views; unopiniated components, helpers, and stimulus controllers via [Shadcn](https://shadcn.rails-components.com/) and built with [Tailwind CSS](https://tailwindcss.com/).
 
 ## Main dependencies:
