@@ -20,9 +20,7 @@ A starter template for a rails application that includes [Devise](https://github
 
 ## Usage/Examples
 1. Install dependencies
-`bundle install`
-
-`yarn install`
+```bundle install && yarn install```
 
 2. Set the environment variables:
 3. Do a global find and replace for `rails_auth_api_starter` with `your_project_name`
@@ -38,11 +36,11 @@ bin/rails db:migrate RAILS_ENV=test
 ## Environment Variables
 
 To run this project, you will need to add the following environment variables to your .env file
-
-* `host`
-* `google_oauth_client_id:`
-* `google_oauth_client_secret:`
-* ```
+```
+host
+google_oauth_client_id:
+google_oauth_client_secret:
   google_smtp
   - email
   - password
+```
