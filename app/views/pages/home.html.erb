@@ -5,21 +5,16 @@
           Welcome, <%= current_user.full_name || current_user.first_name %>
         </h2>
         <h1 class="text-6xl text-primary tracking-tight font-bold">Rails Jump Starter</h1>
-        <div class="flex h-52 w-full flex-row items-center justify-between gap-8">
+        <div class="flex h-full lg:h-52 w-full flex-col lg:flex-row items-center justify-between gap-8">
           <%= render_card title: "Authentication",
-            body: "Uses a devise configuration for a user, inclusive of authentication, model testing, and views.",
-            footer: "",
-            class: "h-full"
+            body: "Uses a devise configuration for a user, inclusive of authentication, model testing, and views."
           %>
           <%= render_card title: "Interface",
-            body: "Built with tailwind CSS, Shadcn/ui components, and Hotwire Stimulus. Has a theme toggle out of the box!",
-            footer: "",
-            class: "h-full"
+            body: "Built with tailwind CSS, Shadcn/ui components, and Hotwire Stimulus. Has a theme toggle out of the box!"
           %>
           <%= render_card title: "Testing",
-            body: "Uses Rspec for testing, including a spec helper module, as well as a configuration for generators and paths.",
-            footer: "",
-            class: "h-full"
+            subtitle: "Subtitle",
+            body: "Uses Rspec for testing, including a spec helper module, as well as a configuration for generators and paths."
           %>
         </div>
     </div>

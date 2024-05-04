@@ -1,20 +1,20 @@
-<div class="relative rounded-lg ring-1 ring-white/5 text-card-foreground shadow-sm w-[350px] <%= options[:class] %>">
+<div class="h-full w-full min-w-[350px] p-6 overflow-hidden rounded-lg ring-1 ring-black/5 dark:ring-white/10 bg-card text-card-foreground shadow-sm <%= options[:class] %>">
   <% if title || subtitle %>
-  <div class="relative flex flex-col space-y-1.5 p-6 z-10">
+  <div class="flex flex-col space-y-2">
     <% if title %>
-    <h3 class="text-2xl font-semibold leading-none tracking-tight"><%= title %></h3>
-    <% end %> <% if subtitle %>
-    <p class="text-sm text-muted-foreground"><%= subtitle %></p>
+      <h3 class="text-2xl font-semibold leading-none tracking-tight"><%= title %></h3>
+    <% end %>
+    <% if subtitle %>
+      <p class="text-sm text-muted-foreground"><%= subtitle %></p>
     <% end %>
   </div>
   <% end %>
   <% if !block && !title %>
-    <%= content_tag( :div, class: "relative p-6 z-10" ){ body } %>
+    <%= content_tag( :div ){ body } %>
   <% elsif !block %>
-    <%= content_tag( :div, class: "relative px-6 z-10" ){ body } %>
+    <%= content_tag( :div, class: "mt-2" ){ body } %>
   <% else %>
     <%= body %>
   <% end %>
-  <% if footer %><footer class="relative mx-6 mb-6 z-10"><%= footer %></footer><% end %>
-  <div class="absolute top-0 left-0 h-full w-full rounded-lg bg-white/5 opacity-20 blur-sm z-0"></div>
+  <% if footer %><footer class="mx-6 mb-6"><%= footer %></footer><% end %>
 </div>
