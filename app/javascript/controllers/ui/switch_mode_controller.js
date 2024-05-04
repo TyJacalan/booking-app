@@ -1,4 +1,3 @@
-import { Controller } from "@hotwired/stimulus";
 import UIToggleController from "./switch_controller.js";
 
 export default class UIToggleModeController extends UIToggleController {

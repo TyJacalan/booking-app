@@ -10,7 +10,7 @@
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
   </head>
 
-  <body class="flex h-full w-full min-h-screen flex-col">
+  <body class="max-w-7xl min-w-[350px] mx-auto flex h-full w-full min-h-screen flex-col bg-background text-foreground">
     <%= render 'components/layout/toast_messages' %>
     <%= render 'components/layout/navbar' %>
     <%= yield %>
