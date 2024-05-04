@@ -35,7 +35,35 @@
   </div>
 
   <div class="flex w-full items-center justify-end gap-4 md:ml-auto md:gap-2 lg:gap-4">
-    <%= render_switch nil, id: 'mode_switch', name: 'mode_switch' %>
+    <%= render_dropdown_menu do %>
+      <%= dropdown_menu_trigger do %>
+        <%= render_button variant: :outline, id: :mode_trigger do %>
+          <% if cookies[:ui_theme] == 'light' %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 3v2.25m6.364.386-1.591 1.591M21 12h-2.25m-.386 6.364-1.591-1.591M12 18.75V21m-4.773-4.227-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0Z" />
+            </svg>
+          <% else %>
+            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M21.752 15.002A9.72 9.72 0 0 1 18 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 0 0 3 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 0 0 9.002-5.998Z" />
+            </svg>
+          <% end %>
+        <% end %>
+      <% end %>
+      
+      <%= dropdown_menu_content do %>
+        <div data-controller="ui--mode">
+          <% ["Light", "Dark", "System"].each do |mode| %>
+            <%= dropdown_menu_item do %>
+              <%= render_button mode, 
+                variant: :ghost,
+                data: { action: "click->ui--mode##{mode.downcase}" },
+                class: 'p-0 h-fit w-full justify-start' %>
+            <% end %>
+          <% end%>
+        </div>
+      <% end %>
+    <% end %>
+
     <%= render_dropdown_menu do %>
       <%= dropdown_menu_trigger do %>
         <%= render_avatar src: current_user.avatar_url %>
@@ -57,6 +85,3 @@
     <% end %>
   </div>
 </header>
-<%# render 'components/layout/partials/navbar_logo' %>
-<%# render_switch nil, id: 'mode_toggle', name: 'mode_toggle', controller: 'ui--switch_mode', action: 'click->ui--switch_mode#toggleMode' %>
-<%# render 'components/layout/partials/navbar_account' %> 

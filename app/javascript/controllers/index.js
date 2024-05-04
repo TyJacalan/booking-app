@@ -7,6 +7,9 @@ import { application } from "./application"
 import Ui__DialogController from "./ui/dialog_controller"
 application.register("ui--dialog", Ui__DialogController)
 
+import Ui__ModeController from "./ui/mode_controller"
+application.register("ui--mode", Ui__ModeController)
+
 import Ui__PopoverController from "./ui/popover_controller"
 application.register("ui--popover", Ui__PopoverController)
 
@@ -15,9 +18,6 @@ application.register("ui--sheet", Ui__SheetController)
 
 import Ui__SwitchController from "./ui/switch_controller"
 application.register("ui--switch", Ui__SwitchController)
-
-import Ui__SwitchModeController from "./ui/switch_mode_controller"
-application.register("ui--switch-mode", Ui__SwitchModeController)
 
 import Ui__ToastController from "./ui/toast_controller"
 application.register("ui--toast", Ui__ToastController)
