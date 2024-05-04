@@ -8,6 +8,7 @@
   "dependencies": {
     "@hotwired/stimulus": "^3.2.2",
     "@hotwired/turbo-rails": "^8.0.4",
+    "@kanety/stimulus-static-actions": "^1.0.1",
     "autoprefixer": "latest",
     "esbuild": "^0.20.2",
     "hotkeys-js": "^3.13.7",

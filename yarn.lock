@@ -122,7 +122,7 @@
   resolved "https://registry.yarnpkg.com/@esbuild/win32-x64/-/win32-x64-0.20.2.tgz#9c907b21e30a52db959ba4f80bb01a0cc403d5cc"
   integrity sha512-N49X4lJX27+l9jbLKSqZ6bKNjzQvHaT8IIFUy+YIqmXQdjYCToGWwOItDrfby14c78aDd5NHQl29xingXfCdLQ==
 
-"@hotwired/stimulus@^3.2.2":
+"@hotwired/stimulus@^3.0.0", "@hotwired/stimulus@^3.2.2":
   version "3.2.2"
   resolved "https://registry.yarnpkg.com/@hotwired/stimulus/-/stimulus-3.2.2.tgz#071aab59c600fed95b97939e605ff261a4251608"
   integrity sha512-eGeIqNOQpXoPAIP7tC1+1Yc1yl1xnwYqg+3mzqxyrbE5pg5YFBZcA6YoTiByJB6DKAEsiWtl6tjTJS4IYtbB7A==
@@ -183,6 +183,13 @@
   dependencies:
     "@jridgewell/resolve-uri" "^3.1.0"
     "@jridgewell/sourcemap-codec" "^1.4.14"
+
+"@kanety/stimulus-static-actions@^1.0.1":
+  version "1.0.1"
+  resolved "https://registry.yarnpkg.com/@kanety/stimulus-static-actions/-/stimulus-static-actions-1.0.1.tgz#291235e39d1484da072802c5878a10952e17f344"
+  integrity sha512-8UN3s4CT4b3EhZ5FBtfZLh9k6zTwE4XYn4v4HO+tk/j7WoT77VXaBpQL6L6FHT85koiFpzZiZyJ0YQqxyXkISw==
+  dependencies:
+    "@hotwired/stimulus" "^3.0.0"
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
