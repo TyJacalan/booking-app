@@ -14,13 +14,13 @@
     "hotkeys-js": "^3.13.7",
     "postcss": "latest",
     "stimulus-use": "^0.52.2",
-    "tailwindcss": "latest"
+    "tailwindcss": "3.4.3"
   },
   "devDependencies": {
     "@tailwindcss/aspect-ratio": "^0.4.2",
     "@tailwindcss/container-queries": "^0.1.1",
     "@tailwindcss/forms": "^0.5.7",
-    "@tailwindcss/typography": "^0.5.10",
+    "@tailwindcss/typography": "^0.5.13",
     "tailwindcss-animate": "^1.0.7"
   }
 }
