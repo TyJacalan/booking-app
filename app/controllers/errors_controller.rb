@@ -1,6 +1,6 @@
 class ErrorsController < ApplicationController
   skip_before_action :authenticate_user!
-  layout "error"
+  layout 'error'
 
   def not_found
     @status_code = '404'

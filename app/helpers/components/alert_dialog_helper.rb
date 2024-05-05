@@ -1,7 +1,7 @@
 module Components::AlertDialogHelper
   def render_alert_dialog(**options, &block)
     content = capture(&block) if block
-    render "components/ui/alert_dialog", content: content, **options
+    render 'components/ui/alert_dialog', content:, **options
   end
 
   def alert_dialog_trigger(&block)
