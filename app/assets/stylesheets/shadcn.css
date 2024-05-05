@@ -52,6 +52,14 @@
     font: inherit;
 		box-sizing: box-border;
 	}
+
+  h1 {
+    @apply mt-6 text-center text-3xl font-bold tracking-tight text-muted-foreground;
+  }
+
+  a {
+    @apply mt-2 text-center text-sm text-muted-foreground;
+  }
 }
 
 @layer utilities {

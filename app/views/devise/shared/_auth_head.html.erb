@@ -1,43 +1,39 @@
 <% content_for(:auth_header) do %>
   <% if devise_mapping.registerable? && controller_name == 'sessions' %>
-    <%= render 'components/text/header' do %>Sign In<% end %>
-    <%= render 'components/text/text_with_link',
-      text: 'Or',
-      link_text: 'create your free account',
-      path: new_registration_path(resource_name) 
-    %>
+    <div class='text-center text-muted-foreground'>
+      <h1>Sign In</h1>
+      <span>Or</span>
+      <%= link_to 'create your free account', new_registration_path(resource_name), class: 'text-primary/90 hover:text-primary' %>
+    </div>
   <% end %>
 
   <% if devise_mapping.registerable? && controller_name == 'registrations' %>
     <% if action_name == 'new' || action_name == 'create' %>
-      <%= render 'components/text/header' do %>Sign Up<% end %>
-      <%= render 'components/text/text_with_link',
-        text: 'Already have an account?',
-        link_text: 'Login',
-        path: new_session_path(resource_name)
-      %>
+      <div class='text-center text-muted-foreground'>
+        <h1>Sign Up</h1>
+        <span>Already have an account?</span>
+        <%= link_to 'Login', new_session_path(resource_name), class: 'text-primary/90 hover:text-primary' %>
+      </div>
     <% end %>
     <% if action_name == 'edit' %>
-      <%= render 'components/text/header' do %>Edit your profile<% end %>
-      <%= render 'components/text/text_with_link',
-        text: 'Back to',
-        link_text: 'home',
-        path: root_path
-      %>
+      <div class='text-center text-muted-foreground'>
+        <h1>Edit your profile</h1>
+        <span>Back to</span>
+        <%= link_to 'home', root_path, class: 'text-primary/90 hover:text-primary' %>
+      </div>
     <% end %>
   <% end %>
 
   <% if devise_mapping.recoverable? && controller_name == 'passwords' %>
     <% if action_name == 'new' || action_name == 'create' %>
-      <%= render 'components/text/header' do %>Forgot your password?<% end %>
-      <%= render 'components/text/text_with_link',
-        text: 'Remember your password?',
-        link_text: 'Back to login',
-        path: new_session_path(resource_name)
-      %>
+      <div class='text-center text-muted-foreground'>
+        <h1>Forgot your password</h1>
+        <span>Remember your password?</span>
+        <%= link_to 'Back to login', new_session_path(resource_name), class: 'text-primary/90 hover:text-primary' %>
+      </div>
     <% end %>
     <% if action_name == 'edit' %>
-      <%= render 'components/text/header' do %>Set a new password<% end %>
+      <h1>Set a new password</h1>
     <% end %>
   <% end %>
 
