@@ -1,3 +1,6 @@
-<%= label_tag name, label,
-  data: options[:data],
-  class: tw("text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 #{options[:class]}") %>
+<div class='flex flex-row items-center leading-none'>
+  <%= label_tag name, label,
+    data: options[:data],
+    class: tw("text-sm font-medium peer-disabled:cursor-not-allowed peer-disabled:opacity-70 #{options[:class]}") %>
+  <%= content_tag(:span, "*", class: "text-destructive ml-2") if options[:required] %>
+</div>

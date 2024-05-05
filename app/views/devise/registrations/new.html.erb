@@ -4,7 +4,7 @@
 
   <div class="flex w-full flex-row gap-2">
     <div class= "flex w-1/2 flex-col gap-2">
-      <%= render 'components/form/required_label', f: f, attribute: :first_name %>
+      <%= f.label :first_name, required: true %>
       <%= f.text_field :first_name, autocomplete: "name" %>
       <%= f.error_message :first_name %>
     </div>
@@ -15,15 +15,15 @@
     </div>
   </div>
 
-  <%= render 'components/form/required_label', f: f, attribute: :email %>
+  <%= f.label :email, required: true %>
   <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
   <%= f.error_message :email %>
 
-  <%= render 'components/form/required_label', f: f, attribute: :password %>
+  <%= f.label :password, required: true %>
   <%= f.password_field :password, autocomplete: "new-password" %>
   <%= f.error_message :password %>
 
-  <%= f.label :password_confirmation %>
+  <%= f.label :password_confirmation, required: true %>
   <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
   <%= f.error_message :password_confirmation %>
 

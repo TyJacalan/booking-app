@@ -2,7 +2,7 @@
 
 <%= render_form_for(resource, url: password_path(resource_name), html: { method: :post }, class: 'flex flex-col gap-4') do |f| %>
 
-    <%= f.label :email %>
+    <%= f.label :email, required: true %>
     <%= f.email_field :email, autofocus: true, autocomplete: 'email' %>
     <%= f.error_message :email %>
 
