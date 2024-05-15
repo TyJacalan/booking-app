@@ -2,7 +2,7 @@ module Components::TabsHelper
   def render_tabs(&block)
     @_tabs = []
     capture(&block)
-    render "components/ui/tabs"
+    render 'components/ui/tabs'
   end
 
   def tab_list(&block)
@@ -11,10 +11,10 @@ module Components::TabsHelper
 
   def tab(title, **options)
     options[:id] ||= "tab_#{title.parameterize}"
-    options[:state] = options[:active] ? "active" : "inactive"
+    options[:state] = options[:active] ? 'active' : 'inactive'
 
-    @_tabs << {title: title, id: options[:id]}
-    render("components/ui/tabs/tab", title:, options:)
+    @_tabs << { title:, id: options[:id] }
+    render('components/ui/tabs/tab', title:, options:)
   end
 
   def tab_panels(&block)
@@ -22,8 +22,8 @@ module Components::TabsHelper
   end
 
   def tab_panel(**options, &block)
-    options[:state] = options[:active] ? "active" : "inactive"
+    options[:state] = options[:active] ? 'active' : 'inactive'
     content_for :panel, capture(&block), flush: true
-    render("components/ui/tabs/panel", options:)
+    render('components/ui/tabs/panel', options:)
   end
 end
