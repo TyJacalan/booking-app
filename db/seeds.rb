@@ -60,7 +60,7 @@ end
   Service.create!(
     title: Faker::Job.title,
     description: Faker::Lorem.sentence(word_count: 20),
-    price: Faker::Number.between(from: 100, to: 10000),
+    price: Faker::Number.between(from: 100, to: 10_000),
     categories: Faker::Lorem.words(number: rand(1..3)),
     user_id: User.where(freelancer: true).sample.id
   )
@@ -85,7 +85,7 @@ end
 50.times do
   freelancer = User.includes(:services).where(freelancer: true).where.not(services: { id: nil }).sample
   service = freelancer.services.sample
-  
+
   Review.create!(
     rating: Faker::Number.between(from: 1, to: 5),
     subject: Faker::Lorem.sentence(word_count: 3),

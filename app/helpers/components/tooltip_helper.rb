@@ -1,7 +1,7 @@
 module Components::TooltipHelper
   def render_tooltip(**options, &block)
     content = capture(&block) if block
-    render "components/ui/tooltip", content: content, **options
+    render 'components/ui/tooltip', content:, **options
   end
 
   def tooltip_trigger(&block)
