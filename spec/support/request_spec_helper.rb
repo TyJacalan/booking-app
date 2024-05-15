@@ -28,5 +28,5 @@ end
 
 RSpec.configure do |config|
   config.include RequestSpecHelper, type: :request
-  config.before(:each, type: :request) { host! 'rails-auth-starter.test' }
+  config.before(:each, type: :request) { host! 'booking-app.test' }
 end
