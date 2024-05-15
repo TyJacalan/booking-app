@@ -1,5 +1,5 @@
 <%= render 'devise/shared/omniauth_separator' %>
-<%- if devise_mapping.omniauthable? %>
+<% if devise_mapping.omniauthable? %>
   <%- resource_class.omniauth_providers.each do |provider| %>
     <%= form_for "Login",
       url: omniauth_authorize_path(resource_name, provider),

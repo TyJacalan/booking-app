@@ -42,6 +42,40 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
     )
   end
 
+  def text_area(method, options = {})
+    error_class = @object.errors[method].any? ? 'error' : ''
+    options[:class] = @template.tw("#{options[:class]} #{error_class}")
+    @template.render_textarea(
+      name: "#{object_name} [#{method}]"
+    )
+  end
+
+  def select_field(method, options = {}, &block)
+    error_class = @object.errors[method].any? ? 'error' : ''
+    options[:class] = @template.tw("#{options[:class]} #{error_class}")
+
+    select_html = @template.render_select(
+      name: "#{object_name}[#{method}]",
+      id: "#{object_name}_#{method}",
+      selected: options[:selected],
+      **options,
+      &block
+    )
+
+    if block_given?
+      select_html
+    else
+      select_html + hidden_field(method)
+    end
+  end
+
+  def checkbox(method)
+    @template.render_checkbox(
+      name: "#{object_name} [#{method}]",
+      label: "#{method}"
+    )
+  end
+
   def submit(value = nil, options = {})
     @template.render_button(value, **options)
   end

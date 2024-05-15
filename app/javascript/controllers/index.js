@@ -4,8 +4,17 @@
 
 import { application } from "./application"
 
+import AutoSubmitController from "./auto_submit_controller"
+application.register("auto-submit", AutoSubmitController)
+
+import PasswordVisibilityController from "./password_visibility_controller"
+application.register("password-visibility", PasswordVisibilityController)
+
 import Ui__DialogController from "./ui/dialog_controller"
 application.register("ui--dialog", Ui__DialogController)
+
+import Ui__HoverCardController from "./ui/hover-card_controller"
+application.register("ui--hover-card", Ui__HoverCardController)
 
 import Ui__ModeController from "./ui/mode_controller"
 application.register("ui--mode", Ui__ModeController)
@@ -19,5 +28,11 @@ application.register("ui--sheet", Ui__SheetController)
 import Ui__SwitchController from "./ui/switch_controller"
 application.register("ui--switch", Ui__SwitchController)
 
+import Ui__TabsController from "./ui/tabs_controller"
+application.register("ui--tabs", Ui__TabsController)
+
 import Ui__ToastController from "./ui/toast_controller"
 application.register("ui--toast", Ui__ToastController)
+
+import Ui__TooltipController from "./ui/tooltip_controller"
+application.register("ui--tooltip", Ui__TooltipController)

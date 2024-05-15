@@ -1,7 +1,7 @@
 // Inspired by: https://github.com/excid3/tailwindcss-stimulus-components/blob/master/src/popover.js
 
 import { Controller } from "@hotwired/stimulus";
-import { createPopper } from "https://ga.jspm.io/npm:@popperjs/core@2.11.8/lib/index.js";
+import { createPopper } from "@popperjs/core";
 import { useClickOutside } from "stimulus-use";
 
 export default class UIPopover extends Controller {

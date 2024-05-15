@@ -1,9 +1,76 @@
-# This file should ensure the existence of records required to run the application in every environment (production,
-# development, test). The code here should be idempotent so that it can be executed at any point in every environment.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Example:
-#
-#   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
-#     MovieGenre.find_or_create_by!(name: genre_name)
-#   end
+require 'faker'
+
+50.times do
+  User.create!(
+    first_name: Faker::Name.first_name,
+    last_name: Faker::Name.last_name,
+    email: Faker::Internet.email,
+    password: 'password123!',
+    freelancer: true,
+    client: false,
+    biography: Faker::Lorem.paragraph(sentence_count: 2),
+    skills: Faker::Lorem.words(number: rand(1..5)),
+    birthdate: Faker::Date.birthday(min_age: 18, max_age: 65),
+    address: Faker::Address.street_address,
+    city: Faker::Address.city,
+    country: Faker::Address.country,
+    mobile: Faker::PhoneNumber.phone_number
+  )
+end
+
+50.times do
+  User.create!(
+    first_name: Faker::Name.first_name,
+    last_name: Faker::Name.last_name,
+    email: Faker::Internet.email,
+    password: 'password123!',
+    freelancer: false,
+    client: true,
+    biography: Faker::Lorem.paragraph(sentence_count: 2),
+    skills: Faker::Lorem.words(number: rand(1..5)),
+    birthdate: Faker::Date.birthday(min_age: 18, max_age: 65),
+    address: Faker::Address.street_address,
+    city: Faker::Address.city,
+    country: Faker::Address.country,
+    mobile: Faker::PhoneNumber.phone_number
+  )
+end
+
+25.times do
+  Service.create!(
+    title: Faker::Job.title,
+    description: Faker::Lorem.sentence(word_count: 20),
+    price: Faker::Number.between(from: 100, to: 10000),
+    categories: Faker::Lorem.words(number: rand(1..3)),
+    user_id: User.where(freelancer: true).sample.id
+  )
+end
+
+100.times do
+  Appointment.create!(
+    date: Faker::Date.between(from: Date.today, to: 1.year.from_now),
+    description: Faker::Lorem.sentence(word_count: 6),
+    client_id: User.where(client: true).sample.id,
+    freelancer_id: User.where(freelancer: true).sample.id
+  )
+end
+
+100.times do
+  Notification.create!(
+    content: Faker::Lorem.sentence(word_count: 6),
+    user_id: User.all.sample.id
+  )
+end
+
+50.times do
+  freelancer = User.includes(:services).where(freelancer: true).where.not(services: { id: nil }).sample
+  service = freelancer.services.sample
+  
+  Review.create!(
+    rating: Faker::Number.between(from: 1, to: 5),
+    subject: Faker::Lorem.sentence(word_count: 3),
+    client_id: User.where(client: true).sample.id,
+    freelancer_id: freelancer.id,
+    service_id: service.id
+  )
+end
