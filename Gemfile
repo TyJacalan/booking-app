@@ -5,6 +5,7 @@ ruby '3.3.0'
 gem 'bootsnap', require: false
 gem 'cssbundling-rails'
 gem 'devise'
+gem 'geocoder'
 gem 'jsbundling-rails'
 gem 'letter_opener_web'
 gem 'omniauth'
