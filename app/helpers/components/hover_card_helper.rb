@@ -1,7 +1,7 @@
 module Components::HoverCardHelper
   def render_hover_card(**options, &block)
     content = capture(&block) if block
-    render "components/ui/hover_card", content: content, **options
+    render 'components/ui/hover_card', content:, **options
   end
 
   def hover_card_trigger(&block)

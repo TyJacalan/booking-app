@@ -1,4 +1,3 @@
 class ReviewsController < ApplicationController
-  def new
-  end
+  def new; end
 end
