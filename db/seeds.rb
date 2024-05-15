@@ -11,9 +11,6 @@ require 'faker'
     biography: Faker::Lorem.paragraph(sentence_count: 2),
     skills: Faker::Lorem.words(number: rand(1..5)),
     birthdate: Faker::Date.birthday(min_age: 18, max_age: 65),
-    address: Faker::Address.street_address,
-    city: Faker::Address.city,
-    country: Faker::Address.country,
     mobile: Faker::PhoneNumber.phone_number
   )
 end
@@ -26,12 +23,35 @@ end
     password: 'password123!',
     freelancer: false,
     client: true,
+    birthdate: Faker::Date.birthday(min_age: 18, max_age: 65),
+    mobile: Faker::PhoneNumber.phone_number
+  )
+end
+
+cities = [
+  'Mactan',
+  'Cebu',
+  'Makati',
+  'Makati',
+  'Manila', 
+  'Mandaluyong',
+  'Taguig',
+  'Davao'
+]
+
+cities.each do |city|
+  User.create!(
+    first_name: Faker::Name.first_name,
+    last_name: Faker::Name.last_name,
+    email: Faker::Internet.email,
+    password: 'password123!',
+    freelancer: true,
+    client: false,
     biography: Faker::Lorem.paragraph(sentence_count: 2),
     skills: Faker::Lorem.words(number: rand(1..5)),
     birthdate: Faker::Date.birthday(min_age: 18, max_age: 65),
-    address: Faker::Address.street_address,
-    city: Faker::Address.city,
-    country: Faker::Address.country,
+    city: city,
+    country: 'Philippines',
     mobile: Faker::PhoneNumber.phone_number
   )
 end
