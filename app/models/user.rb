@@ -6,7 +6,7 @@ class User < ApplicationRecord
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
-         #:omniauthable, omniauth_providers: [:google_oauth2]
+  # :omniauthable, omniauth_providers: [:google_oauth2]
 
   validates :first_name, presence: true, length: { minimum: 2, maximum: 30 }
   validates :last_name, length: { minimum: 2, maximum: 30 }, allow_blank: true
@@ -23,7 +23,7 @@ class User < ApplicationRecord
   end
 
   private
-  
+
   def password_complexity
     return unless password.present?
 
