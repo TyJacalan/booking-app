@@ -32,3 +32,5 @@ group :development do
 end
 
 gem "pundit", "~> 2.3"
+
+gem "store_attribute", "~> 1.2"
