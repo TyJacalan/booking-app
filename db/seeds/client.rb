@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'faker'
-
 email = 'client@example.com'
 attributes = {
   email:,
@@ -9,8 +7,6 @@ attributes = {
   last_name: 'user',
   password: 'password123!',
   password_confirmation: 'password123!',
-  freelancer: false,
-  client: true,
   birthdate: Faker::Date.birthday(min_age: 18, max_age: 65),
   mobile: Faker::PhoneNumber.phone_number
 }
