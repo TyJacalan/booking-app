@@ -1,12 +1,17 @@
 Rails.application.routes.draw do
-  resources :roles
   devise_for :users, controllers: {
     # omniauth_callbacks: 'users/omniauth_callbacks',
     sessions: 'users/sessions',
     registrations: 'users/registrations'
   }
 
+  root to: 'services#index'
+
+  resources :roles
+  resources :services
+  resources :appointments
   resources :reviews
+
   get 'up' => 'rails/health#show', as: :rails_health_check
 
   # Error routes
