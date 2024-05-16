@@ -9,12 +9,12 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
-         #:omniauthable, omniauth_providers: [:google_oauth2]
+  # :omniauthable, omniauth_providers: [:google_oauth2]
   geocoded_by :address
 
   before_validation :set_address
   before_validation do
-    self.role ||= Role.find_by(name: "client")
+    self.role ||= Role.find_by(name: 'client')
   end
 
   validates :first_name, :last_name, presence: true, length: { minimum: 2, maximum: 30 }

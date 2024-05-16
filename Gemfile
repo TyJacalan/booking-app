@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 ruby '3.3.0'
@@ -31,6 +33,6 @@ group :development do
   gem 'web-console'
 end
 
-gem "pundit", "~> 2.3"
+gem 'pundit', '~> 2.3'
 
-gem "ransack", "~> 4.1"
+gem 'ransack', '~> 4.1'
