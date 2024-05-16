@@ -4,14 +4,18 @@ class User < ApplicationRecord
   has_many :appointments
   has_many :notifications
 
+  belongs_to :role
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
          #:omniauthable, omniauth_providers: [:google_oauth2]
   geocoded_by :address
 
-
   before_validation :set_address
+  before_validation do
+    self.role ||= Role.find_by(name: "client")
+  end
 
   validates :first_name, :last_name, presence: true, length: { minimum: 2, maximum: 30 }
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
