@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 Role.find_or_create_by!(name: 'freelancer') do |r|
-  r.permissions = {
+  r.permission = {
     create_services: true,
     read_services: true,
     update_services: true,
@@ -14,7 +14,7 @@ Role.find_or_create_by!(name: 'freelancer') do |r|
 end
 
 Role.find_or_create_by!(name: 'client') do |r|
-  r.permissions = {
+  r.permission = {
     create_services: false,
     read_services: true,
     update_services: false,

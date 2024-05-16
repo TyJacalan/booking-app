@@ -1,6 +1,6 @@
 class ChangePermissionToRoles < ActiveRecord::Migration[7.1]
   def change
     remove_column :roles, :permission, :string
-    add_column :roles, :permission, :json
+    add_column :roles, :permission, :json, default: {}
   end
 end
