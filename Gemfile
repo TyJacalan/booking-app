@@ -31,6 +31,6 @@ group :development do
   gem 'web-console'
 end
 
-gem "pundit", "~> 2.3"
+gem 'pundit', '~> 2.3'
 
-gem "ransack", "~> 4.1"
+gem 'ransack', '~> 4.1'

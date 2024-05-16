@@ -4,7 +4,7 @@ require 'faker'
 
 email = 'freelancer@example.com'
 attributes = {
-  email: email,
+  email:,
   first_name: 'freelancer',
   last_name: 'user',
   password: 'password123!',
@@ -19,6 +19,6 @@ attributes = {
   mobile: Faker::PhoneNumber.phone_number
 }
 
-User.find_or_create_by!(email: email) do |user|
+User.find_or_create_by!(email:) do |user|
   user.assign_attributes(attributes)
 end

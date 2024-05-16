@@ -6,17 +6,17 @@ def seed(file)
 end
 
 puts "Seeding #{Rails.env} database..."
-seed 'appointments'
 seed 'client'
 seed 'clients'
 seed 'freelancer'
 seed 'freelancers'
+seed 'appointments'
 seed 'notifications'
 seed 'reviews'
 seed 'services'
 puts 'All files successfully seeded'
 
-Role.find_or_create_by!(name: "freelancer") do |r|
+Role.find_or_create_by!(name: 'freelancer') do |r|
   r.permissions = {
     create_services: true,
     read_services: true,
@@ -29,7 +29,7 @@ Role.find_or_create_by!(name: "freelancer") do |r|
   }
 end
 
-Role.find_or_create_by!(name: "client") do |r|
+Role.find_or_create_by!(name: 'client') do |r|
   r.permissions = {
     create_services: false,
     read_services: true,

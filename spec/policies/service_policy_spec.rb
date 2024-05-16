@@ -5,7 +5,7 @@ RSpec.describe ServicePolicy, type: :policy do
 
   subject { described_class }
 
-  permissions ".scope" do
+  permissions '.scope' do
     pending "add some examples to (or delete) #{__FILE__}"
   end
 
