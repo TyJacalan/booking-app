@@ -14,7 +14,6 @@ gem 'omniauth-rails_csrf_protection', '~> 1.0'
 gem 'pg', '~> 1.1'
 gem 'puma', '>= 5.0'
 gem 'rails', '~> 7.1.3', '>= 7.1.3.2'
-gem 'ransack'
 gem 'rubocop-rails', '~> 2.24', '>= 2.24.1'
 gem 'shadcn-ui', '~> 0.0.12'
 gem 'sprockets-rails'
@@ -34,4 +33,4 @@ end
 
 gem "pundit", "~> 2.3"
 
-gem "store_attribute", "~> 1.2"
+gem "ransack", "~> 4.1"

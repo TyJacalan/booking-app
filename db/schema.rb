@@ -10,8 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_15_033522) do
-
+ActiveRecord::Schema[7.1].define(version: 2024_05_16_024326) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -45,6 +44,13 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_15_033522) do
     t.index ["client_id"], name: "index_reviews_on_client_id"
     t.index ["freelancer_id"], name: "index_reviews_on_freelancer_id"
     t.index ["service_id"], name: "index_reviews_on_service_id"
+  end
+
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.string "permission"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "services", force: :cascade do |t|
@@ -83,8 +89,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_15_033522) do
     t.string "mobile"
     t.float "latitude"
     t.float "longitude"
+    t.bigint "role_id", null: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+    t.index ["role_id"], name: "index_users_on_role_id"
   end
 
   add_foreign_key "appointments", "users", column: "client_id"
@@ -94,4 +102,5 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_15_033522) do
   add_foreign_key "reviews", "users", column: "client_id"
   add_foreign_key "reviews", "users", column: "freelancer_id"
   add_foreign_key "services", "users"
+  add_foreign_key "users", "roles"
 end
