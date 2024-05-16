@@ -10,6 +10,7 @@ class User < ApplicationRecord
          :recoverable, :rememberable, :validatable
 
   # :omniauthable, omniauth_providers: [:google_oauth2]
+
   geocoded_by :address
 
   before_validation :set_address
@@ -47,6 +48,7 @@ class User < ApplicationRecord
 
   def set_address
     self.address = "#{city}, #{country}" if city.present? && country.present?
+    errors.add(:city, 'must correspond to a real city') unless Geocoder.search(address).first
   end
 
   def set_fullname
