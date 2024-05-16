@@ -5,7 +5,13 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
 
+  root to: 'services#index'
+
+  resources :roles
+  resources :services
+  resources :appointments
   resources :reviews
+
   get 'up' => 'rails/health#show', as: :rails_health_check
 
   # Error routes

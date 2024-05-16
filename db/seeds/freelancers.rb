@@ -18,7 +18,7 @@ shared_attributes = {
     biography: Faker::Lorem.paragraph(sentence_count: 2),
     skills: Faker::Lorem.words(number: rand(1..5)),
     birthdate: Faker::Date.birthday(min_age: 18, max_age: 65),
-    city: ['Cebu', 'Davao', 'Mactan', 'Makati', 'Mandaluyong', 'Taguig'].sample,
+    city: %w[Cebu Davao Mactan Makati Mandaluyong Taguig].sample,
     mobile: Faker::PhoneNumber.phone_number
   )
 
