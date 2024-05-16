@@ -31,3 +31,7 @@ end
 group :development do
   gem 'web-console'
 end
+
+gem "pundit", "~> 2.3"
+
+gem "store_attribute", "~> 1.2"
