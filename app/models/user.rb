@@ -1,8 +1,8 @@
 class User < ApplicationRecord
-  has_many :services
-  has_many :reviews
-  has_many :appointments
-  has_many :notifications
+  has_many :services, dependent: :destroy
+  has_many :reviews, dependent: :destroy
+  has_many :appointments, dependent: :destroy
+  has_many :notifications, dependent: :destroy
 
   belongs_to :role
 
@@ -47,8 +47,9 @@ class User < ApplicationRecord
   end
 
   def set_address
-    self.address = "#{city}, #{country}" if city.present? && country.present?
-    errors.add(:city, 'must correspond to a real city') unless Geocoder.search(address).first
+    return unless city.present? && country.present?
+    self.address = "#{city}, #{country}"
+    errors.add(:city, 'must correspond to a real city') unless Geocoder.search(city).first
   end
 
   def set_fullname

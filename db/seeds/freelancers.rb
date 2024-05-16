@@ -1,12 +1,9 @@
 # frozen_string_literal: true
 
-require 'faker'
-
 shared_attributes = {
   password: 'password123!',
   password_confirmation: 'password123!',
-  freelancer: true,
-  client: false,
+  role: Role.find_by(name: 'freelancer'),
   country: 'Philippines'
 }
 

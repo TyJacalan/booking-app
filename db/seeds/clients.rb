@@ -1,12 +1,8 @@
 # frozen_string_literal: true
 
-require 'faker'
-
 shared_attributes = {
   password: 'password123!',
   password_confirmation: 'password123!',
-  freelancer: false,
-  client: true,
   country: 'Philippines'
 }
 
