@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Role < ApplicationRecord
   store :permissions, accessors: %i[
     create_services
@@ -8,5 +10,5 @@ class Role < ApplicationRecord
     read_appointments
     update_appointments
     delete_appointments
-  ], coder: JSON
+  ]
 end

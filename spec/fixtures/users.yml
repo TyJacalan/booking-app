@@ -4,4 +4,3 @@ valid_freelancer:
   email: freelancer@example.com
   city: 'Makati'
   country: 'Philippines'
-  freelancer: true
