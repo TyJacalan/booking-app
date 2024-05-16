@@ -47,8 +47,9 @@ class User < ApplicationRecord
   end
 
   def set_address
-    self.address = "#{city}, #{country}" if city.present? && country.present?
-    errors.add(:city, 'must correspond to a real city') unless Geocoder.search(address).first
+    return unless city.present? && country.present?
+    self.address = "#{city}, #{country}"
+    errors.add(:city, 'must correspond to a real city') unless Geocoder.search(city).first
   end
 
   def set_fullname

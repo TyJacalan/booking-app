@@ -4,7 +4,7 @@ class AppointmentsController < ApplicationController
   end
 
   def index
-    @appointments = current_user.appointments
+    @appointments = Appointment.where(client_id: current_user.id)
     authorize @appointments
   end
 end
