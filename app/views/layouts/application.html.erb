@@ -11,6 +11,14 @@
   </head>
 
   <body class="max-w-7xl min-w-[350px] mx-auto flex h-full w-full min-h-screen flex-col bg-background text-foreground">
+    <% if user_signed_in? %>
+      <%= current_user.email %>
+      <%= button_to "Logout", destroy_user_session_path, method: :delete %>
+    <% else %>
+      <%= link_to "Login", new_user_session_path%>
+      <%= link_to "Signup", new_user_registration_path%>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>
