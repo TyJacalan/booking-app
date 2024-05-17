@@ -10,17 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_240_516_085_019) do
+ActiveRecord::Schema[7.1].define(version: 20_240_516_123_551) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
   create_table 'appointments', force: :cascade do |t|
-    t.date 'date', null: false
     t.text 'description', null: false
     t.bigint 'client_id', null: false
     t.bigint 'freelancer_id', null: false
     t.datetime 'created_at', null: false
     t.datetime 'updated_at', null: false
+    t.datetime 'start'
+    t.datetime 'end'
     t.index ['client_id'], name: 'index_appointments_on_client_id'
     t.index ['freelancer_id'], name: 'index_appointments_on_freelancer_id'
   end
