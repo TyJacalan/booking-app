@@ -7,4 +7,9 @@ class ServicesController < ApplicationController
     @services = Service.all
     authorize @services
   end
+
+  def new
+    @service = Service.new
+    authorize @service
+  end
 end

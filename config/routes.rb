@@ -5,7 +5,7 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
 
-  root to: 'services#index'
+  root 'services#index'
 
   resources :roles
   resources :services

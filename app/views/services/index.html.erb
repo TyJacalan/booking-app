@@ -1,0 +1,5 @@
+<% if user_signed_in? %>
+  <%= link_to "Offer your services", new_service_path %>
+<% else %>
+  <%= link_to "Offer your services", new_user_session_path %>
+<% end %>
