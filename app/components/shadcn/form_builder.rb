@@ -46,7 +46,10 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
     error_class = @object.errors[method].any? ? 'error' : ''
     options[:class] = @template.tw("#{options[:class]} #{error_class}")
     @template.render_textarea(
-      name: "#{object_name} [#{method}]"
+      name: "#{object_name}[#{method}]",
+      id: "#{object_name}_#{method}",
+      value: @object.send(method),
+      **options
     )
   end
 
