@@ -1,8 +1,34 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
-  # before_action :configure_sign_up_params, only: [:create]
+  before_action :configure_sign_up_params, only: [:create, :create_freelancer]
   # before_action :configure_account_update_params, only: [:update]
+
+  def new_freelancer
+    build_resource({})
+    respond_with resource
+  end
+
+  def create_freelancer
+    if user_signed_in?
+      current_user.update(sign_up_params)
+      current_user.update(role: Role.find_by(name: 'freelancer'))
+      redirect_to root_path, notice: "Welcome to the freelancers' community!"
+    else
+      user = User.find_by(email: sign_up_params[:email])
+      if user
+        user.update(sign_up_params)
+        user.update(role: Role.find_by(name: 'freelancer'))
+        sign_in(user)
+      else
+        build_resource(sign_up_params)
+        resource.role = Role.find_by(name: 'freelancer')
+        resource.save
+        sign_in(resource)
+      end
+      redirect_to root_path, notice: "You have successfully joined the freelancers' community!"
+    end
+  end
 
   # GET /resource/sign_up
   # def new
@@ -38,12 +64,24 @@ class Users::RegistrationsController < Devise::RegistrationsController
   #   super
   # end
 
-  # protected
+  protected
 
   # If you have extra params to permit, append them to the sanitizer.
-  # def configure_sign_up_params
-  #   devise_parameter_sanitizer.permit(:sign_up, keys: [:attribute])
-  # end
+  def configure_sign_up_params
+    devise_parameter_sanitizer.permit(:sign_up, keys: [
+      :first_name,
+      :last_name,
+      :email,
+      :password,
+      :password_confirmation,
+      :biography,
+      :skills,
+      :birthdate,
+      :address,
+      :city,
+      :country,
+      :mobile])
+  end
 
   # If you have extra params to permit, append them to the sanitizer.
   # def configure_account_update_params
