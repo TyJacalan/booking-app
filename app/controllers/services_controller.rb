@@ -4,7 +4,8 @@ class ServicesController < ApplicationController
   end
 
   def index
-    @services = Service.all
+    @q = Service.ransack(params[:q])
+    @services = @q.result(distinct: true)
     authorize @services
   end
 end
