@@ -14,6 +14,7 @@
     "@stimulus-components/password-visibility": "^3.0.0",
     "autoprefixer": "latest",
     "esbuild": "^0.20.2",
+    "flatpickr": "^4.6.13",
     "hotkeys-js": "^3.13.7",
     "postcss": "latest",
     "stimulus-use": "^0.52.2",

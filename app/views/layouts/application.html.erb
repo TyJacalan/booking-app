@@ -8,6 +8,9 @@
 
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+
+    <%# Date picker: https://flatpickr.js.org/ %>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
   </head>
 
   <body class="max-w-7xl min-w-[350px] mx-auto flex h-full w-full min-h-screen flex-col bg-background text-foreground">
@@ -17,6 +20,10 @@
     <% else %>
       <%= link_to "Login", new_user_session_path%>
       <%= link_to "Signup", new_user_registration_path%>
+    <% end %>
+
+    <%= turbo_frame_tag 'toasts' do %>
+      <%= render 'layouts/toasts' %>
     <% end %>
     
     <%= yield %>
