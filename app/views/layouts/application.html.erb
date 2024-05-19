@@ -22,6 +22,10 @@
       <%= link_to "Signup", new_user_registration_path%>
     <% end %>
 
+    <%= turbo_frame_tag 'toasts' do %>
+      <%= render 'layouts/toasts' %>
+    <% end %>
+    
     <%= yield %>
   </body>
 </html>
