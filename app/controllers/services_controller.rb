@@ -22,5 +22,6 @@ class ServicesController < ApplicationController
 
   def set_service
     @set_service ||= Service.find(params[:id])
+    authorize @set_service
   end
 end
