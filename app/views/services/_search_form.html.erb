@@ -1,0 +1,6 @@
+<%= search_form_for @q do |f| %>
+    <%= f.label :categories_cont, "What service are you looking for?" %>
+    <%= f.search_field :categories_cont %>
+
+    <%= f.submit "Search" %>
+<% end %>
