@@ -10,6 +10,10 @@ class Appointment < ApplicationRecord
   before_save :set_price
   before_destroy :validate_deletion
 
+  def total_hours
+    ((self.end - self.start) / 3600).to_i
+  end
+
   private
 
   def set_price

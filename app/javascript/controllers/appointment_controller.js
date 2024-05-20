@@ -13,9 +13,9 @@ export default class extends Controller {
                     'totalFee' ]
 
   connect() {
-    flatpickr(this.dateInputTargets, {
+    flatpickr(this.dateInputTarget, {
       mode: 'range',
-      minDate: new Date().fp_incr(1),
+      minDate: this.dateInputTarget.value || new Date().fp_incr(1),
       onChange: (selectedDates) => {
         this.handleDateChange(selectedDates);
         this.handleDurationChange();

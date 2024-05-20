@@ -14,7 +14,7 @@ Rails.application.routes.draw do
 
   resources :roles
   resources :services
-  resources :appointments
+  resources :appointments, except: %i[show edit]
   resources :reviews
 
   get 'up' => 'rails/health#show', as: :rails_health_check

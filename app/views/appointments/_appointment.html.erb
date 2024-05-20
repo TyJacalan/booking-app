@@ -1,0 +1,21 @@
+<div class='flex flex-row gap-2 items-center'>
+  <span><%= appointment.status.capitalize %></span>
+  <h2 class='text-lg text-muted-foreground'><%= appointment.service.title %></h2>
+  <% if current_user&.role&.name == 'client' %>
+    <%= render partial: 'form_edit', locals: { appointment: appointment } %>
+  <% end %>
+</div>
+<%= render_separator class: 'my-4' %>
+<div class='h-12 overflow-hidden'>
+  <p class='text-ellipsis'><%= appointment.description %></p>
+</div>
+<span><%= appointment.start %></span>
+<span><%= appointment.end %></span>
+<span><%= appointment.fee %></span>
+<span><%= appointment.freelancer.first_name %></span>
+
+<% if current_user&.role&.name == 'client' %>
+  <span class='absolute top-5 right-5'>
+    <%= render partial: 'form_delete', locals: { appointment: appointment } %>
+  </span>
+<% end %>
