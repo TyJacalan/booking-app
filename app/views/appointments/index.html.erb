@@ -10,6 +10,12 @@
       <span><%= appointment.start %></span>
       <span><%= appointment.end %></span>
       <span><%= appointment.freelancer.first_name %></span>
+
+      <% if current_user&.role&.name == 'client' %>
+        <span class='absolute top-5 right-5'>
+          <%= render partial: 'form_delete', locals: { appointment: appointment } %>
+        </span>
+      <% end %>
     <% end %>
   <% end %>
 </div>
