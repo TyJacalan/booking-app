@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 source 'https://rubygems.org'
 
 ruby '3.3.0'
@@ -5,6 +7,7 @@ ruby '3.3.0'
 gem 'bootsnap', require: false
 gem 'cssbundling-rails'
 gem 'devise'
+gem 'geocoder'
 gem 'jsbundling-rails'
 gem 'letter_opener_web'
 gem 'omniauth'
@@ -15,6 +18,7 @@ gem 'puma', '>= 5.0'
 gem 'rails', '~> 7.1.3', '>= 7.1.3.2'
 gem 'rubocop-rails', '~> 2.24', '>= 2.24.1'
 gem 'shadcn-ui', '~> 0.0.12'
+gem 'store_attribute', '~> 1.0'
 gem 'sprockets-rails'
 gem 'stimulus-rails'
 gem 'turbo-rails'
@@ -29,3 +33,7 @@ end
 group :development do
   gem 'web-console'
 end
+
+gem 'pundit', '~> 2.3'
+
+gem 'ransack', '~> 4.1'

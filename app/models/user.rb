@@ -1,17 +1,26 @@
 class User < ApplicationRecord
-  has_many :services
-  has_many :reviews
-  has_many :appointments
-  has_many :notifications
+  has_many :services, dependent: :destroy
+  has_many :reviews, dependent: :destroy
+  has_many :appointments, dependent: :destroy
+  has_many :notifications, dependent: :destroy
+
+  belongs_to :role
 
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
+
   # :omniauthable, omniauth_providers: [:google_oauth2]
 
-  validates :first_name, presence: true, length: { minimum: 2, maximum: 30 }
-  validates :last_name, length: { minimum: 2, maximum: 30 }, allow_blank: true
+  geocoded_by :address
+
+  before_validation :set_address
+  before_validation :set_default_role, on: :create
+
+  validates :first_name, :last_name, presence: true, length: { minimum: 2, maximum: 30 }
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validate :password_complexity
+
+  after_validation :geocode, if: -> { address.present? && address_changed? }
 
   def self.from_omniauth(auth)
     where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
@@ -24,6 +33,10 @@ class User < ApplicationRecord
 
   private
 
+  def set_default_role
+    self.role ||= Role.find_by(name: 'client')
+  end
+
   def password_complexity
     return unless password.present?
 
@@ -33,5 +46,15 @@ class User < ApplicationRecord
     return if password.match?(/[!@#$%^&*]/)
 
     errors.add(:password, 'must contain at least one special character')
+  end
+
+  def set_address
+    return unless city.present? && country.present?
+    self.address = "#{city}, #{country}"
+    errors.add(:city, 'must correspond to a real city') unless Geocoder.search(city).first
+  end
+
+  def set_fullname
+    self.full_name = "#{first_name} #{last_name}" if first_name.present? && last_name.present?
   end
 end

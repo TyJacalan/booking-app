@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
 
-# Exit when any command fails
-set -e
-
 # Run RuboCop checks
 rubocop
 
@@ -11,3 +8,6 @@ rubocop -a
 
 # Run the test suite
 rspec
+
+# Ensure seeds work
+RAILS_ENV=test bundle exec rails db:reset

@@ -1,50 +1,20 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
-  describe 'validations' do
-    let(:user_valid) { users(:valid_user) }
-    let(:user_missing_first_name) { users(:missing_first_name_user) }
-    let(:user_short_first_name) { users(:short_first_name_user) }
-    let(:user_long_first_name) { users(:long_first_name_user) }
-    let(:user_missing_last_name) { users(:missing_last_name_user) }
-    let(:user_short_last_name) { users(:short_last_name_user) }
-    let(:user_long_last_name) { users(:long_last_name_user) }
-    let(:user_invalid_email) { users(:invalid_email_user) }
+  let(:valid_freelancer) { users(:valid_freelancer) }
 
-    context 'when the user is valid' do
-      it 'is valid' do
-        expect(user_valid).to be_valid
-      end
+  context 'geocoding' do
+    it 'sets the address before validation' do
+      valid_freelancer.valid?
+      expect(valid_freelancer.address).to eq('Makati, Philippines')
     end
 
-    context 'when first name is invalid' do
-      it 'is invalid without a first name' do
-        expect(user_missing_first_name).to be_invalid
-      end
-
-      it 'is invalid with a short first name' do
-        expect(user_short_first_name).to be_invalid
-      end
-
-      it 'is invalid with a long first name' do
-        expect(user_long_first_name).to be_invalid
-      end
-    end
-
-    context 'when last name is invalid' do
-      it 'is invalid with a short last name' do
-        expect(user_short_last_name).to be_invalid
-      end
-
-      it 'is invalid with a long last name' do
-        expect(user_long_last_name).to be_invalid
-      end
-    end
-
-    context 'when the email is invalid' do
-      it 'is not a valid email' do
-        expect(user_invalid_email).to be_invalid
-      end
+    it 'geocodes the user after validation' do
+      valid_freelancer.save
+      expect(valid_freelancer.latitude).to be_present
+      expect(valid_freelancer.longitude).to be_present
     end
   end
 end

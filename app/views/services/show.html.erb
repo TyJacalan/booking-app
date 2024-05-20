@@ -1,0 +1,5 @@
+<%= @service.title %>
+
+<%= turbo_frame_tag :new_appointment, 
+  src: new_appointment_path(id: @service.id) do %>
+<% end %>

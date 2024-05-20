@@ -5,7 +5,18 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
 
+  devise_scope :user do
+    get :freelancer_registration, to: 'users/registrations#new_freelancer', as: :new_freelancer
+    post :freelancer_registration, to: 'users/registrations#create_freelancer', as: :create_freelancer
+  end
+
+  root 'services#index'
+
+  resources :roles
+  resources :services
+  resources :appointments
   resources :reviews
+
   get 'up' => 'rails/health#show', as: :rails_health_check
 
   # Error routes

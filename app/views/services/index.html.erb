@@ -1,0 +1,6 @@
+<% if user_signed_in? %>
+  <%= link_to "Offer your services", policy(Service).new? ? new_service_path : new_freelancer_path %>
+  <%= render 'search_form' %>
+<% else %>
+  <%= link_to "Offer your services", new_user_session_path %>
+<% end %>
