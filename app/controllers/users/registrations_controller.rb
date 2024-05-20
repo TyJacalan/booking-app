@@ -11,7 +11,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   def create_freelancer
     if user_signed_in?
-      puts "signup: #{sign_up_params}"
       current_user.update(sign_up_params)
       current_user.update(role: Role.find_by(name: 'freelancer'))
       redirect_to root_path, notice: "Welcome to the freelancers' community!"

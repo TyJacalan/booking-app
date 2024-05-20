@@ -14,6 +14,7 @@ class User < ApplicationRecord
   geocoded_by :address
 
   before_validation :set_address
+  before_validation :set_fullname
   before_validation :set_default_role, on: :create
 
   validates :first_name, :last_name, presence: true, length: { minimum: 2, maximum: 30 }

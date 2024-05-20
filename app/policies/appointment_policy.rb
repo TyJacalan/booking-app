@@ -10,7 +10,13 @@ class AppointmentPolicy < ApplicationPolicy
   end
 
   def show?
-    user&.role&.read_appointments?
+    true
+    # user&.role&.read_appointments?
+  end
+
+  def new?
+    true
+    # user&.role&.create_appointments?
   end
 
   def create?
