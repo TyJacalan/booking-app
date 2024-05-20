@@ -1,14 +1,23 @@
+<% role = current_user&.role&.name %>
 <div class='flex flex-row gap-2 items-center'>
-  <span><%= appointment.status.capitalize %></span>
+  <% if role == 'client' %> 
+    <span><%= appointment.status.capitalize %></span>
+  <% elsif role == 'freelancer' %>
+    <%= render partial: 'form_edit_status', locals: { appointment: appointment } %>
+  <% end %>
   <h2 class='text-lg text-muted-foreground'><%= appointment.service.title %></h2>
   <% if current_user&.role&.name == 'client' %>
     <%= render partial: 'form_edit', locals: { appointment: appointment } %>
   <% end %>
 </div>
+
 <%= render_separator class: 'my-4' %>
+
 <div class='h-12 overflow-hidden'>
   <p class='text-ellipsis'><%= appointment.description %></p>
 </div>
+
+<span><%= appointment.status %></span>
 <span><%= appointment.start %></span>
 <span><%= appointment.end %></span>
 <span><%= appointment.fee %></span>

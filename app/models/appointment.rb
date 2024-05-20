@@ -5,7 +5,7 @@ class Appointment < ApplicationRecord
 
   validates :description, :start, :end, :duration, :service_id, :client_id, :freelancer_id, presence: true
 
-  enum status: { pending: 0, accepted: 1, denied: 2, expired: 3, paid: 4, blocked: 5 }
+  enum status: { pending: 0, accepted: 1, rejected: 2, expired: 3, paid: 4, blocked: 5 }
 
   before_save :set_price
   before_destroy :validate_deletion

@@ -41,7 +41,14 @@ class AppointmentsController < ApplicationController
   private
 
   def appointment_params
-    params.require(:appointment).permit(:description, :start, :end, :duration, :service_id, :client_id, :freelancer_id)
+    params.require(:appointment).permit(:client_id,
+                                        :description,
+                                        :duration,
+                                        :end,
+                                        :freelancer_id,
+                                        :service_id,
+                                        :start,
+                                        :status)
   end
 
   def handle_appointment_destroy
