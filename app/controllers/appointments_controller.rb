@@ -40,7 +40,6 @@ class AppointmentsController < ApplicationController
     @service = Service.find(service_id)
   end
 
-
   def set_fees
     @price ||= @service.price
     @service_fee ||= @price * 0.025

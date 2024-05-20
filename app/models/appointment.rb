@@ -14,10 +14,9 @@ class Appointment < ApplicationRecord
 
   def set_price
     service = Service.find(service_id)
-    fee = service.price
-    price = fee * duration
+    price = service.price * duration
     service_fee = price * 0.025
-    fee = price + service_fee
+    self.fee = price + service_fee
   end
 
   def validate_deletion

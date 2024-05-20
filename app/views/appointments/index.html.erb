@@ -9,6 +9,7 @@
       <p><%= appointment.description %></p>
       <span><%= appointment.start %></span>
       <span><%= appointment.end %></span>
+      <span><%= appointment.fee %></span>
       <span><%= appointment.freelancer.first_name %></span>
 
       <% if current_user&.role&.name == 'client' %>
