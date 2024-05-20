@@ -1,6 +1,7 @@
 class Appointment < ApplicationRecord
   belongs_to :client, class_name: 'User', foreign_key: 'client_id'
   belongs_to :freelancer, class_name: 'User', foreign_key: 'freelancer_id'
+  belongs_to :service
 
   validates :description, :start, :end, :duration, :service_id, :client_id, :freelancer_id, presence: true
 
@@ -11,10 +12,11 @@ class Appointment < ApplicationRecord
   private
 
   def set_price
-    service = Service.find(self.service_id)
+    service = Service.find(service_id)
     fee = service.price
-    price = fee * self.duration
+    price = fee * duration
     service_fee = price * 0.025
-    self.fee = price + service_fee
+    fee = price + service_fee
   end
+
 end

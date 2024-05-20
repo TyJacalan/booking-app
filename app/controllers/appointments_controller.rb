@@ -7,7 +7,7 @@ class AppointmentsController < ApplicationController
   end
 
   def index
-    @appointments = Appointment.where(client_id: current_user.id)
+    @appointments = Appointment.where(client_id: current_user.id).or(Appointment.where(freelancer_id: current_user.id))
     authorize @appointments
   end
 
@@ -29,6 +29,7 @@ class AppointmentsController < ApplicationController
     service_id ||= params[:id] || params.dig(:appointment, :service_id)
     @service = Service.find(service_id)
   end
+
 
   def set_fees
     @price ||= @service.price
