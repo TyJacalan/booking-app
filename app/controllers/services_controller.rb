@@ -9,6 +9,11 @@ class ServicesController < ApplicationController
     authorize @services
   end
 
+  def new
+    @service = Service.new
+    authorize @service
+  end
+
   def show
     @service = @set_service
   end
@@ -17,5 +22,6 @@ class ServicesController < ApplicationController
 
   def set_service
     @set_service ||= Service.find(params[:id])
+    authorize @set_service
   end
 end
