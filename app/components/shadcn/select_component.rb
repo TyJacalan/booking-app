@@ -1,11 +1,12 @@
 class Shadcn::SelectComponent
   include ComponentsHelper
-  attr_reader :name, :selected, :view_context
+  attr_reader :name, :selected, :disabled, :view_context
 
-  def initialize(name:, view_context:, selected: nil, data: {}, **options, &block)
+  def initialize(name:, view_context:, selected: nil, disabled: nil, data: {}, **options, &block)
     @name = name
     @view_context = view_context
     @selected = selected
+    @disabled = disabled
     @options = options
     @data = data
     @content = view_context.capture(self, &block) if block
@@ -15,6 +16,7 @@ class Shadcn::SelectComponent
     content = label || view_context.capture(&block)
     option_options = { value: }
     option_options[:selected] = 'selected' if value == selected
+    option_options[:disabled] = 'disabled' if value == disabled
     view_context.content_tag :option, content, option_options
   end
 
