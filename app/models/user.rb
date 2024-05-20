@@ -14,9 +14,7 @@ class User < ApplicationRecord
   geocoded_by :address
 
   before_validation :set_address
-  before_validation do
-    self.role ||= Role.find_by(name: 'client')
-  end
+  before_validation :set_default_role, on: :create
 
   validates :first_name, :last_name, presence: true, length: { minimum: 2, maximum: 30 }
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -34,6 +32,10 @@ class User < ApplicationRecord
   end
 
   private
+
+  def set_default_role
+    self.role ||= Role.find_by(name: 'client')
+  end
 
   def password_complexity
     return unless password.present?

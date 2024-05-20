@@ -13,10 +13,12 @@ class AppointmentsController < ApplicationController
 
   def new
     @appointment = Appointment.new
+    authorize @appointment
   end
 
   def create
     @appointment = Appointment.new(appointment_params)
+    authorize @appointment
 
     handle_appointment_save
   end
@@ -24,7 +26,7 @@ class AppointmentsController < ApplicationController
   private
 
   def set_service
-    service_id ||= params[:id] || params.dig(:appointment, :service_id) 
+    service_id ||= params[:id] || params.dig(:appointment, :service_id)
     @service = Service.find(service_id)
   end
 

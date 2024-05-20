@@ -6,7 +6,7 @@ class ServicePolicy < ApplicationPolicy
   # https://gist.github.com/Burgestrand/4b4bc22f31c8a95c425fc0e30d7ef1f5
 
   def index?
-    user&.role&.read_services?
+    true
   end
 
   def show?
