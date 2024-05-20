@@ -58,7 +58,7 @@ class AppointmentsController < ApplicationController
       else
         flash.now[:alert] = @appointment.errors.full_messages.to_sentence
       end
-      format.turbo_stream { render 'appointments/turbo/delete', locals: { id: @appointment.id }}
+      format.turbo_stream { render 'appointments/turbo/delete' }
     end
   end
 
@@ -79,9 +79,10 @@ class AppointmentsController < ApplicationController
       if @appointment.update(appointment_params)
         flash.now[:notice] = "The appointment request for #{@appointment.freelancer.first_name}'s service was successfully updated."
       else
-        flash.now[:alert] = 'Something went wrong!'
+        flash.now[:alert] = @appointment.errors.full_messages.first
+        @appointment = Appointment.find(params[:id])
       end
-      format.turbo_stream { render 'appointments/turbo/update', locals: { appointment: @appointment }}
+      format.turbo_stream { render 'appointments/turbo/update' }
     end
   end
 
