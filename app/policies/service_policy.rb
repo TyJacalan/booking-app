@@ -10,7 +10,11 @@ class ServicePolicy < ApplicationPolicy
   end
 
   def show?
-    user&.role&.read_services?
+    true
+  end
+
+  def new?
+    user&.role&.create_services?
   end
 
   def create?
@@ -27,8 +31,8 @@ class ServicePolicy < ApplicationPolicy
 
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
-    # def resolve
-    #   scope.all
-    # end
+    def resolve
+      scope.all
+    end
   end
 end

@@ -7,6 +7,7 @@ Role.find_or_create_by!(name: 'freelancer') do |r|
     update_services: true,
     delete_services: true,
     read_appointments: true,
+    create_appointments: true
     update_appointments: true
   }
 end
