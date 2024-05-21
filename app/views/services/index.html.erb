@@ -1,6 +1,19 @@
 <% if user_signed_in? %>
   <%= link_to "Offer your services", policy(Service).new? ? new_service_path : new_freelancer_path %>
-  <%= render 'search_form' %>
 <% else %>
   <%= link_to "Offer your services", new_user_session_path %>
 <% end %>
+
+<%= render 'search_form' %>
+<br>
+<div>
+  <% if @services.any? %>
+    <% @services.each do |service| %>
+      <h2><%= service.title %></h2>
+      <p><%= service.description %></p>
+      <p>City: <%= service.user.city %></p>
+    <% end %>
+  <% else %>
+    <li>No services found</li>
+  <% end %>
+</div>
