@@ -15,7 +15,9 @@
         method: :put,
         class: 'flex flex-col gap-4' do |f| %>
         <%= f.label :description %>
-        <%= f.text_area :description do %><%= appointment.description %><% end %>
+        <%= f.text_area :description do %>
+          <%= appointment.description.gsub(/\s+/,'') %>
+      <% end %>
 
         <div class='flex flex-row gap-2'>
           <div class='w-full flex flex-col gap-4'>
