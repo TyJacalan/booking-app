@@ -14,8 +14,7 @@ class ServicePolicy < ApplicationPolicy
   end
 
   def new?
-    true
-    # user&.role&.create_services?
+    user&.role&.create_services?
   end
 
   def create?

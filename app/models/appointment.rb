@@ -1,6 +1,7 @@
 class Appointment < ApplicationRecord
   belongs_to :client, class_name: 'User', foreign_key: 'client_id'
   belongs_to :freelancer, class_name: 'User', foreign_key: 'freelancer_id'
+  belongs_to :service
 
   validates :description, :start, :end, :duration, :service_id, :client_id, :freelancer_id, presence: true
 
