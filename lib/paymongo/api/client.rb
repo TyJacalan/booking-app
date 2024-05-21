@@ -1,15 +1,32 @@
 class Paymongo::Api::Client
+  include Paymongo::Endpoints::CheckoutSessions
+
   BASE_URL = Rails.application.credentials.PAYMONGO_BASE_URL.freeze
   SECRET_KEY = Rails.application.credentials.PAYMONGO_SECRET_KEY.freeze
   PUBLIC_KEY = Rails.application.credentials.PAYMONGO_PUBLIC_KEY.freeze
 
   private
 
-  def request(method:, endpoint:, params: {}, headers: {}, body: {})
+  def build_headers(headers)
+    {
+      'Accept' => 'application/json',
+      'Content-Type' => 'application/json',
+      'Authorization' => "Basic #{Base64.strict_encode64("#{SECRET_KEY}:")}"
+    }.merge(headers)
+  end
+
+  def build_body(body)
+    {
+      send_email_receipt: false,
+      show_description: true,
+      show_line_items: true
+    }.merge(body).to_json
+  end
+
+  def request(method:, endpoint:, headers: {}, body: {})
     response = connection.public_send(method, "#{endpoint}") do |request|
-      request.params = params if params.present?
-      request.headers = headers if headers.present?
-      request.body = body.to_json if body.present?
+      request.headers = build_headers(headers)
+      request.body = build_body(body)
     end
 
     handle_response(response)
@@ -19,15 +36,15 @@ class Paymongo::Api::Client
     case response.status
     when 200..299
       JSON.parse(response.body).with_indifferent_access if response.success?
-    when 404
-      raise Faraday::ResourceNotFound, response.body
     else
-      # to do: handle client errors
-      raise 'Something went wrong!'
+      Paymongo::Errors::ApiError.handle_error(response)
     end
   end
 
   def connection
-    @connection ||= Faraday.new(url: BASE_URL)
+    @connection ||= Faraday.new(url: BASE_URL) do |faraday|
+      faraday.adapter Faraday.default_adapter
+      faraday.ssl[:verify] = true
+    end
   end
 end
