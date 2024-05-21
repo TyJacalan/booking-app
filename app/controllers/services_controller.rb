@@ -3,8 +3,8 @@ class ServicesController < ApplicationController
   after_action :verify_authorized, except: %i[index show]
 
   def index
-    # @q = Service.ransack(params[:q])
-    # @services = @q.result(distinct: true)
+    @q = Service.ransack(params[:q])
+    @services = @q.result(distinct: true)
     @services = Service.all
     authorize @services
   end
