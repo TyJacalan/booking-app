@@ -1,5 +1,7 @@
 <%= @service.title %>
 
-<%= turbo_frame_tag :new_appointment, 
-  src: new_appointment_path(id: @service.id) do %>
+<% if current_user&.role&.name == 'client' %>
+  <%= turbo_frame_tag :new_appointment, 
+    src: new_appointment_path(id: @service.id) do %>
+  <% end %>
 <% end %>
