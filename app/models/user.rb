@@ -6,6 +6,14 @@ class User < ApplicationRecord
 
   belongs_to :role
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w[city]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    %w[services]
+  end
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
@@ -14,7 +22,9 @@ class User < ApplicationRecord
   geocoded_by :address
 
   before_validation :set_address
-  before_validation :set_default_role, on: :create
+  before_validation do
+    self.role ||= Role.find_by(name: 'client')
+  end
 
   validates :first_name, :last_name, presence: true, length: { minimum: 2, maximum: 30 }
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
@@ -33,10 +43,6 @@ class User < ApplicationRecord
 
   private
 
-  def set_default_role
-    self.role ||= Role.find_by(name: 'client')
-  end
-
   def password_complexity
     return unless password.present?
 
@@ -50,6 +56,7 @@ class User < ApplicationRecord
 
   def set_address
     return unless city.present? && country.present?
+
     self.address = "#{city}, #{country}"
     errors.add(:city, 'must correspond to a real city') unless Geocoder.search(city).first
   end
