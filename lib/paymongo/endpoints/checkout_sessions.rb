@@ -9,6 +9,20 @@ module Paymongo
           body: body
         )
       end
+
+      def retrieve_checkout_session(id)
+        request(
+          method: :get,
+          endpoint: "checkout_sessions/#{id}"
+        )
+      end
+
+      def expire_checkout_session(id)
+        request(
+          method: :post,
+          endpoint: "checkout_sessions/#{id}"
+        )
+      end
     end
   end
 end

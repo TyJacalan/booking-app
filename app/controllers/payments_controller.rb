@@ -3,17 +3,20 @@ class PaymentsController < ApplicationController
 
   def index
     client = Paymongo::Api::Client.new
-    attributes = {
-      send_email_receipt: false,
-      show_description: true,
-      show_line_items: true,
-      line_items: [
-        { currency: 'PHP', name: 'test', quantity: 1, amount: 10000 }
-      ],
-      payment_method_types: ['gcash'],
-      description: 'this is a test description'
-    }
+    # attributes = {
+    #   send_email_receipt: false,
+    #   show_description: true,
+    #   show_line_items: true,
+    #   line_items: [
+    #     { currency: 'PHP', name: 'test', quantity: 1, amount: 10000 }
+    #   ],
+    #   payment_method_types: ['gcash'],
+    #   description: 'this is a test description'
+    # }
 
-    @response = client.create_checkout_session(attributes)
+    # @response = client.create_checkout_session(attributes)
+    id = 'cs_sbZzDMxrQjKRetfvqFNSiPhk'
+    @response = client.retrieve_checkout_session(id)
+
   end
 end
