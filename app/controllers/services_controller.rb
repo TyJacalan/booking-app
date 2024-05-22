@@ -4,14 +4,15 @@ class ServicesController < ApplicationController
 
   def index
     @q = Service.ransack(params[:q])
-    @services = @q.result(distinct: true)
-    @services = Service.all
-    authorize @services
-  end
+    if params[:q].present? && params[:q][:combined_search].present?
+      search_query = params[:q][:combined_search]
+      @services = Service.joins(:user).where("concat_ws(' ', users.full_name, services.title, users.city) ILIKE ?",
+                                             "%#{search_query}%")
+    else
+      @services = @q.result.includes(:user)
+    end
 
-  def new
-    @service = Service.new
-    authorize @service
+    authorize @services
   end
 
   def create
@@ -20,7 +21,7 @@ class ServicesController < ApplicationController
     authorize @service
 
     if @service.save
-      redirect_to @service, notice: "Service was successfully created."
+      redirect_to @service, notice: 'Service was successfully created.'
     else
       render :new
     end
