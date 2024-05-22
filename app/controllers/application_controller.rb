@@ -6,7 +6,10 @@ class ApplicationController < ActionController::Base
   after_action :verify_authorized, unless: :devise_controller?
 
   # Rescue Pundit errors
-  rescue_from Pundit::NotAuthorizedError, with: :user_not_authorized
+  rescue_from Pundit::NotAuthorizedError do |e|
+    Rails.logger.error("Authorization failed: #{e.policy.class} #{e.query}")
+    redirect_to root_path, alert: "Unauthorized access: #{e.policy.class} #{e.query.to_s.humanize}"
+  end
 
   private
 

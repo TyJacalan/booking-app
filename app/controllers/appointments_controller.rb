@@ -1,19 +1,15 @@
 class AppointmentsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :set_appointment, only: %i[destroy]
   before_action :set_service, :set_fees, only: %i[new create]
 
-  rescue_from Pundit::NotAuthorizedError do
-    redirect_to root_path, alert: 'Unauthorized access.'
-  end
-
   def index
-    @appointments = Appointment.where(client_id: current_user.id)
+    @appointments = Appointment.where(client_id: current_user.id).or(Appointment.where(freelancer_id: current_user.id))
     authorize @appointments
   end
 
   def new
-    @appointment = Appointment.new
-    authorize @appointment
+    @appointment = @service.appointments.new
+    authorize :appointment, :new?
   end
 
   def create
@@ -23,7 +19,16 @@ class AppointmentsController < ApplicationController
     handle_appointment_save
   end
 
+  def destroy
+    authorize @appointment
+    handle_appointment_destroy
+  end
+
   private
+
+  def set_appointment
+    @appointment ||= Appointment.find(params[:id])
+  end
 
   def set_service
     service_id ||= params[:id] || params.dig(:appointment, :service_id)
@@ -45,6 +50,17 @@ class AppointmentsController < ApplicationController
         flash.now[:alert] = @appointment.errors.full_messages.first
         format.turbo_stream { render 'appointments/create_failure' }
       end
+    end
+  end
+
+  def handle_appointment_destroy
+    respond_to do |format|
+      if @appointment.destroy
+        flash.now[:notice] = "The appointment request for #{@appointment.freelancer.first_name}'s service was successfully deleted"
+      else
+        flash.now[:alert] = @appointment.errors.full_messages.to_sentence
+      end
+      format.turbo_stream { render 'appointments/delete', locals: { id: @appointment.id } }
     end
   end
 
