@@ -14,10 +14,15 @@ class User < ApplicationRecord
   geocoded_by :address
 
   before_validation :set_address
+  before_validation :set_fullname
   before_validation :set_default_role, on: :create
 
   validates :first_name, :last_name, presence: true, length: { minimum: 2, maximum: 30 }
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
+  validates :biography, presence: true, length: { minimum: 10, maximum: 500 }, if: :freelancer_registering?
+  validates :skills, presence: true, if: :freelancer_registering?
+  validates :city, presence: :true, if: :freelancer_registering?
+  validates :country, presence: :true, if: :freelancer_registering?
   validate :password_complexity
 
   after_validation :geocode, if: -> { address.present? && address_changed? }
@@ -35,6 +40,10 @@ class User < ApplicationRecord
 
   def set_default_role
     self.role ||= Role.find_by(name: 'client')
+  end
+
+  def freelancer_registering?
+    role&.name == 'freelancer'
   end
 
   def password_complexity

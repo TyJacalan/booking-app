@@ -20,6 +20,17 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
     )
   end
 
+  def number_field(method, options = {})
+    error_class = @object.errors[method].any? ? 'error' : ''
+    options[:class] = @template.tw("#{options[:class]} #{error_class}")
+    @template.render_input(
+      name: "#{object_name}[#{method}]",
+      id: "#{object_name}_#{method}",
+      value: @object.send(method),
+      type: 'number', **options
+    )
+  end
+
   def password_field(method, options = {})
     error_class = @object.errors[method].any? ? 'error' : ''
     options[:class] = @template.tw("#{options[:class]} #{error_class}")

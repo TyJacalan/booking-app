@@ -1,10 +1,6 @@
 class AppointmentsController < ApplicationController
-  before_action :authenticate_user!
+  before_action :set_appointment, only: %i[destroy]
   before_action :set_service, :set_fees, only: %i[new create]
-
-  rescue_from Pundit::NotAuthorizedError do
-    redirect_to root_path, alert: 'Unauthorized access.'
-  end
 
   def index
     @appointments = Appointment.where(client_id: current_user.id)
@@ -15,8 +11,8 @@ class AppointmentsController < ApplicationController
   end
 
   def new
-    @appointment = Appointment.new
-    authorize @appointment
+    @appointment = @service.appointments.new
+    authorize :appointment, :new?
   end
 
   def create
