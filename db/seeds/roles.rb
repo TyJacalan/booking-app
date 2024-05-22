@@ -8,7 +8,8 @@ Role.find_or_create_by!(name: 'freelancer') do |r|
     delete_services: true,
     read_appointments: true,
     update_appointments: true,
-    read_notifications: true
+    read_notifications: true,
+    update_notifications: true
   }
 end
 
@@ -22,6 +23,7 @@ Role.find_or_create_by!(name: 'client') do |r|
     read_appointments: true,
     update_appointments: true,
     delete_appointments: true,
-    read_notifications: true
+    read_notifications: true,
+    update_notifications: true
   }
 end

@@ -1,8 +1,7 @@
 class NotificationsController < ApplicationController
-  before_action :set_count_unread
-
   def index
-    @notifications = current_user.notifications.order(:created_at)
+    @notifications = current_user.notifications.order(:created_at).limit(5)
+    @count_unread = current_user.notifications.where(read: false).count
     authorize @notifications
   end
 
@@ -13,6 +12,7 @@ class NotificationsController < ApplicationController
 
   def update
     @notification = Notification.find(params[:id])
+    authorize @notification
     handle_notification_result(@notification.update(notification_params))
   end
 
@@ -21,15 +21,12 @@ class NotificationsController < ApplicationController
   def handle_notification_result(success)
     respond_to do |format|
       if success
+        @count_unread = current_user.notifications.where(read: false).count
         format.turbo_stream { render 'notifications/turbo/update' }
       else
         format.html { redirect_to internal_error_path }
       end
     end
-  end
-
-  def set_count_unread
-    @count_unread ||= current_user.notifications.where(read: false).count
   end
 
   def notification_params

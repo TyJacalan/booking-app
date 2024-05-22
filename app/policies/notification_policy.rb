@@ -8,6 +8,10 @@ class NotificationPolicy < ApplicationPolicy
     user&.role&.read_notifications?
   end
 
+  def update?
+    user&.role&.update_notifications?
+  end
+
   class Scope < ApplicationPolicy::Scope
     def resolve
       scope.all

@@ -1,13 +1,17 @@
 <%= turbo_frame_tag :index_notifications do %>
   <%= render_dropdown_menu do %>
     <%= dropdown_menu_trigger do %>
-      <%= render partial: 'notifications/trigger' %>
+      <div id='notification_trigger' class='relative'>
+        <%= render partial: 'notifications/trigger', locals: { count_unread: @count_unread } %>
+      </div>
     <% end %>
     <%= dropdown_menu_content do %>
       <% if current_user&.notifications.any? %>
-        <div class='h-fit w-96 flex flex-col overflow-hidden'>
+        <div class='h-fit w-96 flex flex-col gap-1 overflow-hidden'>
           <% @notifications.each do |notification| %>
-            <%= render partial: 'notification', locals: { notification: notification } %>
+            <div id="notification_<%= notification.id %>">
+              <%= render partial: 'notification', locals: { notification: notification } %>
+            </div>
           <% end %>
         </div>
       <% else %>

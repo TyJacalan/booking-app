@@ -1,5 +1,11 @@
-<div class='h-16 w-full p-2 rounded-md hover:bg-accent'>
-  <% status = notification.read ? 'Read' : 'Mark as Read' %>
+<% status = notification.read ? 'Read' : 'Mark as Read' %>
+
+<div class="h-16 w-full p-2 rounded-md <%= notification.read ? 'bg-accent hover:bg-accent/75' : 'bg-background hover:bg-accent-50' %>">
   <%= notification.content %>
-  <%= link_to status, notifications_path, method: :patch, class: 'truncate text-xs' %>
+  <% if !notification.read %>
+    <%= render_form_for notification, method: :patch, class: 'inline' do |f| %>
+      <%= f.hidden_field :read, value: true %>
+      <%= f.submit status, class: 'truncate text-xs' %>
+    <% end %>
+  <% end %>
 </div>
