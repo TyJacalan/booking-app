@@ -1,6 +1,7 @@
-<%= search_form_for @q do |f| %>
-    <%= f.label :categories_cont, "What service are you looking for?" %>
-    <%= f.search_field :categories_cont %>
-
-    <%= f.submit "Search" %>
+<%= search_form_for @q, url: services_path, method: :get do |f| %>
+  <div class="form-group">
+    <%= f.label :combined_search, "Search Service or City or Both :)" %>
+    <%= f.search_field :combined_search, class: "form-control" %>
+    <%= f.submit "Search", class: "btn btn-primary" %>
+    </div>
 <% end %>

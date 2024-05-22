@@ -6,6 +6,14 @@ class User < ApplicationRecord
 
   belongs_to :role
 
+  def self.ransackable_attributes(auth_object = nil)
+    %w[full_name city]
+  end
+
+  def self.ransackable_associations(auth_object = nil)
+    %w[services]
+  end
+
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
@@ -59,6 +67,7 @@ class User < ApplicationRecord
 
   def set_address
     return unless city.present? && country.present?
+
     self.address = "#{city}, #{country}"
     errors.add(:city, 'must correspond to a real city') unless Geocoder.search(city).first
   end
