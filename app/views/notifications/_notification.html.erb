@@ -1,0 +1,5 @@
+<div class='h-16 w-full p-2 rounded-md hover:bg-accent'>
+  <% status = notification.read ? 'Read' : 'Mark as Read' %>
+  <%= notification.content %>
+  <%= link_to status, notifications_path, method: :patch, class: 'truncate text-xs' %>
+</div>

@@ -37,18 +37,8 @@
 
         <%# notifications %>
         <% if user_signed_in? %>
-          <%= render_dropdown_menu do %>
-            <%= dropdown_menu_trigger do %>
-              <%= render_button variant: :ghost, id: 'notification_bell' do %>
-                <%= render 'icons/bell' %>
-              <% end %>
-            <% end %>
-            <%= dropdown_menu_content do %>
-              <div class='h-full w-full flex items-center justify-center px-4 py-6 truncate text-sm text-muted-foreground text-center'>
-                No notifications to display
-              </div>
-            <% end %>
-          <% end %>
+          <%= turbo_frame_tag :index_notifications, 
+            src: notifications_path %>
         <% end %>
 
         <%# account %>

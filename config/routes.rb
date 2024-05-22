@@ -12,10 +12,11 @@ Rails.application.routes.draw do
 
   root 'services#index'
 
-  resources :roles
-  resources :services
   resources :appointments
+  resources :notifications, only: [:index, :create, :update]
+  resources :roles
   resources :reviews
+  resources :services
 
   get 'up' => 'rails/health#show', as: :rails_health_check
 
