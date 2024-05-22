@@ -1,0 +1,8 @@
+<%= render_dialog do %>
+    <%= dialog_trigger do %>
+      <%= render_button("Open Reviews", variant: :outline, class: 'open-reviews-button') %>
+    <% end %>
+    <%= dialog_content id: "reviews-modal-content" do %>
+      <!-- Content will be dynamically loaded here -->
+    <% end %>
+<% end %>

@@ -10,6 +10,9 @@ application.register("auto-submit", AutoSubmitController)
 import PasswordVisibilityController from "./password_visibility_controller"
 application.register("password-visibility", PasswordVisibilityController)
 
+import ReviewController from "./review_controller"
+application.register("review", ReviewController)
+
 import Ui__DialogController from "./ui/dialog_controller"
 application.register("ui--dialog", Ui__DialogController)
 

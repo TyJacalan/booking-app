@@ -1,4 +1,4 @@
-class LikesController < ApplicationController
+class CommentsLikesController < ApplicationController
     before_action :set_comment
 
     def create
