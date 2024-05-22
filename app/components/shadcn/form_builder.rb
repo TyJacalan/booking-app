@@ -1,11 +1,13 @@
 class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
   include ActionView::Helpers::TagHelper
 
-  def label(method, options = {})
+  def label(method, options = {}, &block)
     options[:class] = @template.tw("#{options[:class]}")
     @template.render_label(
       name: "#{object_name}[#{method}]",
-      label: label_for(@object, method), **options
+      label: label_for(@object, method),
+      **options,
+      &block
     )
   end
 
@@ -71,7 +73,7 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
     options[:class] = @template.tw("#{options[:class]} #{error_class}")
 
     select_html = @template.render_select(
-      name: "#{object_name}[#{method}]",
+      name: "#{object_name}_#{method}",
       id: "#{object_name}_#{method}",
       selected: options[:selected],
       **options,

@@ -15,16 +15,16 @@
         method: :put,
         class: 'flex flex-col gap-4' do |f| %>
         <%= f.label :description %>
-        <%= f.text_area :description do %>
-          <%= appointment.description.gsub(/\s+/,'') %>
-      <% end %>
+        <%= f.text_area :description do %><%= appointment.description.gsub(/\s+/,'') %> <% end %>
 
         <div class='flex flex-row gap-2'>
           <div class='w-full flex flex-col gap-4'>
-            <%= f.label 'Date Range' %>
-            <%= render_input name: 'Date Range', 
+            <%= f.label 'date_range', name: "appointment_date_range_#{appointment.id}" %>
+            <%= render_input name: 'date_range', 
+              id: "appointment_date_range_#{appointment.id}",
               placeholder: appointment.start.strftime('%Y / %m / %d'), 
               value: appointment.start,
+              autocomplete: false,
               data: { appointment_target: 'dateInput' } %>
           </div>
 
