@@ -1,0 +1,8 @@
+<%= render_button variant: :ghost do %>
+  <%= render 'icons/bell' %>
+<% end %>
+<% if count_unread > 0 %>
+  <div class='absolute top-1 right-1 h-4 w-fit p-2 flex items-center justify-center rounded-full bg-destructive text-[10px] leading-none text-center text-destructive-foreground'>
+    <%= count_unread %>
+  </div>
+<% end %>
