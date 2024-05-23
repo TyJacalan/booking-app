@@ -73,7 +73,7 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
     options[:class] = @template.tw("#{options[:class]} #{error_class}")
 
     select_html = @template.render_select(
-      name: "#{object_name}_#{method}",
+      name: "#{object_name}[#{method}]",
       id: "#{object_name}_#{method}",
       selected: options[:selected],
       **options,
