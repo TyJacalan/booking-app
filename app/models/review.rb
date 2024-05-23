@@ -3,13 +3,11 @@ class Review < ApplicationRecord
   belongs_to :service
   belongs_to :appointment
 
-  validates_presence :subject
-
   validate :client_must_match_appointment_client
   validate :appointment_must_be_completed
   validate :one_review_per_appointment
 
-  validates :overall_rating, :professionalism, :punctuality, :quality, :communication, :value, presence: true
+  validates :overall_rating, :professionalism, :punctuality, :quality, :communication, :value, :subject, presence: true
   validates :overall_rating, :professionalism, :punctuality, :quality, :communication, :value, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }
 
   has_many :comments
@@ -21,13 +19,13 @@ class Review < ApplicationRecord
   private
 
   def client_must_match_appointment_client
-    unless client == appointment.client
+    unless client == appointment.client_id
       errors.add(:client, "must be the same as the client in the appointment")
     end
   end
 
   def appointment_must_be_completed
-    unless appointment.completed?
+    unless appointment.is_completed?
       errors.add(:appointment, "must be completed before a review can be submitted")
     end
   end
@@ -39,7 +37,7 @@ class Review < ApplicationRecord
   end
 
   def review_after_appointment_date
-    if appointment.present? && appointment.start_date > Time.current
+    if appointment.present? && appointment.start > Time.current
       errors.add(:base, "Review can't be created before the appointment date")
     end
   end
