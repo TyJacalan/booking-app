@@ -4,11 +4,6 @@ class NotificationsController < ApplicationController
     authorize @notifications
   end
 
-  def create
-    @notification = Notification.new(notification_params)
-    handle_notification_result(@notification.save)
-  end
-
   def update
     @notification = Notification.find(params[:id])
     authorize @notification
