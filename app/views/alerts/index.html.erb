@@ -19,6 +19,9 @@
           No notifications to display
         </div>
       <% end %>
+      <div class='h-6 w-full text-center'>
+        <%= link_to 'See More', notifications_path, data: { turbo: false } %>
+      </div>
     <% end %>
   <% end %>
 <% end %>
