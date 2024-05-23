@@ -1,7 +1,6 @@
 class NotificationsController < ApplicationController
   def index
-    @notifications = current_user.notifications.order(:created_at).limit(5)
-    @count_unread = current_user.notifications.where(read: false).count
+    @notifications = current_user.notifications.order(:created_at)
     authorize @notifications
   end
 
@@ -22,7 +21,7 @@ class NotificationsController < ApplicationController
     respond_to do |format|
       if success
         @count_unread = current_user.notifications.where(read: false).count
-        format.turbo_stream { render 'notifications/turbo/update' }
+        format.turbo_stream { render 'alerts/turbo/update' }
       else
         format.html { redirect_to internal_error_path }
       end
