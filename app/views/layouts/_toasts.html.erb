@@ -1,0 +1,8 @@
+<%= turbo_frame_tag 'toasts' do %>
+  <% if notice %>
+    <%= render_toast id: 'default_toast', description: notice %>
+  <% end %>
+  <% if alert %>
+    <%= render_toast id: 'alert_toast', description: alert, variant: :destructive %>
+  <% end %>
+<% end %>

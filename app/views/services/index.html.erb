@@ -1,0 +1,36 @@
+<% if user_signed_in? %>
+  <div class="flex justify-center mt-4">
+    <div class="bg-white rounded-lg hover:bg-gray-100 p-4 transition duration-300 ease-in-out">
+      <%= link_to policy(Service).new? ? new_service_path : new_freelancer_path, class: "font-semibold" do %>
+        Offer your services
+      <% end %>
+    </div>
+  </div>
+<% else %>
+  <div class="flex justify-center mt-4">
+    <div class="bg-white rounded-lg hover:bg-gray-100 p-4 transition duration-300 ease-in-out">
+      <%= link_to new_user_session_path, class: "font-semibold" do %>
+        Offer your services
+      <% end %>
+    </div>
+  </div>
+<% end %>
+<%= render 'search_form' %>
+
+<div class="container mx-auto p-10 pt-28">
+  <div class="flex flex-wrap justify-evenly items-start gap-4">
+    <% @services.each do |service| %>
+      <div class="w-full sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+        <%= link_to service_path(service) do %>
+          <%= render_card title: "#{service.title}", class: "hover:cursor-pointer" do %>
+            <div class="flex flex-col gap-2 mt-8">
+              <div class=""><%= service.user&.full_name&.capitalize %></div>
+              <div class=""><%= service.user.city.capitalize %></div>
+              <div class=""><%= number_to_currency(service.price, precision: 2, unit: "₱") %></div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

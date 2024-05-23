@@ -13,6 +13,10 @@ class AppointmentPolicy < ApplicationPolicy
     user&.role&.read_appointments?
   end
 
+  def new?
+    user.present?
+  end
+
   def create?
     user&.role&.create_appointments?
   end
@@ -27,8 +31,8 @@ class AppointmentPolicy < ApplicationPolicy
 
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
-    # def resolve
-    #   scope.all
-    # end
+    def resolve
+      scope.all
+    end
   end
 end

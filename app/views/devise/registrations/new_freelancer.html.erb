@@ -1,0 +1,52 @@
+<h2 class="font-semibold text-2xl pb-8">Join our community and start offering your services</h2>
+
+<%= render_form_for(resource, as: resource_name, url: create_freelancer_path, html: { method: :post }, class: "flex flex-col gap-2") do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <div class="field">
+    <%= f.label :biography %><br />
+    <%= f.text_area :biography %>
+    <%= f.error_message :biography %>
+  </div>
+
+  <div class="field">
+    <%= f.label :skills %><br />
+    <%= f.text_area :skills %>
+    <%= f.error_message :skills %>
+  </div>
+
+
+  <div class="field">
+    <%= f.label :birthdate %><br />
+    <%= f.text_field :birthdate %>
+    <%= f.error_message :birthdate %>
+  </div>
+
+  <div class="field">
+    <%= f.label :address %><br />
+    <%= f.text_field :address %>
+    <%= f.error_message :address %>
+  </div>
+
+  <div class="field">
+    <%= f.label :city %><br />
+    <%= f.text_field :city %>
+    <%= f.error_message :city %>
+  </div>
+
+  <div class="field">
+    <%= f.label :country %><br />
+    <%= f.text_field :country %>
+    <%= f.error_message :country %>
+  </div>
+
+  <div class="field">
+    <%= f.label :mobile %><br />
+    <%= f.text_field :mobile %>
+    <%= f.error_message :mobile %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit user_signed_in? ? "Update Profile" : "Sign Up" %>
+  </div>
+<% end %>

@@ -1,0 +1,4 @@
+<%= turbo_stream.update 'toasts', partial: 'layouts/toasts' %>
+<%= turbo_stream.update "appointment_#{@appointment.id}", 
+  partial: 'appointment', 
+  locals: { appointment: @appointment } %>

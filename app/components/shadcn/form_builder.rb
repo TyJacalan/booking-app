@@ -1,11 +1,13 @@
 class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
   include ActionView::Helpers::TagHelper
 
-  def label(method, options = {})
+  def label(method, options = {}, &block)
     options[:class] = @template.tw("#{options[:class]}")
     @template.render_label(
       name: "#{object_name}[#{method}]",
-      label: label_for(@object, method), **options
+      label: label_for(@object, method),
+      **options,
+      &block
     )
   end
 
@@ -17,6 +19,17 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
       id: "#{object_name}_#{method}",
       value: @object.send(method),
       type: 'text', **options
+    )
+  end
+
+  def number_field(method, options = {})
+    error_class = @object.errors[method].any? ? 'error' : ''
+    options[:class] = @template.tw("#{options[:class]} #{error_class}")
+    @template.render_input(
+      name: "#{object_name}[#{method}]",
+      id: "#{object_name}_#{method}",
+      value: @object.send(method),
+      type: 'number', **options
     )
   end
 
@@ -42,11 +55,16 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
     )
   end
 
-  def text_area(method, options = {})
+  def text_area(method, options = {}, &block)
     error_class = @object.errors[method].any? ? 'error' : ''
     options[:class] = @template.tw("#{options[:class]} #{error_class}")
+
     @template.render_textarea(
-      name: "#{object_name} [#{method}]"
+      name: "#{object_name}[#{method}]",
+      id: "#{object_name}_#{method}",
+      value: @object.send(method),
+      **options,
+      &block
     )
   end
 
@@ -55,7 +73,7 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
     options[:class] = @template.tw("#{options[:class]} #{error_class}")
 
     select_html = @template.render_select(
-      name: "#{object_name}[#{method}]",
+      name: "#{object_name}_#{method}",
       id: "#{object_name}_#{method}",
       selected: options[:selected],
       **options,

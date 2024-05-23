@@ -4,6 +4,9 @@
 
 import { application } from "./application"
 
+import AppointmentController from "./appointment_controller"
+application.register("appointment", AppointmentController)
+
 import AutoSubmitController from "./auto_submit_controller"
 application.register("auto-submit", AutoSubmitController)
 

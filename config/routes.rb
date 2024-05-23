@@ -5,12 +5,18 @@ Rails.application.routes.draw do
     registrations: 'users/registrations'
   }
 
-  root to: 'services#index'
+  devise_scope :user do
+    get :freelancer_registration, to: 'users/registrations#new_freelancer', as: :new_freelancer
+    post :freelancer_registration, to: 'users/registrations#create_freelancer', as: :create_freelancer
+  end
 
+  root 'services#index'
+
+  resources :appointments, except: %i[show edit]
+  resources :notifications, only: [:index, :create, :update]
   resources :roles
-  resources :services
-  resources :appointments
   resources :reviews
+  resources :services
 
   get 'up' => 'rails/health#show', as: :rails_health_check
 
