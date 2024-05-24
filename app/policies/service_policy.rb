@@ -29,6 +29,14 @@ class ServicePolicy < ApplicationPolicy
     user&.role&.delete_services?
   end
 
+  def select_category?
+    new?
+  end
+
+  def detail?
+    new?
+  end
+
   class Scope < ApplicationPolicy::Scope
     # NOTE: Be explicit about which records you allow access to!
     def resolve

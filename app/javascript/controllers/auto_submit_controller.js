@@ -11,4 +11,10 @@ export default class extends AutoSubmit {
   connect() {
     super.connect()
   }
+
+  toggleBorder(event) {
+    const categoryCard = event.currentTarget.closest('.category-card')
+    categoryCard.classList.toggle('border-transparent')
+    categoryCard.classList.toggle('border-black')
+  }
 }
