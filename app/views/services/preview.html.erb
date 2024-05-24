@@ -1,36 +1,45 @@
-<div class="preview-container flex flex-col gap-2 p-5 h-screen">
-  <h2 class="text-center font-semibold text-4xl p-4 justify-center">Preview</h2>
-  <%= render_form_with(url: services_path, method: :post, data: { controller: 'auto-submit' }) do |f| %>
-    <div class="service-details grid grid-cols-1 md:grid-cols-2 gap-4">
-      <div class="font-semibold text-4xl p-4">
-        <%= session[:title].capitalize %>
+<div class="flex flex-col gap-2 p-5 h-screen">
+  <h2 class="text-center font-semibold text-4xl p-4">Preview</h2>
+  <%= render_form_for(@service, url: services_path, method: :post, data: { controller: 'auto-submit'}) do |f| %>
+    <%= render_card do %>
+      <div class="p-2">
+        <div class="font-semibold text-4xl p-4">
+          <%= @service.title&.capitalize %>
+        </div>
+        <div class="p-4">
+          <%= @service.description %>
+        </div>
+        <div class="p-4">
+          <%= number_to_currency(@service.price, precision: 2, unit: '₱') %>
+        </div>
+        <p class="p-4">
+          <span class="font-semibold">Categories:</span> 
+          <div class="flex flex-col p-4 mr-4">
+            <% @service.categories&.each do |category| %>
+              <span><%= category %></span>
+            <% end %>
+          </div>
+        </p>
       </div>
-      <div>
-        <p class="text-lg font-medium">Description:</p>
-        <p><%= session[:description] %></p>
-        <p class="text-lg font-medium">Price:</p>
-        <% if session[:price].present? %>
-          <p><%= number_to_currency(session[:price], precision: 2, unit: '₱') %></p>
-        <% end %>
-        <% if session[:categories].present? %>
-          <%= session[:categories].join(', ') %>
-        <% end %>
-      </div>
-    </div>
 
-    <div class="fixed bottom-0 left-0 right-0 flex justify-between p-5 bg-white shadow-md border">
-      <div class="w-auto flex items-center">
-        <%= link_to request.referrer.presence || root_path, class: 'btn btn-ghost flex justify-center items-center gap-2 text-xl' do %>
-          <i class="fa-solid fa-circle-chevron-left"></i>
-          <span class="ml-2">Previous</span>
-        <% end %>
+      <div class="fixed bottom-0 left-0 right-0 flex justify-between p-5 bg-white shadow-md border">
+        <div class="w-auto">
+          <%= link_to layout: '_new_service', template: 'services/_price', class: 'shadcn-button shadcn-button-ghost' do %>
+            <div class="flex justify-center items-center gap-2 text-xl">
+              <i class="fa-solid fa-circle-chevron-left"></i>
+              <span class="ml-2">Previous</span>
+            </div>
+          <% end %>
+        </div>
+        <div class="w-auto">
+          <%= button_tag type: 'button', class: 'shadcn-button shadcn-button-ghost', data: { action: 'click->auto-submit#submit' } do %>
+            <div class="flex justify-center items-center gap-2 text-xl">
+              <span class="mr-2">Publish</span>
+              <i class="fa-solid fa-circle-chevron-right"></i>
+            </div>
+          <% end %>
+        </div>
       </div>
-      <div class="w-auto flex items-center">
-        <%= button_tag type: 'button', class: 'btn btn-ghost flex justify-center items-center gap-2 text-xl', data: { action: 'click->auto-submit#submit' } do %>
-          <span class="mr-2">Publish</span>
-          <i class="fa-solid fa-circle-chevron-right"></i>
-        <% end %>
-      </div>
-    </div>
+    <% end %>
   <% end %>
 </div>
