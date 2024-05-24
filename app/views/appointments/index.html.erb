@@ -1,13 +1,9 @@
 <h1>Appointments</h1>
 
-<%= link_to 'Create Appointment', new_appointment_path %>
-<%= button_to 'Log Out', destroy_user_session_path, method: :delete %>
-
-<% @appointments.each do |appointment| %> 
-  <ul class='flex flex-col gap-2'>
-    <li><%= appointment.description %></li>
-    <li><%= appointment.start %></li>
-    <li><%= appointment.end %></li>
-    <li><%= appointment.freelancer.first_name %></li>
-  </ul>
-<% end %>
+<div class='h-fit w-full flex flex-col gap-4'>
+  <% @appointments.each do |appointment| %> 
+    <%= render_card class: 'relative flex flex-col', id: "appointment_#{appointment.id}" do %>
+      <%= render partial: 'appointment', locals: { appointment: appointment } %>
+    <% end %>
+  <% end %>
+</div>

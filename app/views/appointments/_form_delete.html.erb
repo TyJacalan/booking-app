@@ -1,0 +1,44 @@
+<% not_pending = appointment.status != 'pending' %>
+<% date_limit = appointment.start <= 3.days.from_now %>
+
+<%= render_dialog do %>
+  <%= dialog_trigger do %>
+    <svg xmlns="http://www.w3.org/2000/svg" 
+      fill="none" 
+      viewBox="0 0 24 24" 
+      stroke-width="1.5" 
+      stroke="currentColor" 
+      class="cursor-pointer text-muted-foreground hover:text-foreground w-6 h-6">
+      <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+    </svg>
+  <% end %>
+  <%= dialog_content do %>
+    <%= render_form_for appointment,
+      url: appointment_path(appointment.id), 
+      method: :delete do |f| %>
+      <div class="flex flex-col space-y-2 text-center sm:text-left">
+          <h2 class="text-lg font-semibold">
+            <% if not_pending || date_limit %>
+              Unable to delete this request
+            <% else %>
+              Are you absolutely sure?
+            <% end %>
+          </h2>
+          <p class="text-sm text-muted-foreground">
+          <% if not_pending %>
+            Appointment cannot be deleted unless it is pending.
+          <% elsif date_limit %>
+            Appointment cannot be deleted within three (3) days of the start date.
+          <% else %>
+            This action cannot be undone. This will permanently delete the appointment request.
+          <% end %>
+          </p>
+      </div>
+      
+      <div class="flex w-full flex-row items-center justify-end gap-2 mt-4">
+        <%= render_button "Cancel", variant: :outline, data: { action: "ui--dialog#close" } %>
+        <%= f.submit "Delete", variant: :destructive, disabled: not_pending || date_limit %>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
