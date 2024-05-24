@@ -37,8 +37,8 @@
 
         <%# notifications %>
         <% if user_signed_in? %>
-          <%= turbo_frame_tag :index_notifications, 
-            src: notifications_path %>
+          <%= turbo_frame_tag :index_alerts, 
+            src: alerts_path %>
         <% end %>
 
         <%# account %>
