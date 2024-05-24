@@ -2,7 +2,7 @@ module Paymongo
   module Endpoints
     module CheckoutSessions
       def create_checkout_session(params)
-        body = { data: { attributes: params } }
+        body = build_body(data: { attributes: params })
         request(
           method: :post,
           endpoint: 'checkout_sessions',
@@ -22,6 +22,16 @@ module Paymongo
           method: :post,
           endpoint: "checkout_sessions/#{id}"
         )
+      end
+
+      private
+
+      def build_body(body)
+        {
+          send_email_receipt: false,
+          show_description: true,
+          show_line_items: true
+        }.merge(body).to_json
       end
     end
   end

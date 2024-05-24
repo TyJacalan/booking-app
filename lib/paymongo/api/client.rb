@@ -15,18 +15,10 @@ class Paymongo::Api::Client
     }.merge(headers)
   end
 
-  def build_body(body)
-    {
-      send_email_receipt: false,
-      show_description: true,
-      show_line_items: true
-    }.merge(body).to_json
-  end
-
   def request(method:, endpoint:, headers: {}, body: {})
     response = connection.public_send(method, "#{endpoint}") do |request|
       request.headers = build_headers(headers)
-      request.body = build_body(body)
+      request.body = body
     end
 
     handle_response(response)
