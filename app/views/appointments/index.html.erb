@@ -3,20 +3,7 @@
 <div class='h-fit w-full flex flex-col gap-4'>
   <% @appointments.each do |appointment| %> 
     <%= render_card class: 'relative flex flex-col', id: "appointment_#{appointment.id}" do %>
-      <span><%= appointment.status.capitalize %></span>
-      <h2 class='text-lg text-muted-foreground'><%= appointment.service.title %></h2>
-      <%= render_separator class: 'my-4' %>
-      <p><%= appointment.description %></p>
-      <span><%= appointment.start %></span>
-      <span><%= appointment.end %></span>
-      <span><%= appointment.fee %></span>
-      <span><%= appointment.freelancer.first_name %></span>
-
-      <% if current_user&.role&.name == 'client' %>
-        <span class='absolute top-5 right-5'>
-          <%= render partial: 'form_delete', locals: { appointment: appointment } %>
-        </span>
-      <% end %>
+      <%= render partial: 'appointment', locals: { appointment: appointment } %>
     <% end %>
   <% end %>
 </div>

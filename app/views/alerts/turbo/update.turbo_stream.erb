@@ -1,0 +1,10 @@
+<%# turbo_stream.prepend 'notification_list',
+  partial: 'notification',
+  locals: { notification: @notification } %>
+<%= turbo_stream.update "alert_#{@notification.id}",
+  partial: 'alerts/alert',
+  locals: { notification: @notification } %>
+
+<%= turbo_stream.update 'alert_trigger',
+  partial: 'alerts/trigger',
+  locals: { count_unread: @count_unread } %>

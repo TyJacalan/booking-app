@@ -1,11 +1,13 @@
 class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
   include ActionView::Helpers::TagHelper
 
-  def label(method, options = {})
+  def label(method, options = {}, &block)
     options[:class] = @template.tw("#{options[:class]}")
     @template.render_label(
       name: "#{object_name}[#{method}]",
-      label: label_for(@object, method), **options
+      label: label_for(@object, method),
+      **options,
+      &block
     )
   end
 
@@ -53,14 +55,16 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
     )
   end
 
-  def text_area(method, options = {})
+  def text_area(method, options = {}, &block)
     error_class = @object.errors[method].any? ? 'error' : ''
     options[:class] = @template.tw("#{options[:class]} #{error_class}")
+
     @template.render_textarea(
       name: "#{object_name}[#{method}]",
       id: "#{object_name}_#{method}",
       value: @object.send(method),
-      **options
+      **options,
+      &block
     )
   end
 
@@ -83,10 +87,11 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
     end
   end
 
-  def checkbox(method)
+  def checkbox(method, options = {})
+    label = options.key?(:label) ? options[:label] : nil
     @template.render_checkbox(
-      name: "#{object_name} [#{method}]",
-      label: "#{method}"
+      name: "#{object_name}_#{method}",
+      label: label
     )
   end
 

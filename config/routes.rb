@@ -12,6 +12,9 @@ Rails.application.routes.draw do
 
   root 'services#index'
 
+  resources :alerts, only: %i[index]
+  resources :appointments, except: %i[show edit]
+  resources :notifications, only: %i[index update]
   resources :roles
   resources :appointments
   resources :reviews

@@ -6,8 +6,14 @@ class ServicesController < ApplicationController
 
   def index
     @q = Service.ransack(params[:q])
-    @services = @q.result(distinct: true)
-    @services = Service.all
+    if params[:q].present? && params[:q][:combined_search].present?
+      search_query = params[:q][:combined_search]
+      @services = Service.joins(:user).where("concat_ws(' ', users.full_name, services.title, users.city) ILIKE ?",
+                                             "%#{search_query}%")
+    else
+      @services = @q.result.includes(:user)
+    end
+
     authorize @services
   end
 
