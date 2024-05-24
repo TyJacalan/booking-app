@@ -16,7 +16,6 @@ Rails.application.routes.draw do
   resources :appointments, except: %i[show edit]
   resources :notifications, only: %i[index update]
   resources :roles
-  resources :appointments
   resources :reviews
 
   resources :services do
