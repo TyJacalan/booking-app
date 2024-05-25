@@ -1,4 +1,5 @@
 class AppointmentsController < ApplicationController
+  before_action :authenticate_user!, except: [:new]
   before_action :set_service, :set_fees, only: %i[new create]
 
   def index

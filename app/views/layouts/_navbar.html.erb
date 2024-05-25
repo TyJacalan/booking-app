@@ -9,10 +9,15 @@
   <div class="w-full">
     <% if user_signed_in? %>
       <div class="flex w-full items-center justify-end gap-4  md:gap-2 lg:gap-4">
+        <%# Add Service %>
         <div class="flex justify-center items-center">
           <div class="rounded-lg hover:bg-gray-100 p-2 transition duration-300 ease-in-out">
             <%= link_to policy(Service).new? ? new_service_path : new_freelancer_path, class: "font-semibold" do %>
-              Offer your services
+              <% if current_user&.role&.name == 'freelancer' %>
+                Offer your services
+              <% else %>
+                Become a freelancer  
+              <% end %>
             <% end %>
           </div>
         </div>
@@ -77,17 +82,16 @@
         <% end %>
       </div>
     <% else %>
-      <div class="flex justify-center mt-4">
-        <div class="bg-white rounded-lg hover:bg-gray-100 p-4 transition duration-300 ease-in-out">
-          <%= link_to new_user_session_path, class: "font-semibold" do %>
-            Offer your services
-          <% end %>
+      <div class="flex justify-end items-center gap-4 p-2 w-full">
+        <%# Add Service %>
+        <div class="">
         </div>
-      </div>
-
-      <div class='hidden md:w-fit md:flex md:flex-row md:gap-6'>
-      <%= link_to "Login", new_user_session_path%>
-      <%= link_to "Signup", new_user_registration_path%>
+      
+        <div class='hidden md:w-fit md:flex md:flex-row md:gap-6'>
+          <%= link_to "Become a freelancer", new_user_session_path, class: "font-semibold rounded-lg hover:bg-gray-100 p-2 transition duration-300 ease-in-out" %>
+          <%= link_to "Login", new_user_session_path, class: "rounded-lg hover:bg-gray-100 p-2 transition duration-300 ease-in-out" %>
+          <%= link_to "Signup", new_user_registration_path, class: "rounded-lg hover:bg-gray-100 p-2 transition duration-300 ease-in-out" %>
+        </div>
       </div>
     <% end %>
   </div>
