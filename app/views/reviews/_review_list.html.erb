@@ -1,8 +1,0 @@
-#_review_list_modal.html.erb
-<% reviews.each do |review| %>
-    <div class="review">
-      <h3><%= review.title %></h3>
-      <p><%= review.content %></p>
-      <%= link_to 'Show Comments', service_review_path(review.service, review), class: 'comment-link' %>
-    </div>
-<% end %>
