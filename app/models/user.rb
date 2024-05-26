@@ -1,5 +1,6 @@
 class User < ApplicationRecord
   has_many :services, dependent: :destroy
+  has_many :categories, dependent: :destroy
   has_many :reviews, dependent: :destroy
   has_many :appointments, dependent: :destroy
   has_many :notifications, dependent: :destroy
@@ -74,6 +75,7 @@ class User < ApplicationRecord
 
   def set_fullname
     return unless first_name.present? && last_name.present?
+
     self.full_name = "#{first_name} #{last_name}"
   end
 end
