@@ -1,6 +1,6 @@
 <header class='sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background px-4 mx:px-6'>
   <nav class='md:w-full hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:justify-between md:gap-4 md:text-sm lg:gap-6'>
-    <span class='w-32'>Booking App</span>
+    <span class='w-32'><%= link_to 'Booking App', root_path, class: 'hover:cursor-pointer' %></span>
     <div class='w-full flex flex-row justify-center gap-4 text-sm text-muted-foreground'>
       <%# Add filters triggers here %>
     </div>
@@ -65,7 +65,7 @@
             <%= dropdown_menu_label "My Account" %>
             <%= render_separator class: "my-1" %>
             <%= dropdown_menu_item do %>
-              <%= link_to current_user.role.name == 'client' ? 'Profile' : 'Dashboard', user_path(current_user) %>
+              <%= link_to current_user.role.name == 'client' ? 'Profile' : 'Dashboard', current_user.role.name == 'client' ? edit_user_registration_path : user_path(current_user) %>
             <% end %>
             <% if current_user&.role&.name == 'freelancer' %>
               <%= dropdown_menu_item do %>

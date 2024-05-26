@@ -13,12 +13,7 @@
   </head>
 
   <body class="max-w-7xl min-w-[350px] mx-auto flex h-full w-full min-h-screen flex-col bg-background text-foreground">
-    <% if current_user&.role&.name == 'freelancer' %>
-      <%= render 'layouts/freelancer_nav' %>
-    <% else %>
-      <%= render 'layouts/client_nav' %>
-    <% end %>
-
+    <%= render 'layouts/user_nav' %>
     <%= yield %>
   </body>
 </html>
