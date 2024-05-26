@@ -4,12 +4,13 @@ class Appointment < ApplicationRecord
   belongs_to :service
 
   # belongs_to :client, class_name: 'User', foreign_key: 'client_id'
-  #has_one :review
-  #has_many :comments through :review
+  has_one :review, dependent: :destroy
+  has_many :comments, through: :review
   #end_date
   #review_notification_sent
 
   validates :description, :start, :end, :duration, :service_id, :client_id, :freelancer_id, presence: true
+  validates :is_completed, inclusion: { in: [false] }, on: :create
 
   enum status: { pending: 0, accepted: 1, rejected: 2, expired: 3, paid: 4, blocked: 5 }
 

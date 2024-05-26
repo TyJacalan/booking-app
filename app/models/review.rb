@@ -1,5 +1,6 @@
 class Review < ApplicationRecord
   belongs_to :client, class_name: 'User', foreign_key: 'client_id'
+  belongs_to :freelancer, class_name: 'User', foreign_key: 'freelancer_id'
   belongs_to :service
   belongs_to :appointment
 
@@ -19,7 +20,9 @@ class Review < ApplicationRecord
   private
 
   def client_must_match_appointment_client
-    unless client == appointment.client_id
+    if appointment.nil?
+      errors.add(:appointment, "must be present")
+    elsif client_id != appointment.client_id
       errors.add(:client, "must be the same as the client in the appointment")
     end
   end

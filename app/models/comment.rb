@@ -1,8 +1,10 @@
 class Comment < ApplicationRecord
-  belongs_to :review
-  belongs_to :user
+  belongs_to :client, class_name: 'User', foreign_key: 'client_id'
+  belongs_to :freelancer, class_name: 'User', foreign_key: 'freelancer_id'
   belongs_to :appointment
+  belongs_to :review
 
+  # Association for polymorphic like
   has_many :likes, as: :likeable
 
   validates :subject, presence: true

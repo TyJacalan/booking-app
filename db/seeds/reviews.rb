@@ -5,13 +5,22 @@
   next unless freelancer
 
   service = freelancer.services.sample
-  client_id = User.joins(:role).where(roles: { name: 'client' }).sample.id
+  client = User.joins(:role).where(roles: { name: 'client' }).sample
+  next unless client
+
+  appointment = Appointment.where(client_id: client.id, service_id: service.id, status: 'completed').sample
+  next unless appointment
 
   Review.create!(
-    rating: Faker::Number.between(from: 1, to: 5),
+    overall_rating: Faker::Number.between(from: 1, to: 5),
+    professionalism: Faker::Number.between(from: 1, to: 5),
+    punctuality: Faker::Number.between(from: 1, to: 5),
+    quality: Faker::Number.between(from: 1, to: 5),
+    communication: Faker::Number.between(from: 1, to: 5),
+    value: Faker::Number.between(from: 1, to: 5),
     subject: Faker::Lorem.sentence(word_count: 3),
-    client_id:,
-    freelancer_id: freelancer.id,
-    service_id: service.id
+    client_id: client.id,
+    service_id: service.id,
+    appointment_id: appointment.id
   )
 end

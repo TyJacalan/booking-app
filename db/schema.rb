@@ -10,27 +10,74 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_240_516_085_019) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_22_115041) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table 'appointments', force: :cascade do |t|
-    t.date 'date', null: false
-    t.text 'description', null: false
-    t.bigint 'client_id', null: false
-    t.bigint 'freelancer_id', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['client_id'], name: 'index_appointments_on_client_id'
-    t.index ['freelancer_id'], name: 'index_appointments_on_freelancer_id'
+  create_table "appointments", force: :cascade do |t|
+    t.text "description", null: false
+    t.bigint "client_id", null: false
+    t.bigint "freelancer_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.datetime "start"
+    t.datetime "end"
+    t.bigint "service_id"
+    t.integer "duration"
+    t.integer "fee", default: 0
+    t.integer "status", default: 0
+    t.boolean "review_notification_sent"
+    t.boolean "is_completed"
+    t.index ["client_id"], name: "index_appointments_on_client_id"
+    t.index ["freelancer_id"], name: "index_appointments_on_freelancer_id"
+    t.index ["service_id"], name: "index_appointments_on_service_id"
   end
 
-  create_table 'notifications', force: :cascade do |t|
-    t.text 'content'
-    t.bigint 'user_id', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.index ['user_id'], name: 'index_notifications_on_user_id'
+  create_table "comments", force: :cascade do |t|
+    t.text "subject", null: false
+    t.bigint "user_id"
+    t.bigint "review_id"
+    t.bigint "appointment_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["appointment_id"], name: "index_comments_on_appointment_id"
+    t.index ["review_id"], name: "index_comments_on_review_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
+  end
+
+  create_table "likes", force: :cascade do |t|
+    t.bigint "user_id"
+    t.string "likeable_type", null: false
+    t.bigint "likeable_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["likeable_type", "likeable_id"], name: "index_likes_on_likeable"
+    t.index ["user_id", "likeable_type", "likeable_id"], name: "index_likes_on_user_id_and_likeable_type_and_likeable_id", unique: true
+    t.index ["user_id"], name: "index_likes_on_user_id"
+  end
+
+  create_table "notifications", force: :cascade do |t|
+    t.text "content"
+    t.bigint "user_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "read", default: false
+    t.index ["user_id"], name: "index_notifications_on_user_id"
+  end
+
+  create_table "overall_service_ratings", force: :cascade do |t|
+    t.bigint "service_id", null: false
+    t.integer "cleanliness", default: 0
+    t.integer "accuracy", default: 0
+    t.integer "checkin", default: 0
+    t.integer "communication", default: 0
+    t.integer "location", default: 0
+    t.integer "value", default: 0
+    t.integer "overall_rating", default: 0
+    t.integer "count", default: 0
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["service_id"], name: "index_overall_service_ratings_on_service_id"
   end
 
   create_table "reviews", force: :cascade do |t|
@@ -93,12 +140,18 @@ ActiveRecord::Schema[7.1].define(version: 20_240_516_085_019) do
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 
-  add_foreign_key 'appointments', 'users', column: 'client_id'
-  add_foreign_key 'appointments', 'users', column: 'freelancer_id'
-  add_foreign_key 'notifications', 'users'
-  add_foreign_key 'reviews', 'services'
-  add_foreign_key 'reviews', 'users', column: 'client_id'
-  add_foreign_key 'reviews', 'users', column: 'freelancer_id'
-  add_foreign_key 'services', 'users'
-  add_foreign_key 'users', 'roles'
+  add_foreign_key "appointments", "services"
+  add_foreign_key "appointments", "users", column: "client_id"
+  add_foreign_key "appointments", "users", column: "freelancer_id"
+  add_foreign_key "comments", "appointments"
+  add_foreign_key "comments", "reviews"
+  add_foreign_key "comments", "users"
+  add_foreign_key "likes", "users"
+  add_foreign_key "notifications", "users"
+  add_foreign_key "overall_service_ratings", "services"
+  add_foreign_key "reviews", "services"
+  add_foreign_key "reviews", "users", column: "client_id"
+  add_foreign_key "reviews", "users", column: "freelancer_id"
+  add_foreign_key "services", "users"
+  add_foreign_key "users", "roles"
 end
