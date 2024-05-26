@@ -20,7 +20,8 @@
     value: Faker::Number.between(from: 1, to: 5),
     subject: Faker::Lorem.sentence(word_count: 3),
     client_id: client.id,
-    service_id: service.id,
-    appointment_id: appointment.id
+    freelancer_id: freelancer.id,
+    appointment_id: appointment.id,
+    service_id: service.id
   )
 end

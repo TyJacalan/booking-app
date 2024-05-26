@@ -4,12 +4,12 @@ class Review < ApplicationRecord
   belongs_to :service
   belongs_to :appointment
 
+  validates :overall_rating, :professionalism, :punctuality, :quality, :communication, :value, :subject, presence: true
+  validates :overall_rating, :professionalism, :punctuality, :quality, :communication, :value, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }
+
   validate :client_must_match_appointment_client
   validate :appointment_must_be_completed
   validate :one_review_per_appointment
-
-  validates :overall_rating, :professionalism, :punctuality, :quality, :communication, :value, :subject, presence: true
-  validates :overall_rating, :professionalism, :punctuality, :quality, :communication, :value, numericality: { only_integer: true, greater_than_or_equal_to: 1, less_than_or_equal_to: 5 }
 
   has_many :comments
   has_many :likes, as: :likeable
@@ -22,7 +22,7 @@ class Review < ApplicationRecord
   def client_must_match_appointment_client
     if appointment.nil?
       errors.add(:appointment, "must be present")
-    elsif client_id != appointment.client_id
+    elsif client_id != appointment.client.id
       errors.add(:client, "must be the same as the client in the appointment")
     end
   end
@@ -56,21 +56,19 @@ class Review < ApplicationRecord
 
     reviews = service.reviews
 
-    total_cleanliness = reviews.sum(:cleanliness)
-    total_accuracy = reviews.sum(:accuracy)
-    total_checkin = reviews.sum(:checkin)
+    total_professionalism = reviews.sum(:professionalism)
+    total_punctuality = reviews.sum(:punctuality)
+    total_quality = reviews.sum(:quality)
     total_communication = reviews.sum(:communication)
-    total_location = reviews.sum(:location)
     total_value = reviews.sum(:value)
     total_overall_rating = reviews.sum(:overall_rating)
     review_count = reviews.count
 
-    overall_rating.update(
-      cleanliness: total_cleanliness,
-      accuracy: total_accuracy,
-      checkin: total_checkin,
+    overall_service_rating.update(
+      professionalism: total_professionalism,
+      punctuality: total_punctuality,
+      quality: total_quality,
       communication: total_communication,
-      location: total_location,
       value: total_value,
       count: review_count
     )

@@ -32,9 +32,10 @@ class ReviewsController < ApplicationController
   end
 
   # POST /services/:service_id/appointment/:appointment_id/reviews
+  # edit
   def create
     ActiveRecord::Base.transaction do
-      @review = @service.reviews.new(review_params)
+      @review = @appoitment.build_reviews(review_params)
       @review.appointment_id = params[:appointment_id]
       @review.client_id = current_user.id
   
