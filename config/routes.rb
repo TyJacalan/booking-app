@@ -17,6 +17,9 @@ Rails.application.routes.draw do
   resources :notifications, only: %i[index update]
   resources :roles
   resources :reviews
+  resources :users do
+    get :reviews, to: 'users#reviews', as: :reviews
+  end
 
   resources :services do
     collection do

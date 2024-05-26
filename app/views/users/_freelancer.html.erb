@@ -1,0 +1,85 @@
+<div class="flex justify-between gap-4 p-10">
+  <div class="flex flex-col gap-4 w-full sm:w-full lg:w-2/3">
+    <div class="flex items-end gap-4 p-4">
+      <% if current_user.avatar_url.present? %>
+        <%= image_tag current_user.avatar_url, size: '70x70', class: 'rounded-full' %>
+      <% else %>
+        <%= image_tag 'default_avatar.png', alt: 'Default Avatar', size: '70x70', class: 'rounded-full' %>
+      <% end %>
+      <h3 class="text-4xl font-semibold p-4"><%= current_user.full_name.capitalize %></h3>
+    </div>
+    <%= render_card do %>
+      <div class="flex flex-col gap-2">
+        <span class="p-2"><%= current_user.biography %></span>
+        <span class="p-2"><%= current_user.skills.join(', ') %></span>
+      </div>
+    <% end %>
+
+    <%= render_card title: 'Quick Stats' do %>
+      <div class="flex justify-evenly items-center gap-2 p-4 mt-4">
+        <div class="flex flex-col min-w-[200px] text-center gap-2 p-2 border rounded-lg">
+          <span class="font-semibold text-xl p-2">Appointments</span>
+          <span class="text-xl p-2"><%= @accepted_appointments.count %></span>
+        </div>
+        <div class="flex flex-col min-w-[200px] text-center gap-2 p-2 border rounded-lg">
+          <span class="font-semibold text-xl p-2">Services</span>
+          <span class="text-xl p-2"><%= services.count %></span>
+        </div>
+        <div class="flex flex-col min-w-[200px] text-center gap-2 p-2 border rounded-lg">
+          <span class="font-semibold text-xl p-2">Reviews</span>
+          <span class="text-xl p-2"><%= reviews.count %></span>
+        </div>
+      </div>
+    <% end %>
+
+    <%= render_card title: 'Appointment Requests' do %>
+      <div class="flex flex-col gap-2 p-4 mt-4">
+        <% @appointments.where(status: :pending).each do |appointment| %>
+          <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 p-4 border rounded-lg shadow-sm bg-white">
+            <div class="flex-1">
+              <p class="text-lg font-semibold"><%= appointment.description %></p>
+              <p class="text-sm text-gray-600">Start: <%= appointment.start %></p>
+              <p class="text-sm text-gray-600">End: <%= appointment.end %></p>
+            </div>
+            <div class="flex-1">
+              <%= render partial: 'appointments/form_edit_status', locals: { appointment: appointment } %>
+            </div>
+          </div>
+        <% end %>
+        <div class="flex justify-center items-center p-4 mt-4">
+          <%= paginate @appointments %>
+        </div>
+      <% end %>
+      </div>
+  </div>
+
+  <div class="flex flex-col gap-4 w-full sm:w-full lg:w-1/3">
+    <%= render_card title: "Profile" do %>
+      <div class="flex flex-col gap-2 p-4 mt-4">
+        <span class="font-semibold">Email: </span><span class="text-gray-500 p-2"><%= current_user.email %></span>
+        <span class="font-semibold">Mobile: </span><span class="text-gray-500 p-2"><%= current_user.mobile %></span>
+        <span class="font-semibold">Location: </span><span class="text-gray-500 p-2"><%= current_user.address %></span>
+        <%= link_to "Update", edit_user_registration_path, class: "border rounded-lg px-4 py-2" %>
+      </div>
+    <% end %>
+    <%= render_card title: 'Reviews' do %>
+      <% reviews.each do |review| %>
+        <div class="flex flex-col gap-2 p-4 border-b-gray-500 mt-4">
+          <div class="flex items-center gap-2">
+            <span class="font-semibold"><%= review.client.full_name %></span>
+            <span class="text-xs text-gray-500"><%= review.created_at.strftime("%B %d, %Y at %I:%M %p") %></span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-yellow-500">
+              <%= "★" * review.rating %><%= "☆" * (5 - review.rating) %>
+            </span>
+          </div>
+          <%= review.subject %>
+        </div>
+      <% end %>
+      <div class="flex justify-center items-center p-4 mt-4">
+          <%= paginate reviews %>
+        </div>
+    <% end %>
+  </div>
+</div>

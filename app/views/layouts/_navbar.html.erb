@@ -65,7 +65,7 @@
             <%= dropdown_menu_label "My Account" %>
             <%= render_separator class: "my-1" %>
             <%= dropdown_menu_item do %>
-              <%= link_to 'Profile', edit_user_registration_path %>
+              <%= link_to current_user.role.name == 'client' ? 'Profile' : 'Dashboard', user_path(current_user) %>
             <% end %>
             <% if current_user&.role&.name == 'freelancer' %>
               <%= dropdown_menu_item do %>

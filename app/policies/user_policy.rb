@@ -5,9 +5,21 @@ class UserPolicy < ApplicationPolicy
   # code, beware of possible changes to the ancestors:
   # https://gist.github.com/Burgestrand/4b4bc22f31c8a95c425fc0e30d7ef1f5
 
+  def index?
+    user.present?
+  end
+
+  def show?
+    user.present?
+  end
+
+  def services?
+    user&.role&.create_services
+  end
+
   class Scope < ApplicationPolicy::Scope
-    def index
-      true
+    def resolve
+      scope.all
     end
   end
 end

@@ -1,0 +1,76 @@
+<header class='sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background px-4 mx:px-6'>
+  <nav class='md:w-full hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:justify-between md:gap-4 md:text-sm lg:gap-6'>
+    <span class='w-32'>Booking App</span>
+    <div class='w-full flex flex-row justify-center gap-4 text-sm text-muted-foreground'>
+      <%# Add filters triggers here %>
+      <%= link_to 'Profile', user_path(current_user), class: 'hover:underline' %>
+      <%= link_to 'Services', services_path, class: 'hover:underline' %>
+      <%= link_to 'Appointments', appointments_path, class: 'hover:underline' %>
+      <%= link_to 'Reviews', user_reviews_path(current_user) %>
+      <%= link_to 'Calendar' %>
+    </div>
+  </nav>
+
+  <div class="w-full">
+    <div class="flex w-full items-center justify-end gap-4  md:gap-2 lg:gap-4">
+      <%# mode toggle %>
+      <%= render_dropdown_menu do %>
+        <%= dropdown_menu_trigger do %>
+          <%= render_button variant: :ghost, id: :mode_trigger do %>
+            <% if cookies[:ui_theme] == 'light' %>
+              <%= render 'icons/sun' %>
+            <% else %>
+              <%= render 'icons/moon' %>
+            <% end %>
+          <% end %>
+        <% end %>
+        <%= dropdown_menu_content do %>
+          <div data-controller='ui--mode'>
+            <% ['Light', 'Dark', 'System'].each do |mode| %>
+              <%= dropdown_menu_item do %>
+                <%= render_button mode, 
+                  variant: :ghost,
+                  data: { action: "click->ui--mode##{mode.downcase}" },
+                  class: 'p-0 h-fit w-full justify-start' %>
+              <% end %>
+            <% end%>
+          </div>
+        <% end %>
+      <% end %>
+
+      <%# notifications %>
+      <% if user_signed_in? %>
+        <%= turbo_frame_tag :index_alerts, 
+          src: alerts_path %>
+      <% end %>
+
+      <%# account %>
+      <%= render_dropdown_menu do %>
+        <%= dropdown_menu_trigger do %>
+          <div class='p-2'>
+            <%= render_avatar src: current_user.avatar_url %>
+          </div>
+        <% end %>
+
+        <%= dropdown_menu_content do %>
+          <%= dropdown_menu_label "My Account" %>
+          <%= render_separator class: "my-1" %>
+          <%= dropdown_menu_item do %>
+            <%= link_to current_user.role.name == 'client' ? 'Profile' : 'Dashboard', user_path(current_user) %>
+          <% end %>
+          <% if current_user&.role&.name == 'freelancer' %>
+            <%= dropdown_menu_item do %>
+              <%= link_to 'My Services', services_path %>
+            <% end %>
+          <% end %>
+          <%= dropdown_menu_item do %>
+            <%= link_to 'My Appointments', appointments_path %>
+          <% end %>
+          <%= dropdown_menu_item do %>
+            <%= button_to "Logout", destroy_user_session_path, method: :delete, class: 'text-muted-foreground' %>
+          <% end %>
+        <% end %>
+      <% end %>
+    </div>
+  </div>
+</header>
