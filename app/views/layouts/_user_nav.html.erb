@@ -3,11 +3,11 @@
     <span class='w-32'><%= link_to 'Booking App', root_path, class: 'hover:cursor-pointer' %></span>
     <div class='w-full flex flex-row justify-center gap-4 text-sm text-muted-foreground'>
       <%# Add filters triggers here %>
-      <%= link_to 'Profile', user_path(current_user), class: 'hover:underline' if current_user&.role&.name == 'freelancer' %>
-      <%= link_to 'Services', services_path, class: 'hover:underline' if current_user&.role&.name == 'freelancer' %>
-      <%= link_to 'Appointments', appointments_path, class: 'hover:underline' %>
-      <%= link_to 'Reviews', user_reviews_path(current_user) %>
-      <%= link_to 'Calendar' if current_user&.role&.name == 'freelancer' %>
+        <%= link_to 'Profile', user_path(@user), class: 'hover:underline' if @user&.role&.name == 'freelancer' %>
+        <%= link_to 'Services', services_path, class: 'hover:underline' if @user&.role&.name == 'freelancer' %>
+        <%= link_to 'Appointments', appointments_path, class: 'hover:underline' if @user == current_user %>
+        <%= link_to 'Reviews', user_reviews_path(@user) if user_signed_in? %>
+        <%= link_to 'Calendar' if @user == current_user %>
     </div>
   </nav>
 
@@ -45,32 +45,32 @@
       <% end %>
 
       <%# account %>
-      <%= render_dropdown_menu do %>
-        <%= dropdown_menu_trigger do %>
-          <div class='p-2'>
-            <%= render_avatar src: current_user.avatar_url %>
-          </div>
-        <% end %>
-
-        <%= dropdown_menu_content do %>
-          <%= dropdown_menu_label "My Account" %>
-          <%= render_separator class: "my-1" %>
-          <%= dropdown_menu_item do %>
-            <%= link_to current_user.role.name == 'client' ? 'Profile' : 'Dashboard', user_path(current_user) %>
+        <%= render_dropdown_menu do %>
+          <%= dropdown_menu_trigger do %>
+            <div class='p-2'>
+              <%= render_avatar src: current_user.avatar_url %>
+            </div>
           <% end %>
-          <% if current_user&.role&.name == 'freelancer' %>
+
+          <%= dropdown_menu_content do %>
+            <%= dropdown_menu_label "My Account" %>
+            <%= render_separator class: "my-1" %>
             <%= dropdown_menu_item do %>
-              <%= link_to 'My Services', services_path %>
+              <%= link_to current_user.role.name == 'client' ? 'Profile' : 'Dashboard', current_user.role.name == 'client' ? edit_user_registration_path : user_path(current_user) %>
+            <% end %>
+            <% if current_user&.role&.name == 'freelancer' %>
+              <%= dropdown_menu_item do %>
+                <%= link_to 'My Services', services_path %>
+              <% end %>
+            <% end %>
+            <%= dropdown_menu_item do %>
+              <%= link_to 'My Appointments', appointments_path %>
+            <% end %>
+            <%= dropdown_menu_item do %>
+              <%= button_to "Logout", destroy_user_session_path, method: :delete, class: 'text-muted-foreground' %>
             <% end %>
           <% end %>
-          <%= dropdown_menu_item do %>
-            <%= link_to 'My Appointments', appointments_path %>
-          <% end %>
-          <%= dropdown_menu_item do %>
-            <%= button_to "Logout", destroy_user_session_path, method: :delete, class: 'text-muted-foreground' %>
-          <% end %>
         <% end %>
-      <% end %>
     </div>
   </div>
 </header>

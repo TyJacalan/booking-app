@@ -21,7 +21,7 @@ Rails.application.routes.draw do
   resources :reviews
 
   resources :users do
-    get :reviews, to: 'users#reviews', as: :reviews
+    get :reviews, to: 'users#reviews'
   end
 
   resources :services do
