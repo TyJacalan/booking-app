@@ -2,7 +2,7 @@ class CommentsLikesController < ApplicationController
     before_action :set_comment
 
     def create
-      @like = @comment.likes.new(user: current_user)
+      @like = @comment.likes.build(user: current_user)
 
       if @like.save
         render json: { likes_count: @comment.likes.count, liked: true }
