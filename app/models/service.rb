@@ -5,7 +5,7 @@ class Service < ApplicationRecord
 
   attr_accessor :combined_search
 
-  validates :title, :description, :price, :categories, :freelancer_id, presence: true
+  validates :title, :description, :price, :categories, :user_id, presence: true
   validates :price, numericality: { greater_than: 0 }
 
   def self.ransackable_attributes(auth_object = nil)

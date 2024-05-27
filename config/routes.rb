@@ -21,7 +21,8 @@ Rails.application.routes.draw do
   resources :reviews
 
   resources :users do
-    get :reviews, to: 'users#reviews'
+    get :reviews, to: 'users#reviews', only: [:show]
+    get :services, to: 'users#services', only: [:show]
   end
 
   resources :services do

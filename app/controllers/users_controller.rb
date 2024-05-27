@@ -12,7 +12,6 @@ class UsersController < ApplicationController
   def show; end
 
   def reviews
-    puts "these params: #{params}"
     @user = User.find(params[:user_id])
     if @user&.role&.name == 'freelancer'
       @all_reviews = Review.where(freelancer_id: @user.id)
@@ -23,6 +22,13 @@ class UsersController < ApplicationController
     end
     authorize User, :show?
     render 'reviews/_reviews'
+  end
+
+  def services
+    @user = User.find(params[:user_id])
+    @services = @user.services
+    authorize User, :show?
+    render 'services/_services'
   end
 
   private
