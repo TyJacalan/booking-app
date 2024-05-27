@@ -12,18 +12,20 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def text_field(method, options = {})
-    error_class = @object.errors[method].any? ? 'error' : ''
+    error_class = @object&.errors&.[](method)&.any? ? 'error' : ''
     options[:class] = @template.tw("#{options[:class]} #{error_class}")
+    value = @object&.send(method) || ''
+
     @template.render_input(
       name: "#{object_name}[#{method}]",
       id: "#{object_name}_#{method}",
-      value: @object.send(method),
+      value: value,
       type: 'text', **options
     )
   end
 
   def number_field(method, options = {})
-    error_class = @object.errors[method].any? ? 'error' : ''
+    error_class = @object&.errors&.[](method)&.any? ? 'error' : ''
     options[:class] = @template.tw("#{options[:class]} #{error_class}")
     @template.render_input(
       name: "#{object_name}[#{method}]",
@@ -34,7 +36,7 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def password_field(method, options = {})
-    error_class = @object.errors[method].any? ? 'error' : ''
+    error_class = @object&.errors&.[](method)&.any? ? 'error' : ''
     options[:class] = @template.tw("#{options[:class]} #{error_class}")
     @template.render_input(
       name: "#{object_name}[#{method}]",
@@ -45,7 +47,7 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def email_field(method, options = {})
-    error_class = @object.errors[method].any? ? 'error' : ''
+    error_class = @object&.errors&.[](method)&.any? ? 'error' : ''
     options[:class] = @template.tw("#{options[:class]} #{error_class}")
     @template.render_input(
       name: "#{object_name}[#{method}]",
@@ -56,7 +58,7 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def text_area(method, options = {}, &block)
-    error_class = @object.errors[method].any? ? 'error' : ''
+    error_class = @object&.errors&.[](method)&.any? ? 'error' : ''
     options[:class] = @template.tw("#{options[:class]} #{error_class}")
 
     @template.render_textarea(
@@ -69,7 +71,7 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def select_field(method, options = {}, &block)
-    error_class = @object.errors[method].any? ? 'error' : ''
+    error_class = @object&.errors&.[](method)&.any? ? 'error' : ''
     options[:class] = @template.tw("#{options[:class]} #{error_class}")
 
     select_html = @template.render_select(
@@ -100,7 +102,7 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def error_message(method, options = {})
-    return unless @object.errors[method].any?
+    return unless @object&.errors[method].any?
 
     method_name = method.to_s.capitalize.gsub('_', ' ')
     error_message = @object.errors[method].to_sentence
