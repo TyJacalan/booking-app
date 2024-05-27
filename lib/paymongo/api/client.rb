@@ -1,5 +1,7 @@
 class Paymongo::Api::Client
   include Paymongo::Endpoints::CheckoutSessions
+  include Paymongo::Endpoints::PaymentIntents
+  include Paymongo::Endpoints::PaymentMethods
 
   BASE_URL = Rails.application.credentials.PAYMONGO_BASE_URL.freeze
   SECRET_KEY = Rails.application.credentials.PAYMONGO_SECRET_KEY.freeze
