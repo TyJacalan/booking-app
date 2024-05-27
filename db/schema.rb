@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_22_075559) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_27_035327) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -26,6 +26,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_22_075559) do
     t.integer "duration"
     t.integer "fee", default: 0
     t.integer "status", default: 0
+    t.string "payment_intent_id"
     t.index ["client_id"], name: "index_appointments_on_client_id"
     t.index ["freelancer_id"], name: "index_appointments_on_freelancer_id"
     t.index ["service_id"], name: "index_appointments_on_service_id"
