@@ -14,7 +14,7 @@ class AppointmentPolicy < ApplicationPolicy
   end
 
   def new?
-    user.present?
+    true
   end
 
   def create?

@@ -1,5 +1,5 @@
 class AppointmentsController < ApplicationController
-  before_action :set_appointment, only: %i[destroy]
+  before_action :authenticate_user!, except: [:new]
   before_action :set_service, :set_fees, only: %i[new create]
 
   def index
@@ -63,6 +63,7 @@ class AppointmentsController < ApplicationController
     respond_to do |format|
       if @appointment.save
         flash.now[:notice] = 'Appointment request submitted'
+        Notifications::CreateNotification.notify_new_appointment(@appointment)
         format.turbo_stream { render 'appointments/turbo/create_success' }
       else
         flash.now[:alert] = @appointment.errors.full_messages.first
@@ -74,6 +75,7 @@ class AppointmentsController < ApplicationController
   def handle_appointment_update
     respond_to do |format|
       if @appointment.update(appointment_params)
+        Notifications::CreateNotification.notify_updated_appointment(@appointment, current_user)
         flash.now[:notice] = "The appointment request for #{@appointment.freelancer.first_name}'s service was successfully updated."
       else
         flash.now[:alert] = @appointment.errors.full_messages.first

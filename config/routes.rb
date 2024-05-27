@@ -12,11 +12,19 @@ Rails.application.routes.draw do
 
   root 'services#index'
 
+  resources :alerts, only: %i[index]
   resources :appointments, except: %i[show edit]
-  resources :notifications, only: [:index, :create, :update]
+  resources :notifications, only: %i[index update]
   resources :roles
   resources :reviews
-  resources :services
+
+  resources :services do
+    collection do
+      post :category, to: 'categories#select', as: :select_category_new
+      post :set_detail, to: 'service_details#set', as: :set_detail
+      get :new_form, to: 'service_details#show', as: :detail
+    end
+  end
 
   get 'up' => 'rails/health#show', as: :rails_health_check
 
