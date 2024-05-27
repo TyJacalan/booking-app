@@ -1,5 +1,5 @@
-<% if current_user&.role&.name == 'freelancer' %>
-    <%= render partial: 'users/freelancer', locals: { appointments: @appointments, services: @services, reviews: @reviews } %>
+<% if @user == current_user %>
+    <%= render partial: 'freelancer_current', locals: { appointments: @appointments, services: @services, reviews: @reviews } %>
 <% else %>
-  <%= render "client", locals: { appointments: @appointments, reviews: @reviews} %>
+  <%= render partial: "freelancer", locals: { user: @user, services: @services, reviews: @reviews} %>
 <% end %>
