@@ -1,9 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[show]
-  before_action :set_services, only: %i[show]
-  before_action :set_reviews, only: %i[show]
-  before_action :set_appointments, only: [:show]
-  before_action :set_accepted_appointments, only: [:show]
+  before_action :set_user, only: %i[show reviews services]
+  before_action :load_resources, only: %i[show]
 
   layout :set_layout
 
@@ -12,65 +9,72 @@ class UsersController < ApplicationController
   def show; end
 
   def reviews
-    @user = User.find(params[:user_id])
-    if @user&.role&.name == 'freelancer'
-      @all_reviews = Review.where(freelancer_id: @user.id)
-      @reviews = Review.where(freelancer_id: @user.id).page(params[:page]).per(5)
-    else
-      @all_reviews = Review.where(client_id: @user.id)
-      @reviews = Review.where(client_id: @user.id).page(params[:page]).per(5)
-    end
-    authorize User, :show?
+    @reviews = paginated_reviews
     render 'reviews/_reviews'
   end
 
   def services
-    @user = User.find(params[:user_id])
     @services = @user.services
-    authorize User, :show?
     render 'services/_services'
   end
 
   private
 
   def set_user
-    @user = User.find(params[:id])
-    authorize User, :show?
+    @user = User.find(params[:id] || params[:user_id])
+    authorize @user, :show?
+  end
+
+  def load_resources
+    set_services
+    set_reviews
+    set_appointments
+    set_accepted_appointments
   end
 
   def set_services
     @all_services = @user.services
-    @services = @user.services.page(params[:page]).per(5)
+    @services = @all_services.page(params[:page]).per(5)
   end
 
   def set_reviews
-    if @user&.role&.name == 'freelancer'
-      @all_reviews = Review.where(freelancer_id: @user.id)
-      @reviews = Review.where(freelancer_id: @user.id).page(params[:page]).per(5)
+    @all_reviews = fetch_reviews
+    @reviews = @all_reviews.page(params[:page]).per(5)
+  end
+
+  def fetch_reviews
+    if freelancer?
+      Review.where(freelancer_id: @user.id)
     else
-      @all_reviews = Review.where(client_id: @user.id)
-      @reviews = Review.where(client_id: @user.id).page(params[:page]).per(5)
+      Review.where(client_id: @user.id)
     end
-    authorize User, :show?
+  end
+
+  def paginated_reviews
+    fetch_reviews.page(params[:page]).per(5)
   end
 
   def set_appointments
-    @appointments = if @user&.role&.name == 'freelancer'
-                      Appointment.where(freelancer_id: @user.id).page(params[:page]).per(5)
-                    else
-                      Appointment.where(client_id: @user.id).page(params[:page]).per(5)
-                    end
+    @appointments = fetch_appointments.page(params[:page]).per(5)
+  end
+
+  def fetch_appointments
+    if freelancer?
+      Appointment.where(freelancer_id: @user.id)
+    else
+      Appointment.where(client_id: @user.id)
+    end
   end
 
   def set_accepted_appointments
     @accepted_appointments = Appointment.where(freelancer_id: @user.id, status: :accepted)
   end
 
+  def freelancer?
+    @user&.role&.name == 'freelancer'
+  end
+
   def set_layout
-    if user_signed_in?
-      'user'
-    else
-      'application'
-    end
+    user_signed_in? ? 'user' : 'application'
   end
 end
