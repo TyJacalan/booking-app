@@ -22,7 +22,7 @@ class Review < ApplicationRecord
   def client_must_match_appointment_client
     if appointment.nil?
       errors.add(:appointment, "must be present")
-    elsif client_id != appointment.client.id
+    elsif client_id != appointment.client_id
       errors.add(:client, "must be the same as the client in the appointment")
     end
   end

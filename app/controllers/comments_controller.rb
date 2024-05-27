@@ -26,9 +26,16 @@ class CommentsController < ApplicationController
 
   # POST /reviews/:review_id/comments
   def create
+    @review = Review.find(params[:review_id])
     @comment = @review.comments.build(comment_params)
-    @comment.user = current_user # assuming a user is creating the comment
+    @comment.appointment = @review.appointment.id
 
+    # Assign client_id or freelancer_id based on current user
+    if @review.client.id == current_user.id
+      @comment.client.id = current_user.id
+    elsif @review.freelancer.id == current_user.id
+      @comment.freelancer.id = current_user.id
+    end
     if @comment.save
       CommentsChannel.broadcast_to(@review, @comment)
       respond_to do |format|
@@ -84,6 +91,6 @@ class CommentsController < ApplicationController
   end
 
   def comment_params
-    params.require(:comment).permit(:subject, :content)
+    params.require(:comment).permit(:subject)
   end
 end

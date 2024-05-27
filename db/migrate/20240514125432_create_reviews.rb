@@ -10,8 +10,8 @@ class CreateReviews < ActiveRecord::Migration[7.1]
       t.text :subject
       t.references :client, null: false, foreign_key: { to_table: :users }
       t.references :freelancer, null: false, foreign_key: { to_table: :users }
-      t.references :appointment, foreign_key: true
-      t.references :service, foreign_key: true
+      t.references :appointment, foreign_key: true, null: false
+      t.references :service, foreign_key: true, null: false
 
       t.timestamps
     end

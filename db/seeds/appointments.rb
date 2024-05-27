@@ -9,13 +9,13 @@
   next unless freelancer
 
   service = freelancer.services.sample
-  Appointment.create!(
+  appointment= Appointment.create!(
     start: startdate,
     end: enddate,
     duration: rand(1..total_working_hours),
     description: Faker::Lorem.sentence(word_count: 6),
     client_id: User.joins(:role).where(roles: { name: 'client' }).sample.id,
     freelancer_id: freelancer.id,
-    service_id: service.id
+    service_id: service.id,
   )
 end

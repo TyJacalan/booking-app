@@ -35,10 +35,10 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_22_115041) do
 
   create_table "comments", force: :cascade do |t|
     t.text "subject", null: false
-    t.bigint "client_id", null: false
-    t.bigint "freelancer_id", null: false
-    t.bigint "review_id"
-    t.bigint "appointment_id"
+    t.bigint "client_id"
+    t.bigint "freelancer_id"
+    t.bigint "review_id", null: false
+    t.bigint "appointment_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["appointment_id"], name: "index_comments_on_appointment_id"
@@ -91,8 +91,8 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_22_115041) do
     t.text "subject"
     t.bigint "client_id", null: false
     t.bigint "freelancer_id", null: false
-    t.bigint "appointment_id"
-    t.bigint "service_id"
+    t.bigint "appointment_id", null: false
+    t.bigint "service_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["appointment_id"], name: "index_reviews_on_appointment_id"

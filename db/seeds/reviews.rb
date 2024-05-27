@@ -1,27 +1,32 @@
 # frozen_string_literal: true
 
-50.times do
-  freelancer = User.joins(:role).where(roles: { name: 'freelancer' }).joins(:services).sample
-  next unless freelancer
+Appointment.find_each do |appointment|
+  begin
+    Rails.logger.info("Processing appointment ##{appointment.id}")
+    appointment.update!(is_completed: true)
+    Rails.logger.info("Appointment ##{appointment.id} marked as completed")
 
-  service = freelancer.services.sample
-  client = User.joins(:role).where(roles: { name: 'client' }).sample
-  next unless client
-
-  appointment = Appointment.where(client_id: client.id, service_id: service.id, status: 'completed').sample
-  next unless appointment
-
-  Review.create!(
-    overall_rating: Faker::Number.between(from: 1, to: 5),
-    professionalism: Faker::Number.between(from: 1, to: 5),
-    punctuality: Faker::Number.between(from: 1, to: 5),
-    quality: Faker::Number.between(from: 1, to: 5),
-    communication: Faker::Number.between(from: 1, to: 5),
-    value: Faker::Number.between(from: 1, to: 5),
-    subject: Faker::Lorem.sentence(word_count: 3),
-    client_id: client.id,
-    freelancer_id: freelancer.id,
-    appointment_id: appointment.id,
-    service_id: service.id
-  )
+    if appointment.client && appointment.freelancer && appointment.service
+      review = Review.create!(
+        overall_rating: Faker::Number.between(from: 1, to: 5),
+        professionalism: Faker::Number.between(from: 1, to: 5),
+        punctuality: Faker::Number.between(from: 1, to: 5),
+        quality: Faker::Number.between(from: 1, to: 5),
+        communication: Faker::Number.between(from: 1, to: 5),
+        value: Faker::Number.between(from: 1, to: 5),
+        subject: Faker::Lorem.sentence(word_count: 3),
+        client_id: appointment.client_id,
+        freelancer_id: appointment.freelancerid,
+        appointment_id: appointment.id,
+        service_id: appointment.service_id
+      )
+      Rails.logger.info("Review ##{review.id} created for appointment ##{appointment.id}")
+    else
+      Rails.logger.error("Missing associated objects for appointment ##{appointment.id}")
+    end
+  rescue ActiveRecord::RecordInvalid => e
+    Rails.logger.error("Failed to update appointment ##{appointment.id} or create review: #{e.message}")
+  rescue => e
+    Rails.logger.error("An unexpected error occurred for appointment ##{appointment.id}: #{e.message}")
+  end
 end
