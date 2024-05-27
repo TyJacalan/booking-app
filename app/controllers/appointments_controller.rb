@@ -18,9 +18,6 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.new(appointment_params)
     authorize @appointment
 
-    #response = Appointments::CreateAppointment.call(@appointment)
-    #redirect_to payment_path(@appointment.id)
-
     handle_appointment_create
   end
 
@@ -47,7 +44,6 @@ class AppointmentsController < ApplicationController
 
     respond_to do |format|
       if response
-        format.html { redirect_to payment_path(@appointment.id) }
         format.turbo_stream { redirect_to payment_path(@appointment.id) }
       else
         flash.now[:alert] = @appointment.errors.full_messages.first
