@@ -1,18 +1,16 @@
 class ServicesController < ApplicationController
-  before_action :set_service, only: %i[show]
+  before_action :set_service, only: %i[show edit update destroy]
   before_action :set_session_params, only: %i[new create]
-  before_action :set_session_form, only: [:new]
+  before_action :set_session_form, only: %i[new]
   after_action :verify_authorized, except: %i[index new show]
 
   def index
     @q = Service.ransack(params[:q])
-    if params[:q].present? && params[:q][:combined_search].present?
-      search_query = params[:q][:combined_search]
-      @services = Service.joins(:user).where("concat_ws(' ', users.full_name, services.title, users.city) ILIKE ?",
-                                             "%#{search_query}%")
-    else
-      @services = @q.result.includes(:user)
-    end
+    @services = if params[:q].present? && params[:q][:combined_search].present?
+                  search_combined(params[:q][:combined_search])
+                else
+                  @q.result.includes(:user)
+                end
 
     authorize @services
   end
@@ -22,27 +20,45 @@ class ServicesController < ApplicationController
   end
 
   def create
-    @service = Service.new(service_params)
-    @service.user = current_user
+    @service = current_user.services.build(service_params)
     authorize @service
 
     if @service.save
       clear_session_params
-      redirect_to @service, notice: "Service was successfully created."
+      redirect_to @service, notice: 'Service was successfully created.'
     else
       render :new
     end
   end
 
   def show
-    @service = @set_service
     authorize @service
+  end
+
+  def edit
+    authorize @service
+  end
+
+  def update
+    authorize @service
+
+    if @service.update(service_params)
+      redirect_to @service, notice: 'Service was successfully updated.'
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    authorize @service
+    @service.destroy
+    redirect_to services_path, notice: 'Service was successfully deleted.'
   end
 
   private
 
   def set_service
-    @set_service ||= Service.find(params[:id])
+    @service = Service.find(params[:id])
   end
 
   def service_params
@@ -69,5 +85,11 @@ class ServicesController < ApplicationController
     session.delete(:description)
     session.delete(:price)
     session.delete(:selected_categories)
+  end
+
+  def search_combined(query)
+    Service.joins(:user).where(
+      "concat_ws(' ', users.full_name, services.title, users.city) ILIKE ?", "%#{query}%"
+    )
   end
 end
