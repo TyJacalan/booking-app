@@ -6,16 +6,16 @@ class Like < ApplicationRecord
     validates :user_id, uniqueness: { scope: [:likeable_type, :likeable_id] }
     #scope to polymorphic
 
-    after_create :increment_review_likes_count
-    after_destroy :decrement_review_likes_count
-
+    after_create :increment_likes_count
+    after_destroy :decrement_likes_count
+  
     private
-
-    def increment_review_likes_count
-        review.increment!(:likes_count)
+  
+    def increment_likes_count
+      likeable.increment!(:likes_count)
     end
-
-    def decrement_review_likes_count
-        review.decrement!(:likes_count)
+  
+    def decrement_likes_count
+      likeable.decrement!(:likes_count)
     end
 end

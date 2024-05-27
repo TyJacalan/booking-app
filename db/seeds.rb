@@ -15,6 +15,6 @@ puts "Seeding #{Rails.env} database..."
 #seed 'services'
 #seed 'appointments'
 #seed 'reviews'
-seed 'comments'
-#seed 'likes'
+#seed 'comments'
+seed 'likes'
 puts 'All files successfully seeded'

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_22_115041) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_27_022240) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -41,6 +41,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_22_115041) do
     t.bigint "appointment_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "likes_count", default: 0
     t.index ["appointment_id"], name: "index_comments_on_appointment_id"
     t.index ["client_id"], name: "index_comments_on_client_id"
     t.index ["freelancer_id"], name: "index_comments_on_freelancer_id"
@@ -95,6 +96,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_22_115041) do
     t.bigint "service_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "likes_count", default: 0
     t.index ["appointment_id"], name: "index_reviews_on_appointment_id"
     t.index ["client_id"], name: "index_reviews_on_client_id"
     t.index ["freelancer_id"], name: "index_reviews_on_freelancer_id"
