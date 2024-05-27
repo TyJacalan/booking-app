@@ -44,7 +44,7 @@ class AppointmentsController < ApplicationController
                                         :freelancer_id,
                                         :service_id,
                                         :start,
-                                        :status
+                                        :status,
                                         :is_completed)
   end
 
