@@ -26,6 +26,7 @@ ActiveRecord::Schema[7.1].define(version: 20_240_528_073_830) do
     t.integer 'duration'
     t.integer 'fee', default: 0
     t.integer 'status', default: 0
+    t.string 'payment_intent_id'
     t.index ['client_id'], name: 'index_appointments_on_client_id'
     t.index ['freelancer_id'], name: 'index_appointments_on_freelancer_id'
     t.index ['service_id'], name: 'index_appointments_on_service_id'
