@@ -4,12 +4,12 @@ module Components::TextareaHelper
                            readonly: false, class: '', placeholder: 'Type here...')
     content = capture(&block) if block_given?
     render partial: 'components/ui/textarea', locals: {
-      label: label,
-      name: name,
-      value: value,
-      id: id,
-      options: options,
-      content: content
+      label:,
+      name:,
+      value:,
+      id:,
+      options:,
+      content:
     }
   end
 end
