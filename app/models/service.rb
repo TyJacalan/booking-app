@@ -9,11 +9,11 @@ class Service < ApplicationRecord
   validates :title, :description, :price, :categories, :user_id, presence: true
   validates :price, numericality: { greater_than: 0 }
 
-  def self.ransackable_attributes(auth_object = nil)
+  def self.ransackable_attributes(_auth_object = nil)
     %w[title combined_search]
   end
 
-  def self.ransackable_associations(auth_object = nil)
+  def self.ransackable_associations(_auth_object = nil)
     %w[user]
   end
 end
