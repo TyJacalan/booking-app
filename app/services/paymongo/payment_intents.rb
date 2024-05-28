@@ -25,7 +25,7 @@ module Paymongo
     def self.attach(payment_intent_id, payment_method_id)
       params = {
         payment_method: payment_method_id,
-        return_url: 'http://127.0.0.1:3000/'
+        return_url: 'http://127.0.0.1:3000/appointments'
       }
 
       call(:attach_payment_intent, params, id: payment_intent_id)

@@ -12,10 +12,8 @@
       <%= select.option value: :card, label: 'Card' %>
     <% end %>
 
-    <div data-payment-target='name'>
-      <%= f.label :name %>
-      <%= f.text_field :name, autocomplete: 'cc-name' %>
-    </div>
+    <%= f.label :name %>
+    <%= f.text_field :name, autocomplete: 'cc-name' %>
 
     <%= f.label :phone %>
     <div class='flex flex-row items-center gap-2'>
@@ -47,6 +45,6 @@
       </div>
     </div>
 
-    <%= f.submit 'Pay' %>
+    <%= f.submit 'Pay', data: { turbo: false } %>
   <% end %>
 </div>

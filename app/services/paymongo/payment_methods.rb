@@ -7,7 +7,7 @@ module Paymongo
       raise StandardError.new("#{response[:error]}") unless response[:data]
       response[:data]
     end
-    
+ 
     def self.create(payment_intent_id, params)
       params = {
         type: params[:payment_method],
@@ -15,12 +15,12 @@ module Paymongo
           card_number: params[:card_number],
           exp_month: params[:exp_month].to_i,
           exp_year: params[:exp_year].to_i,
-          cvc: params[:cvc],
+          cvc: params[:cvc]
         },
         billing: {
           name: params[:name],
           email: params[:email],
-          phone: params[:phone],
+          phone: params[:phone]
         }
       }
 

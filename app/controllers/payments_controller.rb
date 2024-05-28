@@ -1,19 +1,20 @@
 class PaymentsController < ApplicationController
   skip_after_action :verify_authorized, only: :show
   
-  def show
-  end
+  def show; end
 
   def create
     @appointment = Appointment.find(params[:appointment_id])
     authorize @appointment
 
-    params[:email] = current_user.email
+    response = Appointments::PayAppointment.call(@appointment, params)
 
-    payment_method = Paymongo::PaymentMethods.create(@appointment.payment_intent_id, params)
-    payment_intent_id = @appointment.payment_intent_id
-    payment_method_id = payment_method[:id]
-    payment = Paymongo::PaymentIntents.attach(payment_intent_id, payment_method_id)
-    Rails.logger.info "Complete: #{payment}"
+    if response[:status]
+      flash[:notice] = 'Payment Successful'
+      redirect_to response[:body], allow_other_host: true
+    else
+      flash[:alert] = "#{response[:body].capitalize}"
+      redirect_to payments_path(@appointment.id)
+    end
   end
 end
