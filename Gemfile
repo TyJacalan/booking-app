@@ -37,3 +37,5 @@ end
 gem 'pundit', '~> 2.3'
 
 gem 'ransack', '~> 4.1'
+
+gem 'pundit-matchers', '~> 3.1'
