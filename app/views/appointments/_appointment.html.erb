@@ -1,27 +1,37 @@
 <% role = current_user&.role&.name %>
-<div class='flex flex-row gap-2 items-center'>
+<div class="flex flex-row gap-2 items-center mb-4">
   <% if role == 'client' %> 
-    <span><%= appointment.status.capitalize %></span>
+    <span class="text-blue-500 font-semibold"><%= appointment.status.capitalize %></span>
   <% elsif role == 'freelancer' %>
     <%= render partial: 'form_edit_status', locals: { appointment: appointment } %>
   <% end %>
-  <h2 class='text-lg text-muted-foreground'><%= appointment.service.title %></h2>
+  <h2 class="text-lg text-gray-600"><%= appointment.service.title %></h2>
   <% if current_user&.role&.name == 'client' %>
     <%= render partial: 'form_edit', locals: { appointment: appointment } %>
   <% end %>
 </div>
 
-<%= render_separator class: 'my-4' %>
+<hr class="my-4">
 
-<div class='h-12 overflow-hidden'>
-  <p class='text-ellipsis'><%= appointment.description %></p>
+<div class="h-12 overflow-hidden">
+  <p class="truncate"><%= appointment.description %></p>
 </div>
 
-<span><%= appointment.status %></span>
-<span><%= appointment.start %></span>
-<span><%= appointment.end %></span>
-<span><%= appointment.fee %></span>
-<span><%= appointment.freelancer.first_name %></span>
+<div class="w-full flex flex-col gap-2">
+  <div class="flex gap-1">
+    <span class="font-semibold">Date:</span><span class="ml-2"><%= appointment.start.strftime('%B %d, %Y %I:%M %p') %></span>
+    <span class="font-semibold">to</span><span class="ml-2"><%= appointment.end.strftime('%B %d, %Y %I:%M %p') %></span>
+  </div>
+  <div class="flex flex-col gap-1 mt-4">
+    <span class="font-semibold">Client:</span><span class="ml-2"><%= appointment.client.full_name.titleize %></span>
+    <span class="font-semibold">Total Price:</span><span class="ml-2"><%= number_to_currency(appointment.fee, unit: '₱') %></span>
+  </div>
+  <div class="flex flex-col gap-1 mt-4">
+    <span class="font-semibold">Freelancer:</span><span class="ml-2"><%= appointment.freelancer.full_name.titleize %></span>
+    <span class="font-semibold">Status:</span><span class="ml-2"><%= appointment.status.capitalize %></span>
+  </div>
+</div>
+
 
 <% if current_user&.role&.name == 'client' %>
   <span class='absolute top-5 right-5'>

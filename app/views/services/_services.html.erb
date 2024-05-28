@@ -1,0 +1,18 @@
+<div class="container mx-auto p-10 pt-28">
+  <div class="flex flex-wrap justify-evenly items-start gap-4">
+    <% @services.each do |service| %>
+      <div class="w-full sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4">
+        <%= render_card class: "group hover:bg-yellow-400 hover:text-white" do %>
+          <div>
+            <h2><%= link_to service.title.titleize, service_path(service), class: "font-semibold text-2xl hover:cursor-pointer group-hover:text-white" %></h2>
+          </div>
+          <div class="flex flex-col gap-2 mt-8">
+            <span><%= link_to service.user&.full_name&.titleize, user_path(service.user), class: "hover:underline hover:cursor-pointer group-hover:text-white" %></span>
+            <span class="text-sm"><%= service.user.city.titleize %></span>
+            <span class="text-sm"><%= number_to_currency(service.price, precision: 2, unit: "₱") %></span>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>

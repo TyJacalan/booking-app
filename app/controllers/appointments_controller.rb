@@ -1,6 +1,9 @@
 class AppointmentsController < ApplicationController
   before_action :authenticate_user!, except: [:new]
   before_action :set_service, :set_fees, only: %i[new create]
+  before_action :set_user, only: %i[index]
+
+  layout 'user', only: [:index]
 
   def index
     @appointments = Appointment.where(client_id: current_user.id)
@@ -86,5 +89,9 @@ class AppointmentsController < ApplicationController
     @price ||= @service.price
     @service_fee ||= @price * 0.025
     @total_fee ||= @price + @service_fee
+  end
+
+  def set_user
+    @user = current_user
   end
 end

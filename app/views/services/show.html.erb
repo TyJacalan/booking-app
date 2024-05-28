@@ -1,6 +1,9 @@
 <div class="flex justify-between p-4 gap-2 w-full">
   <div class="lg:w-2/3 sm:w-full md:w-full p-4">
-    <h2 class="font-semibold text-4xl p-4 mb-10"><%= @service.title.capitalize %></h2>
+    <div class="mb-10">
+      <h2 class="font-semibold text-4xl p-2"><%= @service.title.titleize %></h2>
+      <span class="p-2 hover:underline hover:cursor-pointer"><%= link_to @service.user&.full_name&.titleize, user_path(@service.user) %></span>
+    </div>
     <p class="p-2"><%= @service.description %></p>
     <p class="p-2"><span class="font-semibold">Categories:</span> 
       <% @service.categories.each do |category| %>
