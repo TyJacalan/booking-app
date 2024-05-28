@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class Users::RegistrationsController < Devise::RegistrationsController
-  before_action :configure_sign_up_params, only: [:create, :create_freelancer]
+  before_action :configure_sign_up_params, only: %i[create create_freelancer]
   # before_action :configure_account_update_params, only: [:update]
 
   def new_freelancer
@@ -68,19 +68,21 @@ class Users::RegistrationsController < Devise::RegistrationsController
 
   # If you have extra params to permit, append them to the sanitizer.
   def configure_sign_up_params
-    devise_parameter_sanitizer.permit(:sign_up, keys: [
-      :first_name,
-      :last_name,
-      :email,
-      :password,
-      :password_confirmation,
-      :biography,
-      :skills,
-      :birthdate,
-      :address,
-      :city,
-      :country,
-      :mobile])
+    devise_parameter_sanitizer.permit(:sign_up, keys: %i[
+                                        first_name
+                                        last_name
+                                        email
+                                        password
+                                        password_confirmation
+                                        biography
+                                        skills
+                                        birthdate
+                                        address
+                                        city
+                                        country
+                                        mobile
+                                        role_id
+                                      ])
   end
 
   # If you have extra params to permit, append them to the sanitizer.

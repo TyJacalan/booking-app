@@ -37,13 +37,15 @@ class AppointmentsController < ApplicationController
   private
 
   def appointment_params
-    params.require(:appointment).permit(:client_id, :description, :duration, :end, :freelancer_id, :service_id, :start, :status)
+    params.require(:appointment).permit(:client_id, :description, :duration, :end, :freelancer_id, :service_id, :start,
+                                        :status)
   end
 
   def handle_appointment_destroy
     respond_to do |format|
       if @appointment.destroy
-        flash.now[:notice] = "The appointment request for #{@appointment.freelancer.first_name}'s service was successfully deleted"
+        flash.now[:notice] =
+          "The appointment request for #{@appointment.freelancer.first_name}'s service was successfully deleted"
       else
         flash.now[:alert] = @appointment.errors.full_messages.to_sentence
       end
@@ -68,7 +70,8 @@ class AppointmentsController < ApplicationController
     respond_to do |format|
       if @appointment.update(appointment_params)
         Notifications::CreateNotification.notify_updated_appointment(@appointment, current_user)
-        flash.now[:notice] = "The appointment request for #{@appointment.freelancer.first_name}'s service was successfully updated."
+        flash.now[:notice] =
+          "The appointment request for #{@appointment.freelancer.first_name}'s service was successfully updated."
       else
         flash.now[:alert] = @appointment.errors.full_messages.first
         @appointment = Appointment.find(params[:id])

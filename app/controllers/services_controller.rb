@@ -28,7 +28,7 @@ class ServicesController < ApplicationController
 
     if @service.save
       clear_session_params
-      redirect_to @service, notice: "Service was successfully created."
+      redirect_to @service, notice: 'Service was successfully created.'
     else
       render :new
     end
