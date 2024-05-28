@@ -1,16 +1,17 @@
 class User < ApplicationRecord
   has_many :services, dependent: :destroy
+  has_many :categories, dependent: :destroy
   has_many :reviews, dependent: :destroy
   has_many :appointments, dependent: :destroy
   has_many :notifications, dependent: :destroy
 
   belongs_to :role
 
-  def self.ransackable_attributes(auth_object = nil)
+  def self.ransackable_attributes(_auth_object = nil)
     %w[full_name city]
   end
 
-  def self.ransackable_associations(auth_object = nil)
+  def self.ransackable_associations(_auth_object = nil)
     %w[services]
   end
 
@@ -74,6 +75,7 @@ class User < ApplicationRecord
 
   def set_fullname
     return unless first_name.present? && last_name.present?
+
     self.full_name = "#{first_name} #{last_name}"
   end
 end

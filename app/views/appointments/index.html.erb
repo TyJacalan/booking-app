@@ -1,6 +1,5 @@
-<h1>Appointments</h1>
 
-<div class='h-fit w-full flex flex-col gap-4'>
+<div class='h-fit w-full flex flex-col gap-4 p-10'>
   <% @appointments.each do |appointment| %> 
     <%= render_card class: 'relative flex flex-col', id: "appointment_#{appointment.id}" do %>
       <%= render partial: 'appointment', locals: { appointment: appointment } %>

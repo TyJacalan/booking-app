@@ -1,0 +1,5 @@
+<% if @user == current_user %>
+    <%= render partial: 'freelancer_current', locals: { appointments: @appointments, services: @services, reviews: @reviews } %>
+<% else %>
+  <%= render partial: "freelancer", locals: { user: @user, services: @services, reviews: @reviews} %>
+<% end %>
