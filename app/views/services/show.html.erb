@@ -3,9 +3,7 @@
     <h2 class="font-semibold text-4xl p-4 mb-10"><%= @service.title.capitalize %></h2>
     <p class="p-2"><%= @service.description %></p>
     <p class="p-2"><span class="font-semibold">Categories:</span> 
-      <% @service.categories.each do |category| %>
-        <%= category %>
-      <% end %>
+      <%= @service.categories.map(&:title).join(', ') %>
     </p>
     <div class="mt-10">
       <h3 class="font-semibold text-2xl p-2">Reviews</h3>
