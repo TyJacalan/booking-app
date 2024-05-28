@@ -112,7 +112,7 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
     label = options.key?(:label) ? options[:label] : nil
     @template.render_checkbox(
       name: "#{object_name}_#{method}",
-      label: label
+      label:
     )
   end
 

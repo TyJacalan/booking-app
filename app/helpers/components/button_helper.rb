@@ -17,6 +17,6 @@ module Components::ButtonHelper
     button_classes = tw(button_classes)
     text = label if label.present?
     text = capture(&block) if block
-    render 'components/ui/button', text:, button_classes:, as:, href:, data:, options: options
+    render 'components/ui/button', text:, button_classes:, as:, href:, data:, options:
   end
 end

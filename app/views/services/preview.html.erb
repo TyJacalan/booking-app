@@ -16,7 +16,7 @@
           <span class="font-semibold">Categories:</span> 
           <div class="flex flex-col p-4 mr-4">
             <% @service.categories&.each do |category| %>
-              <span><%= category %></span>
+              <span><%= category.title %></span>
             <% end %>
           </div>
         </p>

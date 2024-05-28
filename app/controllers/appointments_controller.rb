@@ -1,6 +1,9 @@
 class AppointmentsController < ApplicationController
   before_action :authenticate_user!, except: [:new]
   before_action :set_service, :set_fees, only: %i[new create]
+  before_action :set_user, only: %i[index]
+
+  layout 'user', only: [:index]
 
   def index
     @appointments = Appointment.where(client_id: current_user.id)
@@ -37,7 +40,8 @@ class AppointmentsController < ApplicationController
   private
 
   def appointment_params
-    params.require(:appointment).permit(:client_id, :description, :duration, :end, :freelancer_id, :service_id, :start, :status)
+    params.require(:appointment).permit(:client_id, :description, :duration, :end, :freelancer_id, :service_id, :start,
+                                        :status)
   end
 
   def handle_appointment_create
@@ -56,7 +60,8 @@ class AppointmentsController < ApplicationController
   def handle_appointment_destroy
     respond_to do |format|
       if @appointment.destroy
-        flash.now[:notice] = "The appointment request for #{@appointment.freelancer.first_name}'s service was successfully deleted"
+        flash.now[:notice] =
+          "The appointment request for #{@appointment.freelancer.first_name}'s service was successfully deleted"
       else
         flash.now[:alert] = @appointment.errors.full_messages.to_sentence
       end
@@ -68,7 +73,8 @@ class AppointmentsController < ApplicationController
     respond_to do |format|
       if @appointment.update(appointment_params)
         Notifications::CreateNotification.notify_updated_appointment(@appointment, current_user)
-        flash.now[:notice] = "The appointment request for #{@appointment.freelancer.first_name}'s service was successfully updated."
+        flash.now[:notice] =
+          "The appointment request for #{@appointment.freelancer.first_name}'s service was successfully updated."
       else
         flash.now[:alert] = @appointment.errors.full_messages.first
         @appointment = Appointment.find(params[:id])
@@ -86,5 +92,9 @@ class AppointmentsController < ApplicationController
     @price ||= @service.price
     @service_fee ||= @price * 0.025
     @total_fee ||= @price + @service_fee
+  end
+
+  def set_user
+    @user = current_user
   end
 end

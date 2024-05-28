@@ -12,7 +12,7 @@ class Appointment < ApplicationRecord
   before_update :validate_update
 
   def total_hours
-    ((self.end - self.start) / 3600).to_i
+    ((self.end - start) / 3600).to_i
   end
 
   def fee_in_cents
@@ -29,10 +29,10 @@ class Appointment < ApplicationRecord
   end
 
   def validate_update
-    if start < 1.days.from_now
-      errors.add(:base, 'Appointment cannot be edited within one (1) day of the start date')
-      throw(:abort)
-    end
+    return unless start < 1.days.from_now
+
+    errors.add(:base, 'Appointment cannot be edited within one (1) day of the start date')
+    throw(:abort)
   end
 
   def validate_deletion
