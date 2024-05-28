@@ -7,9 +7,9 @@
         <%= service %>
       <% end %>
     </p>
+
     <div class="mt-10">
-      <h3 class="font-semibold text-2xl p-2">Reviews</h3>
-      <%= turbo_frame_tag :reviews, src: reviews_path(id: @service.id) %>
+      <%= render partial: 'reviews/service_rating_and_reviews', locals: { service: @service } %>
     </div>
   </div>
 

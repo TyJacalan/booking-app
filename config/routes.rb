@@ -12,11 +12,18 @@ Rails.application.routes.draw do
 
   root 'services#index'
 
-  resources :appointments, except: %i[show edit]
   resources :notifications, only: [:index, :create, :update]
   resources :roles
-  resources :reviews
-  resources :services
+
+  resources :services do
+    resources :reviews, only: [:index]
+    resources :overall_service_ratings, only: [:show]
+    resources :appointments, except: [:show, :edit], shallow: true do
+      resources :reviews, only: [:new, :index, :create], shallow: true do
+        resources :comments, only: [:index, :create], shallow: true
+      end
+    end
+  end  
 
   get 'up' => 'rails/health#show', as: :rails_health_check
 

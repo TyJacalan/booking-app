@@ -1,6 +1,6 @@
 module Components::SelectHelper
-  def render_select(name:, id:, data: {}, **options, &block)
-    component = Shadcn::SelectComponent.new(name:, id:, view_context: self, data:, **options, &block)
+  def render_select(name:, **options, &block)
+    component = Shadcn::SelectComponent.new(name: name, view_context: self, **options, &block)
     component.call
   end
 end

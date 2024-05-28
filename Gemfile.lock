@@ -128,6 +128,18 @@ GEM
     json (2.7.2)
     jwt (2.8.1)
       base64
+    kaminari (1.2.2)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
+      actionview
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
+      activerecord
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     language_server-protocol (3.17.0.3)
     launchy (3.0.1)
       addressable (~> 2.8)
@@ -367,6 +379,7 @@ DEPENDENCIES
   faker
   geocoder
   jsbundling-rails
+  kaminari
   letter_opener_web
   omniauth
   omniauth-google-oauth2

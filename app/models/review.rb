@@ -70,6 +70,7 @@ class Review < ApplicationRecord
       quality: total_quality,
       communication: total_communication,
       value: total_value,
+      overall_rating: total_overall_rating,
       count: review_count
     )
   end

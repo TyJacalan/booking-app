@@ -1,0 +1,27 @@
+<%= turbo_frame_tag dom_id(service, :review), class: "w-full" do %>
+    <div id="search_review_container" class="w-full">
+      <div class="w-full flex justify-between">
+        <span class="text-xl font-bold"><%= reviews.count %> Review/s</span>
+        <%= render_select name: 'sort_by', selected: 'Most Recent' do |select| %>
+          <%= select.option value: 'recent' do %>
+            Most Recent
+          <% end %>
+          <%= select.option value: 'lowest_rated' do %>
+            Lowest rated
+          <% end %>
+          <%= select.option value: 'highest_rated' do %>
+            Highest rated
+          <% end %>
+        <% end %>
+      </div>
+      <div id="search_bar_review" class="mt-4 w-full">
+        <%= render_input name: 'search-review', id: 'search-review', placeholder: 'Search Review', class: 'w-full rounded-full' %>
+      </div>
+    </div>
+    <div id="reviews_container" class="w-full flex flex-wrap">
+      <% reviews.each do |review| %>
+        <%= render partial: 'reviews/review', locals: { service: service, review: review, user: review.client } %>
+      <% end %>
+    </div>
+<% end %>
+  

@@ -1,15 +1,18 @@
 class ReviewsController < ApplicationController
   before_action :set_review, only: %i[show edit update destroy]
   before_action :set_appointment, only: %i[new create]
+  after_action :verify_authorized, except:  [:index, :show]
+
 
   # GET /services/:service_id/reviews
   def index
-    @reviews = Review.where(service_id: params[:service_id])
+    @service = Service.find(params[:service_id])
+    @reviews = @service.reviews.order(created_at: :desc).page(params[:page]).per(10)
 
     respond_to do |format|
-      format.js { render partial: 'reviews/reviews_list', locals: { reviews: @reviews } }
-      format.html # renders index.html.erb by default
-      #turbo stream
+      format.js { render json: @reviews }
+      format.html { render partial: 'reviews/reviews_list', locals: { service: @service, reviews: @reviews } }
+      #this should be streamed 
     end
   end
 
@@ -31,7 +34,6 @@ class ReviewsController < ApplicationController
   end
 
   # POST appointment/:appointment_id/reviews
-  # edit
   def create
     ActiveRecord::Base.transaction do
       @review = @appoitment.build_reviews(review_params)
