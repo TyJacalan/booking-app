@@ -1,10 +1,10 @@
 <div class="flex justify-between p-4 gap-2 w-full">
-  <div class="w-2/3 p-4">
-    <h2 class="font-semibold text-4xl mb-10"><%= @service.title.capitalize %></h2>
+  <div class="lg:w-2/3 sm:w-full md:w-full p-4">
+    <h2 class="font-semibold text-4xl p-4 mb-10"><%= @service.title.capitalize %></h2>
     <p class="p-2"><%= @service.description %></p>
     <p class="p-2"><span class="font-semibold">Categories:</span> 
-      <% @service.categories.each do |service| %>
-        <%= service %>
+      <% @service.categories.each do |category| %>
+        <%= category %>
       <% end %>
     </p>
     <div class="mt-10">
@@ -14,12 +14,10 @@
   </div>
 
   <div class="1/3 px-4">
-    <% if current_user&.role&.name == 'client' %>
-      <%= render_card class: 'h-fit max-w-sm text-sm' do %>
-        <%= turbo_frame_tag :new_appointment, 
-          id: :new_appointment,
-          src: new_appointment_path(id: @service.id) do %>
-        <% end %>
+    <%= render_card class: 'h-fit max-w-sm text-sm' do %>
+      <%= turbo_frame_tag :new_appointment, 
+        id: :new_appointment,
+        src: new_appointment_path(id: @service.id) do %>
       <% end %>
     <% end %>
   </div>

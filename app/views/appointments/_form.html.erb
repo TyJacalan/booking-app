@@ -6,13 +6,13 @@
 
   <%= render_form_for appointment, class: 'h-full w-full max-w-md mx-auto flex flex-col gap-4' do |f| %>
     <%= f.hidden_field :service_id, value: service.id %>
-    <%= f.hidden_field :client_id, value: current_user.id %>
+    <%= f.hidden_field :client_id, value: current_user&.id %>
     <%= f.hidden_field :freelancer_id, value: service.user_id %>
     <%= f.hidden_field :start, data: { appointment_target: 'startDate' } %>
     <%= f.hidden_field :end, data: { appointment_target: 'endDate' } %>
 
     <%= f.label :description %>
-    <%= f.text_area :description %>
+    <%= f.text_area :description, class: (current_user.present? ? '' : 'disabled:opacity-50 disabled:cursor-not-allowed') %>
 
     <div class='flex flex-row gap-2'>
       <div class='w-full flex flex-col gap-4'>
@@ -35,7 +35,6 @@
     </div>
 
     <%= f.submit 'Create', data: { turbo_frame: '_top' } %>
-
   <% end %>
 
   <div class='flex flex-col gap-4'>

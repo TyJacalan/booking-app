@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html class="transition-colors <%= cookies[:ui_theme] %>">
+  <head>
+    <title>New Service</title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+  </head>
+
+  <body class="max-w-7xl min-w-[350px] mx-auto flex h-full w-full min-h-screen flex-col bg-background text-foreground">
+    <% if params[:controller] == 'service_details' && params[:action] == 'show' %>
+      <%= render 'layouts/navbar' %>
+      <%= render 'layouts/toasts' %>
+    <% end %>
+    
+    <%= form_with(url: set_detail_services_path, method: :post, data: { controller: 'auto-submit' }) do |f| %>
+      <div>
+        <div class="flex-grow">
+          <%= yield %>
+        </div>
+
+        <div class="fixed bottom-0 left-0 right-0 flex justify-between p-5 bg-white shadow-md border">
+          <div class="w-auto">
+            <%= link_to request.referrer.presence || root_path, class: 'shadcn-button shadcn-button-ghost' do %>
+              <div class="flex justify-center items-center gap-2 text-xl">
+                <i class="fa-solid fa-circle-chevron-left"></i>
+                <span class="ml-2">Previous</span>
+              </div>
+            <% end %>
+          </div>
+          <div class="w-auto">
+            <%= button_tag type: 'button', class: 'shadcn-button shadcn-button-ghost', data: { action: 'click->auto-submit#submit' } do %>
+              <div class="flex justify-center items-center gap-2 text-xl">
+                <span class="mr-2">Next</span>
+                <i class="fa-solid fa-circle-chevron-right"></i>
+              </div>
+            <% end %>
+          </div>
+        </div>
+      </div>
+    <% end %>
+  </body>
+</html>
