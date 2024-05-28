@@ -77,12 +77,12 @@
             <% end %>
             <% if current_user&.role&.name == 'client' %>
               <%= dropdown_menu_item do %>
-                <%= button_to 'Switch to freelancing', user_role_path(current_user.id, current_user.role.id), method: :patch %>
+                <%= button_to 'Switch to freelancing', user_role_path(current_user.id, current_user.role.id), method: :patch, class: 'text-muted-foreground' %>
               <% end %>
             <% end %>
             <% if current_user&.role&.name == 'freelancer' %>
               <%= dropdown_menu_item do %>
-                <%= button_to 'Switch to client', user_role_path(current_user.id, current_user.role.id), method: :patch %>
+                <%= button_to 'Switch to client', user_role_path(current_user.id, current_user.role.id), method: :patch, class: 'text-muted-foreground' %>
               <% end %>
            <% end %>
             <%= dropdown_menu_item do %>
