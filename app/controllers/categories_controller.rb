@@ -1,6 +1,6 @@
 class CategoriesController < ApplicationController
   def select
-    @category = params[:category]
+    @category = Category.find(params[:id])
     session[:selected_categories] ||= []
     session[:selected_categories] << @category unless session[:selected_categories].include?(@category)
 

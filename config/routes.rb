@@ -8,6 +8,8 @@ Rails.application.routes.draw do
   devise_scope :user do
     get :freelancer_registration, to: 'users/registrations#new_freelancer', as: :new_freelancer
     post :freelancer_registration, to: 'users/registrations#create_freelancer', as: :create_freelancer
+    get :freelancer_update, to: 'users/registrations#edit_freelancer', as: :edit_freelancer
+    patch :freelancer_update, to: 'users/registrations#update_freelancer', as: :update_freelancer
   end
 
   root 'services#index'
@@ -17,6 +19,11 @@ Rails.application.routes.draw do
   resources :notifications, only: %i[index update]
   resources :roles
   resources :reviews
+
+  resources :users do
+    get :reviews, to: 'users#reviews', only: [:show]
+    get :services, to: 'users#services', only: [:show]
+  end
 
   resources :services do
     collection do
