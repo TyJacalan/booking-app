@@ -3,7 +3,7 @@ module Notifications
     def self.create_notification(user, content)
       Notification.create(
         user_id: user.id,
-        content: content
+        content:
       )
     end
 
