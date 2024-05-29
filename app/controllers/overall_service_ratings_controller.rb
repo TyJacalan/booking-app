@@ -8,7 +8,6 @@ class OverallServiceRatingsController < ApplicationController
   
       respond_to do |format|
         format.html { render partial: 'reviews/overall_service_rating', locals: { service: @service, overall_service_rating: @overall_service_rating } }
-        format.html { render partial: 'reviews/overall_service_rating_modal', locals: { service: @service, overall_service_rating: @overall_service_rating } }
         format.json { render json: @overall_service_rating }
       end
     end

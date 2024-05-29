@@ -23,7 +23,7 @@ Rails.application.routes.draw do
     get 'overall_service_ratings', to: 'overall_service_ratings#show', as: 'overall_service_ratings'
     get 'overall_service_ratings/show_modal', to: 'overall_service_ratings#show_modal', as: 'overall_service_ratings_modal'
     resources :appointments, except: [:show, :edit], shallow: true do
-      resources :reviews, only: [:new, :index, :create], shallow: true do
+      resources :reviews, only: [:new, :show, :index, :create], shallow: true do
         resources :comments, only: [:index, :create], shallow: true
       end
     end
