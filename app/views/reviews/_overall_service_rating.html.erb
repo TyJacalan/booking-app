@@ -1,8 +1,7 @@
 <%= turbo_frame_tag dom_id(service, :overall_service_rating) do %>
-    <%= turbo_stream_from "#{service.id}/overall_service_rating" %>
     <div id="overall_rating_container" class="">
         <span class="">&#9733;</span>
-        <span class=""><%= overall_service_rating.overall_rating %></span>
+        <span class=""><%= number_with_precision(overall_service_rating.overall_rating / overall_service_rating.count, precision: 1)  %></span>
         <span class="">&#183;</span>
         <span class=""><%= overall_service_rating.count %> Review/s</span>
     </div>

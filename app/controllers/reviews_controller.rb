@@ -1,20 +1,7 @@
 class ReviewsController < ApplicationController
   before_action :set_review, only: %i[show edit update destroy]
   before_action :set_appointment, only: %i[new create]
-  after_action :verify_authorized, except:  [:index, :show]
-
-
-  # GET /services/:service_id/reviews
-  def index
-    @service = Service.find(params[:service_id])
-    @reviews = @service.reviews.order(created_at: :desc).page(params[:page]).per(10)
-
-    respond_to do |format|
-      format.js { render json: @reviews }
-      format.html { render partial: 'reviews/reviews_list', locals: { service: @service, reviews: @reviews } }
-      #this should be streamed 
-    end
-  end
+  after_action :verify_authorized, except: [:index, :show]
 
   # GET /reviews/:id
   def show
@@ -36,37 +23,44 @@ class ReviewsController < ApplicationController
   # POST appointment/:appointment_id/reviews
   def create
     ActiveRecord::Base.transaction do
-      @review = @appoitment.build_reviews(review_params)
+      @review = @appointment.reviews.new(review_params)
       @review.service_id = @appointment.service.id
       @review.client_id = current_user.id
       @review.freelancer_id = @appointment.freelancer.id
-  
-      if @review.save!
-        redirect_to service_review_path(@service, @review), notice: 'Review was successfully created.'
-        #turbo stream
+
+      if @review.save
+        respond_to do |format|
+          format.html { redirect_to service_review_path(@review.service, @review), notice: 'Review was successfully created.' }
+          format.turbo_stream { broadcast_prepend_to(@review.service, :review_modal, target: "review_modal_service_#{review.service.id}", partial: 'reviews/review', locals: { user: current_user, review: @review }) }
+        end
       else
-        raise ActiveRecord::Rollback
+        render :new, status: :unprocessable_entity
       end
     end
   rescue ActiveRecord::RecordInvalid
-    render :new
+    render :new, status: :unprocessable_entity
   end
-  
 
   # PATCH/PUT /reviews/:id
   def update
     if @review.update(review_params)
-      redirect_to service_review_path(@service, @review), notice: 'Review was successfully updated.'
-      #turbo stream
+      respond_to do |format|
+        format.html { redirect_to service_review_path(@review.service, @review), notice: 'Review was successfully updated.' }
+        format.turbo_stream { broadcast_replace_to(@review.service, :review_modal, target: "review_modal_service_#{review.service.id}", partial: 'reviews/review', locals: { user: current_user, review: @review }) }
+      end
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 
   # DELETE /reviews/:id
   def destroy
     @review.destroy
-    redirect_to service_reviews_url(@service), notice: 'Review was successfully destroyed.'
+    respond_to do |format|
+      format.html { redirect_to service_reviews_url(@review.service), notice: 'Review was successfully destroyed.' }
+      format.turbo_stream { broadcast_replace_to(@review.service, :review_modal, target: "review_modal_service_#{review.service.id}", html: "<div></div>") }
+      #still not working
+    end
   end
 
   private
@@ -76,7 +70,7 @@ class ReviewsController < ApplicationController
   end
 
   def set_review
-    @review = Review.find(params[:review_id])
+    @review = Review.find(params[:id])
   end
 
   def review_params

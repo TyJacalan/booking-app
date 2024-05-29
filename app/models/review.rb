@@ -11,7 +11,7 @@ class Review < ApplicationRecord
   validate :appointment_must_be_completed
   validate :one_review_per_appointment
 
-  has_many :comments
+  has_many :comments, dependent: :destroy
   has_many :likes, as: :likeable
 
   after_save :update_overall_service_rating

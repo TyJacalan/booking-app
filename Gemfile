@@ -39,3 +39,6 @@ gem 'pundit', '~> 2.3'
 gem 'ransack', '~> 4.1'
 
 gem 'kaminari'
+
+# Use Redis for Action Cable
+gem "redis", "~> 4.0"

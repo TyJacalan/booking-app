@@ -16,8 +16,12 @@ Rails.application.routes.draw do
   resources :roles
 
   resources :services do
-    resources :reviews, only: [:index]
-    resources :overall_service_ratings, only: [:show]
+    get 'reviews/recent_10', to: 'reviews_index#recent_10_reviews', as: 'recent_10_reviews'
+    get 'reviews/recent', to: 'reviews_index#recent_reviews', as: 'recent_reviews'
+    get 'reviews/most_rated', to: 'reviews_index#most_rated_reviews', as: 'most_rated_reviews'
+    get 'reviews/least_rated', to: 'reviews_index#least_rated_reviews', as: 'least_rated_reviews'
+    get 'overall_service_ratings', to: 'overall_service_ratings#show', as: 'overall_service_ratings'
+    get 'overall_service_ratings/show_modal', to: 'overall_service_ratings#show_modal', as: 'overall_service_ratings_modal'
     resources :appointments, except: [:show, :edit], shallow: true do
       resources :reviews, only: [:new, :index, :create], shallow: true do
         resources :comments, only: [:index, :create], shallow: true

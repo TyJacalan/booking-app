@@ -93,10 +93,10 @@
     display: block;
 }
 
-#service_reviews_container #reviews_container turbo-frame {
+#service_reviews_container turbo-frame.service-review-container turbo-frame {
     width: 50%;
 }
 
-#service_reviews_modal_container #reviews_container turbo-frame {
+#service_reviews_modal_container #reviews_container turbo-frame  {
     width: 100%;
 }
