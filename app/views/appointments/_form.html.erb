@@ -34,12 +34,7 @@
       </div>
     </div>
 
-    <%= f.submit 'Create', data: { turbo_frame: '_top' }, class: "#{'opacity-50 cursor-not-allowed' unless current_user.present?}", disabled: !current_user.present? %>
-    <% if !current_user.present? %>
-      <div class="text-center p-2">
-        <%= link_to "Sign in", new_user_session_path, data: { turbo: false }, class: "hover:text-underline" %> or <%= link_to "Create an account", new_user_registration_path, data: { turbo: false }, class: "hover:text-underline" %> to make an appointment.
-      </div>
-    <% end %>
+    <%= f.submit 'Create', data: { turbo_frame: '_top' } %>
 
   <% end %>
 
