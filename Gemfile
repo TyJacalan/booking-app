@@ -37,9 +37,5 @@ group :development do
   gem 'web-console'
 end
 
-gem 'pundit', '~> 2.3'
-
-gem 'ransack', '~> 4.1'
-
 # Use Redis for Action Cable
 gem "redis", "~> 4.0"

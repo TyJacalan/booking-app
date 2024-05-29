@@ -42,3 +42,6 @@ application.register("ui--toast", Ui__ToastController)
 
 import Ui__TooltipController from "./ui/tooltip_controller"
 application.register("ui--tooltip", Ui__TooltipController)
+
+import HelloController from "./hello_controller.js"
+application.register("hello", HelloController)
