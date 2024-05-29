@@ -30,8 +30,9 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :biography, presence: true, length: { minimum: 10, maximum: 500 }, if: :freelancer_registering?
   validates :skills, presence: true, if: :freelancer_registering?
-  validates :city, presence: :true, if: :freelancer_registering?
-  validates :country, presence: :true, if: :freelancer_registering?
+  validates :city, presence: true, if: :freelancer_registering?
+  validates :country, presence: true, if: :freelancer_registering?
+  validates :role_id, presence: true
   validate :password_complexity
 
   after_validation :geocode, if: -> { address.present? && address_changed? }

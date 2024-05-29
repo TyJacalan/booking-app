@@ -31,10 +31,33 @@ class Users::RegistrationsController < Devise::RegistrationsController
     end
   end
 
+  # GET /resource/sign_up
+  # def new
+  #   super
+  # end
+
+  # POST /resource
+  def create
+    super do |resource|
+      UserRegistrationService.call(resource)
+    end
+  end
+
+  # GET /resource/edit
+  # def edit
+  #   super
+  # end
+
+  # PUT /resource
+  # def update
+  #   super
+  # end
+
   def edit_freelancer
     self.resource = current_user
     respond_with resource
   end
+
 
   def update_freelancer
     if @freelancer.update(account_update_params)
@@ -62,6 +85,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
       first_name last_name email password password_confirmation
       biography skills birthdate address city country mobile
     ])
+
   end
 
   # If you have extra params to permit, append them to the sanitizer.
