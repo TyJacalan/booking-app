@@ -13,6 +13,10 @@ class UserPolicy < ApplicationPolicy
     true
   end
 
+  def update?
+    user&.role&.update_roles
+  end
+
   def services?
     user&.role&.create_services
   end
