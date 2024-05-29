@@ -62,6 +62,8 @@ class AppointmentsController < ApplicationController
         flash.now[:notice] = 'Appointment request submitted'
         Notifications::CreateNotification.notify_new_appointment(@appointment)
         format.turbo_stream { render 'appointments/turbo/create_success' }
+
+        NewAppointmentService.call(current_user)
       else
         flash.now[:alert] = @appointment.errors.full_messages.first
         format.turbo_stream { render 'appointments/turbo/create_failure' }
