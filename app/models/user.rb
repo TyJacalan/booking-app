@@ -8,16 +8,17 @@ class User < ApplicationRecord
   has_many :freelancer_reviews, class_name: 'Review', foreign_key: 'freelancer_id', dependent: :destroy
   has_many :client_comments, class_name: 'Comment', foreign_key: 'freelancer_id', dependent: :destroy 
   has_many :services, dependent: :destroy
+  has_many :categories, dependent: :destroy
 
   has_many :notifications, dependent: :destroy
 
   belongs_to :role
 
-  def self.ransackable_attributes(auth_object = nil)
+  def self.ransackable_attributes(_auth_object = nil)
     %w[full_name city]
   end
 
-  def self.ransackable_associations(auth_object = nil)
+  def self.ransackable_associations(_auth_object = nil)
     %w[services]
   end
 
@@ -36,8 +37,9 @@ class User < ApplicationRecord
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :biography, presence: true, length: { minimum: 10, maximum: 500 }, if: :freelancer_registering?
   validates :skills, presence: true, if: :freelancer_registering?
-  validates :city, presence: :true, if: :freelancer_registering?
-  validates :country, presence: :true, if: :freelancer_registering?
+  validates :city, presence: true, if: :freelancer_registering?
+  validates :country, presence: true, if: :freelancer_registering?
+  validates :role_id, presence: true
   validate :password_complexity
 
   after_validation :geocode, if: -> { address.present? && address_changed? }
@@ -81,6 +83,7 @@ class User < ApplicationRecord
 
   def set_fullname
     return unless first_name.present? && last_name.present?
+
     self.full_name = "#{first_name} #{last_name}"
   end
 end

@@ -1,6 +1,7 @@
 class ServiceDetailsController < ApplicationController
   before_action :authorize_service, only: %i[set show]
-  before_action :set_service
+  before_action :set_service, only: [:show]
+  before_action :set_categories, only: [:show]
 
   def set
     case session[:form]
@@ -45,15 +46,23 @@ class ServiceDetailsController < ApplicationController
   private
 
   def set_service
+    category_ids = session[:selected_categories].map { |category_hash| category_hash['id'] }
+    categories = Category.where(id: category_ids)
+
+    @service = Service.new
     @service = Service.new(
       title: session[:title],
       price: session[:price],
       description: session[:description],
-      categories: session[:selected_categories]
+      categories:
     )
   end
 
   def authorize_service
     authorize Service, :new?
+  end
+
+  def set_categories
+    @categories = Category.all
   end
 end

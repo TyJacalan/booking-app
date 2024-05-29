@@ -18,7 +18,7 @@ class Appointment < ApplicationRecord
   after_update :send_review_notification, if: :is_completed_changed_to_true?
 
   def total_hours
-    ((self.end - self.start) / 3600).to_i
+    ((self.end - start) / 3600).to_i
   end
 
   private
@@ -31,10 +31,10 @@ class Appointment < ApplicationRecord
   end
 
   def validate_update
-    if start < 1.days.from_now
-      errors.add(:base, 'Appointment cannot be edited within one (1) day of the start date')
-      throw(:abort)
-    end
+    return unless start < 1.days.from_now
+
+    errors.add(:base, 'Appointment cannot be edited within one (1) day of the start date')
+    throw(:abort)
   end
 
   def validate_deletion

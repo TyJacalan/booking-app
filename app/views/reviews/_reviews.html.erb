@@ -1,0 +1,18 @@
+<div class="p-4 flex flex-wrap -mx-2">
+  <% @reviews.each do |review| %>
+    <div class="w-full lg:w-1/2 px-2 mb-4">
+      <%= render_card do %>
+          <div class="flex items-center gap-2">
+            <span class="font-semibold"><%= review.client.full_name %></span>
+            <span class="text-xs text-gray-500"><%= review.created_at.strftime("%B %d, %Y at %I:%M %p") %></span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-yellow-500">
+              <%= "★" * review.rating %><%= "☆" * (5 - review.rating) %>
+            </span>
+          </div>
+          <%= review.subject %>
+      <% end %>
+    </div>
+  <% end %>
+</div>
