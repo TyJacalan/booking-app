@@ -11,7 +11,7 @@ class PaymentsController < ApplicationController
 
     if response[:status]
       flash[:notice] = 'Payment Successful'
-      redirect_to response[:body], allow_other_host: true
+      redirect_to appointments_path, allow_other_host: true
     else
       flash[:alert] = "#{response[:body].capitalize}"
       redirect_to payments_path(@appointment.id)

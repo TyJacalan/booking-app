@@ -10,10 +10,9 @@ module Appointments
         payment_intent_id = appointment.payment_intent_id
         payment_method_id = payment_method[:id]
 
-        payment = Paymongo::PaymentIntents.attach(payment_intent_id, payment_method_id)
-        redirect_url = payment.dig(:attributes, :next_action, :redirect, :url)
+        Paymongo::PaymentIntents.attach(payment_intent_id, payment_method_id)
 
-        { status: true, body: redirect_url }
+        { status: true, body: nil }
       rescue StandardError => e
         { status: false, body: e.message }
       end
