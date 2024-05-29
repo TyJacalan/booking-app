@@ -59,7 +59,6 @@ class ReviewsController < ApplicationController
     respond_to do |format|
       format.html { redirect_to service_reviews_url(@review.service), notice: 'Review was successfully destroyed.' }
       format.turbo_stream { broadcast_replace_to(@review.service, :review_modal, target: "review_modal_service_#{review.service.id}", html: "<div></div>") }
-      #still not working
     end
   end
 

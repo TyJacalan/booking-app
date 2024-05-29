@@ -1,4 +1,4 @@
-<%= turbo_frame_tag dom_id(service, :modal_overall_service_rating) do %>
+<%= turbo_frame_tag dom_id(service, :overall_service_rating_modal) do %>
     <div id="overall_rating_container" class="">
       <span class="">&#9733;</span>
       <span class=""><%= number_with_precision(overall_service_rating.overall_rating / overall_service_rating.count, precision: 1) %></span>

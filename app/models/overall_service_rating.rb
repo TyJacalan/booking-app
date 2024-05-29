@@ -8,6 +8,7 @@ class OverallServiceRating < ApplicationRecord
 
     def broadcast_rating_update
         Rails.logger.info "Broadcasting with target: overall_service_rating_service_#{service.id}_container"
+      
         broadcast_replace_to(
           service, :overall_service_rating,
           target: dom_id(service, :overall_service_rating),
@@ -17,7 +18,7 @@ class OverallServiceRating < ApplicationRecord
 
         broadcast_replace_to(
           service, :overall_service_rating_modal,
-          target: dom_id(service, :overall_service_rating),
+          target: dom_id(service, :overall_service_rating_modal),
           partial: 'reviews/overall_service_rating',
           locals: { service: service, overall_service_rating: self }
         )

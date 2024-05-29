@@ -1,4 +1,6 @@
 class Review < ApplicationRecord
+  include ActionView::RecordIdentifier
+
   belongs_to :client, class_name: 'User', foreign_key: 'client_id'
   belongs_to :freelancer, class_name: 'User', foreign_key: 'freelancer_id'
   belongs_to :service
@@ -15,7 +17,7 @@ class Review < ApplicationRecord
   has_many :likes, as: :likeable
 
   after_save :update_overall_service_rating
-  after_destroy :update_overall_service_rating
+  after_destroy :update_overall_service_rating, :broadcast_destroy
 
   private
 
@@ -72,6 +74,22 @@ class Review < ApplicationRecord
       value: total_value,
       overall_rating: total_overall_rating,
       count: review_count
+    )
+  end
+
+  def broadcast_destroy
+    broadcast_replace_to(
+      service, 
+      :review,
+      target: dom_id(self, :service), 
+      html: "<div class='hidden'></div>"
+    )
+      
+    broadcast_replace_to(
+      service, 
+      :review_modal,
+      target: dom_id(self, :service_modal), 
+      html: "<div class='hidden'></div>"
     )
   end
 end
