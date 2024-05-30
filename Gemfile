@@ -7,6 +7,7 @@ ruby '3.3.0'
 gem 'bootsnap', require: false
 gem 'cssbundling-rails'
 gem 'devise'
+gem 'faraday'
 gem 'geocoder'
 gem 'jsbundling-rails'
 gem 'kaminari', '~> 1.2'

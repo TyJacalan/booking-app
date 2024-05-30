@@ -16,6 +16,12 @@ application.register("password-visibility", PasswordVisibilityController)
 import ReviewController from "./review_controller"
 application.register("review", ReviewController)
 
+import PaymentController from "./payment_controller"
+application.register("payment", PaymentController)
+
+import Ui__CheckboxController from "./ui/checkbox_controller"
+application.register("ui--checkbox", Ui__CheckboxController)
+
 import Ui__DialogController from "./ui/dialog_controller"
 application.register("ui--dialog", Ui__DialogController)
 

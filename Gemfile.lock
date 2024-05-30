@@ -383,6 +383,7 @@ DEPENDENCIES
   debug
   devise
   faker
+  faraday
   geocoder
   jsbundling-rails
   kaminari (~> 1.2)
