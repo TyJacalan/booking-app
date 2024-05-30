@@ -15,14 +15,14 @@ class AppointmentsController < ApplicationController
 
   def new
     @appointment = @service.appointments.new
-    authorize :appointment, :new?
+    authorize @appointment
   end
 
   def create
     @appointment = Appointment.new(appointment_params)
     authorize @appointment
 
-    handle_appointment_save
+    handle_appointment_create
   end
 
   def update
@@ -44,6 +44,19 @@ class AppointmentsController < ApplicationController
                                         :status)
   end
 
+  def handle_appointment_create
+    response = Appointments::CreateAppointment.call(@appointment)
+
+    respond_to do |format|
+      if response
+        format.turbo_stream { redirect_to payment_path(@appointment.id) }
+      else
+        flash.now[:alert] = @appointment.errors.full_messages.first
+        format.turbo_stream { render 'appointments/turbo/create_failure' }
+      end
+    end
+  end
+
   def handle_appointment_destroy
     respond_to do |format|
       if @appointment.destroy
@@ -53,21 +66,6 @@ class AppointmentsController < ApplicationController
         flash.now[:alert] = @appointment.errors.full_messages.to_sentence
       end
       format.turbo_stream { render 'appointments/turbo/delete' }
-    end
-  end
-
-  def handle_appointment_save
-    respond_to do |format|
-      if @appointment.save
-        flash.now[:notice] = 'Appointment request submitted'
-        Notifications::CreateNotification.notify_new_appointment(@appointment)
-        format.turbo_stream { render 'appointments/turbo/create_success' }
-
-        NewAppointmentService.call(current_user)
-      else
-        flash.now[:alert] = @appointment.errors.full_messages.first
-        format.turbo_stream { render 'appointments/turbo/create_failure' }
-      end
     end
   end
 
