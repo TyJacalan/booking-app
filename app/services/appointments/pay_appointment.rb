@@ -6,6 +6,8 @@ module Appointments
       ActiveRecord::Base.transaction do
         params[:email] = appointment.client.email
 
+        Appointments::NewAppointmentMail.call(appointment.client)
+
         payment_method = Paymongo::PaymentMethods.create(appointment.payment_intent_id, params)
         payment_intent_id = appointment.payment_intent_id
         payment_method_id = payment_method[:id]
