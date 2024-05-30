@@ -39,19 +39,6 @@
               <div id="search_review_container" class="w-full">
                 <div class="w-full flex justify-between">
                   <span class="text-xl font-bold"><%= service.reviews.count %> Review/s</span>
-                  <%= render_select name: 'sort_by', selected: 'Most Recent' do |select| %>
-                    <%= select.option value: 'recent' do %>
-                      Most Recent
-                    <% end %>
-
-                    <%= select.option value: 'lowest_rated' do %>
-                      Lowest rated
-                    <% end %>
-
-                    <%= select.option value: 'highest_rated' do %>
-                      Highest rated
-                    <% end %>
-                  <% end %>
                 </div>
 
                 <div id="search_bar_review" class="mt-4 w-full">
