@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 20_240_528_073_830) do
+ActiveRecord::Schema[7.1].define(version: 20_240_530_080_035) do
   # These are extensions that must be enabled in order to support this database
   enable_extension 'plpgsql'
 
@@ -30,6 +30,12 @@ ActiveRecord::Schema[7.1].define(version: 20_240_528_073_830) do
     t.index ['client_id'], name: 'index_appointments_on_client_id'
     t.index ['freelancer_id'], name: 'index_appointments_on_freelancer_id'
     t.index ['service_id'], name: 'index_appointments_on_service_id'
+  end
+
+  create_table 'blocked_dates', force: :cascade do |t|
+    t.date 'date', null: false
+    t.datetime 'created_at', null: false
+    t.datetime 'updated_at', null: false
   end
 
   create_table 'categories', force: :cascade do |t|
