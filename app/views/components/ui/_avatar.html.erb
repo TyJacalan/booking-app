@@ -1,13 +1,9 @@
 <div class="<%= avatar_classes %>" data=<%= data %>>
   <% if src %>
-    <%= image_tag src, class: "aspect-square h-full w-full" %>
+    <%= image_tag src, class: "aspect-square h-full w-full", alt: alt, size: size %>
   <% else %>
     <div class="flex h-full w-full items-center justify-center rounded-full bg-muted">
-      <% if current_user.first_name.blank? %>
-        <%= current_user.full_name&.chr&.upcase %>
-      <% else %>
-        <%= current_user.first_name&.chr&.upcase  %>
-      <% end %>
+      <%= image_tag 'default_avatar.jpg', alt: alt, size: size, class: 'rounded-full' %>
     </div>
   <% end %>
 </div>
