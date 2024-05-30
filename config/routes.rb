@@ -19,7 +19,6 @@ Rails.application.routes.draw do
   resources :notifications, only: %i[index update]
   resources :payments
   resources :roles
-  resources :reviews
 
   resources :users do
     get :reviews, to: 'users#reviews', only: [:show]
