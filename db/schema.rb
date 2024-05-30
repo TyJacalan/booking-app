@@ -28,6 +28,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_050435) do
     t.integer "status", default: 0
     t.boolean "review_notification_sent", default: false, null: false
     t.boolean "is_completed", default: false, null: false
+    t.string "payment_intent_id"
     t.index ["client_id"], name: "index_appointments_on_client_id"
     t.index ["freelancer_id"], name: "index_appointments_on_freelancer_id"
     t.index ["service_id"], name: "index_appointments_on_service_id"
