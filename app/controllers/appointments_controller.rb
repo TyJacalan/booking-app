@@ -1,14 +1,12 @@
 class AppointmentsController < ApplicationController
   before_action :authenticate_user!, except: [:new]
-  before_action :set_service, :set_fees, only: %i[new create]
-  before_action :set_user, only: %i[index]
+  before_action :set_appointment, only: %i[update destroy]
+  before_action :set_service, only: [:new]
 
   layout 'user', only: [:index]
 
   def index
-    appointments = Appointments::FetchAppointments.call(current_user)
-    @appointments = Kaminari.paginate_array(appointments).page(params[:page]).per(5)
-    authorize appointments
+    @appointments = fetch_appointments
   end
 
   def new
@@ -20,79 +18,68 @@ class AppointmentsController < ApplicationController
     @appointment = Appointment.new(appointment_params)
     authorize @appointment
 
-    handle_appointment_create
+    if Appointments::CreateAppointment.call(@appointment)
+      respond_to_success(payment_path(@appointment.id))
+    else
+      respond_to_failure('appointments/turbo/create_failure', @appointment.errors.full_messages.first)
+    end
   end
 
   def update
-    @appointment ||= Appointment.find(params[:id])
-    authorize @appointment
-    handle_appointment_update
+    if Appointments::UpdateAppointment.call(@appointment, current_user, appointment_params)
+      respond_to_success_with_notice('appointments/turbo/update', "The appointment request for #{@appointment.freelancer.first_name}'s service was successfully updated.")
+    else
+      respond_to_failure('appointments/turbo/update', @appointment.errors.full_messages.first)
+    end
   end
 
   def destroy
-    @appointment ||= Appointment.find(params[:id])
-    authorize @appointment
-    handle_appointment_destroy
+    if @appointment.destroy
+      respond_to_success_with_notice('appointments/turbo/delete', "The appointment request for #{@appointment.freelancer.first_name}'s service was successfully deleted")
+    else
+      respond_to_failure('appointments/turbo/delete', @appointment.errors.full_messages.to_sentence)
+    end
   end
 
   private
 
   def appointment_params
-    params.require(:appointment).permit(:client_id, :description, :duration, :end, :freelancer_id, :service_id, :start,
-                                        :status)
+    params.require(:appointment).permit(:client_id, :description, :duration, :end,
+                                        :freelancer_id, :service_id, :start, :status)
   end
 
-  def handle_appointment_create
-    response = Appointments::CreateAppointment.call(@appointment)
-
-    respond_to do |format|
-      if response
-        format.turbo_stream { redirect_to payment_path(@appointment.id) }
-      else
-        flash.now[:alert] = @appointment.errors.full_messages.first
-        format.turbo_stream { render 'appointments/turbo/create_failure' }
-      end
-    end
+  def fetch_appointments
+    appointments = Appointments::FetchAppointments.call(current_user)
+    authorize appointments
+    @appointments = Kaminari.paginate_array(appointments).page(params[:page]).per(5)
   end
 
-  def handle_appointment_destroy
-    respond_to do |format|
-      if @appointment.destroy
-        flash.now[:notice] =
-          "The appointment request for #{@appointment.freelancer.first_name}'s service was successfully deleted"
-      else
-        flash.now[:alert] = @appointment.errors.full_messages.to_sentence
-      end
-      format.turbo_stream { render 'appointments/turbo/delete' }
-    end
-  end
-
-  def handle_appointment_update
-    respond_to do |format|
-      if @appointment.update(appointment_params)
-        Notifications::CreateNotification.notify_updated_appointment(@appointment, current_user)
-        flash.now[:notice] =
-          "The appointment request for #{@appointment.freelancer.first_name}'s service was successfully updated."
-      else
-        flash.now[:alert] = @appointment.errors.full_messages.first
-        @appointment = Appointment.find(params[:id])
-      end
-      format.turbo_stream { render 'appointments/turbo/update' }
-    end
+  def set_appointment
+    @appointment = Appointment.find(params[:id])
+    authorize @appointment
   end
 
   def set_service
-    service_id ||= params[:id] || params.dig(:appointment, :service_id)
-    @service = Service.find(service_id)
+    @service = Service.find(params[:service_id])
   end
 
-  def set_fees
-    @price ||= @service.price
-    @service_fee ||= @price * 0.025
-    @total_fee ||= @price + @service_fee
+  def respond_to_success(path)
+    respond_to do |format|
+      format.turbo_stream { redirect_to path }
+    end
   end
 
-  def set_user
-    @user = current_user
+  def respond_to_success_with_notice(template, notice)
+    flash.now[:notice] = notice
+    respond_to do |format|
+      format.turbo_stream { render template }
+    end
+  end
+
+  def respond_to_failure(template, alert)
+    flash.now[:alert] = alert
+    respond_to do |format|
+      format.turbo_stream { render template }
+    end
   end
 end
