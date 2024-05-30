@@ -7,7 +7,8 @@
   <% end %>
   <h2 class="text-lg text-gray-600"><%= appointment.service.title %></h2>
   <% if current_user&.role&.name == 'client' %>
-    <%= render partial: 'form_edit', locals: { appointment: appointment } %>
+    <%= turbo_frame_tag :edit_appointment_form, src: edit_appointment_path(appointment.id) do %>
+    <% end %>
   <% end %>
 </div>
 

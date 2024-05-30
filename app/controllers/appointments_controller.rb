@@ -1,6 +1,6 @@
 class AppointmentsController < ApplicationController
   before_action :authenticate_user!, except: [:new]
-  before_action :set_appointment, only: %i[update destroy]
+  before_action :set_appointment, only: %i[edit update destroy]
   before_action :set_service, only: [:new]
 
   layout 'user', only: [:index]
@@ -24,6 +24,8 @@ class AppointmentsController < ApplicationController
       respond_to_failure('appointments/turbo/create_failure', @appointment.errors.full_messages.first)
     end
   end
+
+  def edit; end
 
   def update
     if Appointments::UpdateAppointment.call(@appointment, current_user, appointment_params)
