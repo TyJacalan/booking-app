@@ -14,10 +14,9 @@ class Users::RegistrationsController < Devise::RegistrationsController
   def create_freelancer
     if user_signed_in?
       user = current_user
-      user.update(sign_up_params)
       user.update(role: Role.find_by(name: 'freelancer'))
+      user.update(sign_up_params)
       Rails.logger.debug "role: #{user&.role&.name}"
-      # user.save
       redirect_to root_path, notice: "Welcome to the freelancers' community!"
     else
       user = User.find_by(email: sign_up_params[:email])

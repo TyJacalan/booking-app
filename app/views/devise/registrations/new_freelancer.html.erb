@@ -33,7 +33,6 @@
       <% @categories.each do |category| %>
         <div>
           <%= f.checkbox :skills, label: category.title %>
-          <%#= label_tag category.title %>
         </div>
       <% end %>
     </div>
@@ -42,6 +41,6 @@
 
   <%= f.hidden_field :country, value: 'Philippines' %>
   <div class="actions mt-4">
-    <%= f.submit current_user&.role&.name == 'freelancer' ? "Update Profile" : "Sign Up" %>
+    <%= f.submit current_user&.role&.name == 'freelancer' ? "Update Profile" : "Join" %>
   </div>
 <% end %>
