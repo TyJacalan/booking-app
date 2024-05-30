@@ -2,14 +2,16 @@
 
 clients = User.joins(:role).where(roles: { name: 'client' })
 
-100.times do
+100.times do |i|
   client = clients.sample
   next unless client
 
   appointment = client.client_appointments.sample
   next unless appointment
 
-  appointment.update(is_completed: true) unless appointment.is_completed?
+  unless appointment.is_completed?
+    appointment.update(is_completed: true)
+  end
 
   service = appointment.service
   freelancer = appointment.freelancer
