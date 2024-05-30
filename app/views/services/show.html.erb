@@ -14,8 +14,13 @@
     </div>
   </div>
 
-  <div data-controller="hello">
-    <button data-action="click->hello#greet">Greet</button>
+  <div class="1/3 px-4">
+    <%= render_card class: 'h-fit max-w-sm text-sm' do %>
+      <%= turbo_frame_tag :new_appointment, 
+        id: :new_appointment,
+        src: new_appointment_path(id: @service.id) do %>
+      <% end %>
+    <% end %>
   </div>
 
 </div>

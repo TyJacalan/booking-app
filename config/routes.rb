@@ -14,8 +14,11 @@ Rails.application.routes.draw do
 
   root 'services#index'
 
-  resources :notifications, only: [:index, :create, :update]
+  resources :alerts, only: %i[index]
+  resources :appointments, except: %i[show edit]
+  resources :notifications, only: %i[index update]
   resources :roles
+  resources :reviews
 
   resources :users do
     get :reviews, to: 'users#reviews', only: [:show]
@@ -24,13 +27,18 @@ Rails.application.routes.draw do
   end
 
   resources :services do
+    collection do
+      post :category, to: 'categories#select', as: :select_category_new
+      post :set_detail, to: 'service_details#set', as: :set_detail
+      get :new_form, to: 'service_details#show', as: :detail
+    end
     get 'reviews/recent_10', to: 'reviews_index#recent_10_reviews', as: 'recent_10_reviews'
     get 'reviews/recent', to: 'reviews_index#recent_reviews', as: 'recent_reviews'
     get 'reviews/most_rated', to: 'reviews_index#most_rated_reviews', as: 'most_rated_reviews'
     get 'reviews/least_rated', to: 'reviews_index#least_rated_reviews', as: 'least_rated_reviews'
     get 'overall_service_ratings', to: 'overall_service_ratings#show', as: 'overall_service_ratings'
     get 'overall_service_ratings/show_modal', to: 'overall_service_ratings#show_modal', as: 'overall_service_ratings_modal'
-    resources :appointments, except: [:show, :edit], shallow: true do
+    resources :appointments, except: [:show, :edit, :create, :update, :destroy, :index] do
       resources :reviews, only: [:new, :show, :index, :create], shallow: true do
         resources :comments, only: [:index, :create], shallow: true
       end

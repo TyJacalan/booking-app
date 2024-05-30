@@ -16,7 +16,7 @@ Appointment.find_each do |appointment|
         value: Faker::Number.between(from: 1, to: 5),
         subject: Faker::Lorem.sentence(word_count: 3),
         client_id: appointment.client_id,
-        freelancer_id: appointment.freelancerid,
+        freelancer_id: appointment.freelancer_id,
         appointment_id: appointment.id,
         service_id: appointment.service_id
       )

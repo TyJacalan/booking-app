@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_28_073830) do
+ActiveRecord::Schema[7.1].define(version: 2024_05_30_050435) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -96,20 +96,20 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_28_073830) do
   end
 
   create_table "reviews", force: :cascade do |t|
+    t.text "subject"
+    t.bigint "client_id", null: false
+    t.bigint "freelancer_id", null: false
+    t.bigint "service_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "likes_count", default: 0
     t.integer "professionalism", null: false
     t.integer "punctuality", null: false
     t.integer "quality", null: false
     t.integer "communication", null: false
     t.integer "value", null: false
     t.integer "overall_rating", null: false
-    t.text "subject"
-    t.bigint "client_id", null: false
-    t.bigint "freelancer_id", null: false
     t.bigint "appointment_id", null: false
-    t.bigint "service_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "likes_count", default: 0
     t.index ["appointment_id"], name: "index_reviews_on_appointment_id"
     t.index ["client_id"], name: "index_reviews_on_client_id"
     t.index ["freelancer_id"], name: "index_reviews_on_freelancer_id"
