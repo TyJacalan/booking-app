@@ -15,13 +15,12 @@ export default class extends Controller {
   connect() {
     flatpickr(this.dateInputTarget, {
       mode: 'range',
-      minDate: this.dateInputTarget.value || new Date().fp_incr(1),
+      minDate: this.dateInputTarget.value || new Date().fp_incr(3),
       onChange: (selectedDates) => {
         this.handleDateChange(selectedDates);
         this.handleDurationChange();
       },
     });
-
   }
 
   handleDateChange(selectedDates) {

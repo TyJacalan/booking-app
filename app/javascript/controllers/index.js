@@ -13,6 +13,12 @@ application.register("auto-submit", AutoSubmitController)
 import PasswordVisibilityController from "./password_visibility_controller"
 application.register("password-visibility", PasswordVisibilityController)
 
+import PaymentController from "./payment_controller"
+application.register("payment", PaymentController)
+
+import Ui__CheckboxController from "./ui/checkbox_controller"
+application.register("ui--checkbox", Ui__CheckboxController)
+
 import Ui__DialogController from "./ui/dialog_controller"
 application.register("ui--dialog", Ui__DialogController)
 

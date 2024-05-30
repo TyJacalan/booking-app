@@ -5,14 +5,18 @@ class Appointment < ApplicationRecord
 
   validates :description, :start, :end, :duration, :service_id, :client_id, :freelancer_id, presence: true
 
-  enum status: { pending: 0, accepted: 1, rejected: 2, expired: 3, paid: 4, blocked: 5 }
+  enum status: { pending: 0, accepted: 1, rejected: 2, expired: 3, completed: 4, blocked: 5 }
 
   before_destroy :validate_deletion
   before_save :set_price
   before_update :validate_update
 
   def total_hours
-    ((self.end - self.start) / 3600).to_i
+    ((self.end - start) / 3600).to_i
+  end
+
+  def fee_in_cents
+    (fee * 100).to_i
   end
 
   private
@@ -25,10 +29,10 @@ class Appointment < ApplicationRecord
   end
 
   def validate_update
-    if start < 1.days.from_now
-      errors.add(:base, 'Appointment cannot be edited within one (1) day of the start date')
-      throw(:abort)
-    end
+    return unless start < 1.days.from_now
+
+    errors.add(:base, 'Appointment cannot be edited within one (1) day of the start date')
+    throw(:abort)
   end
 
   def validate_deletion

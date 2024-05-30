@@ -1,0 +1,64 @@
+<h2 class="font-semibold text-2xl pb-8">Update your profile</h2>
+
+<%= render_form_for(resource, as: resource_name, url: update_freelancer_path(resource_name), method: :patch, class: "flex flex-col gap-2") do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+  <div class="field">
+    <%= f.label :biography %><br />
+    <%= f.text_area :biography %>
+    <% if resource.errors[:biography].present? %>
+      <span class="error"><%= resource.errors[:biography].join(", ") %></span>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= f.label :skills %><br />
+    <%= f.text_area :skills %>
+    <% if resource.errors[:skills].present? %>
+      <span class="error"><%= resource.errors[:skills].join(", ") %></span>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= f.label :birthdate %><br />
+    <%= f.text_field :birthdate %>
+    <% if resource.errors[:birthdate].present? %>
+      <span class="error"><%= resource.errors[:birthdate].join(", ") %></span>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= f.label :address %><br />
+    <%= f.text_field :address %>
+    <% if resource.errors[:address].present? %>
+      <span class="error"><%= resource.errors[:address].join(", ") %></span>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= f.label :city %><br />
+    <%= f.text_field :city %>
+    <% if resource.errors[:city].present? %>
+      <span class="error"><%= resource.errors[:city].join(", ") %></span>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= f.label :country %><br />
+    <%= f.text_field :country %>
+    <% if resource.errors[:country].present? %>
+      <span class="error"><%= resource.errors[:country].join(", ") %></span>
+    <% end %>
+  </div>
+
+  <div class="field">
+    <%= f.label :mobile %><br />
+    <%= f.text_field :mobile %>
+    <% if resource.errors[:mobile].present? %>
+      <span class="error"><%= resource.errors[:mobile].join(", ") %></span>
+    <% end %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit user_signed_in? ? "Update Profile" : "Sign Up" %>
+  </div>
+<% end %>

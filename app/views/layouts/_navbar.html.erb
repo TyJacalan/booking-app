@@ -1,14 +1,26 @@
 <header class='sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background px-4 mx:px-6'>
   <nav class='md:w-full hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:justify-between md:gap-4 md:text-sm lg:gap-6'>
-    <span class='w-32'>Booking App</span>
+    <span class='w-32'><%= link_to 'Booking App', root_path, class: 'hover:cursor-pointer' %></span>
     <div class='w-full flex flex-row justify-center gap-4 text-sm text-muted-foreground'>
       <%# Add filters triggers here %>
     </div>
   </nav>
 
-  <div>
+  <div class="w-full">
     <% if user_signed_in? %>
-      <div class="flex w-full items-center justify-end gap-4 md:ml-auto md:gap-2 lg:gap-4">
+      <div class="flex w-full items-center justify-end gap-4  md:gap-2 lg:gap-4">
+        <%# Add Service %>
+        <div class="flex justify-center items-center">
+          <div class="rounded-lg hover:bg-gray-100 p-2 transition duration-300 ease-in-out">
+            <%= link_to policy(Service).new? ? new_service_path : new_freelancer_path, class: "font-semibold" do %>
+              <% if current_user&.role&.name == 'freelancer' %>
+                Offer your services
+              <% else %>
+                Become a freelancer  
+              <% end %>
+            <% end %>
+          </div>
+        </div>
 
         <%# mode toggle %>
         <%= render_dropdown_menu do %>
@@ -37,8 +49,8 @@
 
         <%# notifications %>
         <% if user_signed_in? %>
-          <%= turbo_frame_tag :index_notifications, 
-            src: notifications_path %>
+          <%= turbo_frame_tag :index_alerts, 
+            src: alerts_path %>
         <% end %>
 
         <%# account %>
@@ -53,16 +65,26 @@
             <%= dropdown_menu_label "My Account" %>
             <%= render_separator class: "my-1" %>
             <%= dropdown_menu_item do %>
-              <%= link_to 'Profile', edit_user_registration_path %>
+              <%= link_to current_user.role.name == 'client' ? 'Profile' : 'Dashboard', current_user.role.name == 'client' ? edit_user_registration_path : user_path(current_user) %>
             <% end %>
             <% if current_user&.role&.name == 'freelancer' %>
               <%= dropdown_menu_item do %>
-                <%= link_to 'My Services', services_path %>
+                <%= link_to 'My Services', user_services_path(current_user) %>
               <% end %>
             <% end %>
             <%= dropdown_menu_item do %>
               <%= link_to 'My Appointments', appointments_path %>
             <% end %>
+            <% if current_user&.role&.name == 'client' %>
+              <%= dropdown_menu_item do %>
+                <%= button_to 'Switch to freelancing', user_role_path(current_user.id, current_user.role.id), method: :patch, class: 'text-muted-foreground' %>
+              <% end %>
+            <% end %>
+            <% if current_user&.role&.name == 'freelancer' %>
+              <%= dropdown_menu_item do %>
+                <%= button_to 'Switch to client', user_role_path(current_user.id, current_user.role.id), method: :patch, class: 'text-muted-foreground' %>
+              <% end %>
+           <% end %>
             <%= dropdown_menu_item do %>
               <%= button_to "Logout", destroy_user_session_path, method: :delete, class: 'text-muted-foreground' %>
             <% end %>
@@ -70,9 +92,12 @@
         <% end %>
       </div>
     <% else %>
-      <div class='hidden md:w-fit md:flex md:flex-row md:gap-6'>
-      <%= link_to "Login", new_user_session_path%>
-      <%= link_to "Signup", new_user_registration_path%>
+      <div class="flex justify-end items-center gap-4 p-2 w-full">     
+        <div class='hidden md:w-fit md:flex md:flex-row md:gap-6'>
+          <%= link_to "Become a freelancer", new_user_session_path, class: "font-semibold rounded-lg hover:bg-gray-100 p-2 transition duration-300 ease-in-out" %>
+          <%= link_to "Login", new_user_session_path, class: "rounded-lg hover:bg-gray-100 p-2 transition duration-300 ease-in-out" %>
+          <%= link_to "Signup", new_user_registration_path, class: "rounded-lg hover:bg-gray-100 p-2 transition duration-300 ease-in-out" %>
+        </div>
       </div>
     <% end %>
   </div>

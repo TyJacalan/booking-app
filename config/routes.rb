@@ -8,15 +8,32 @@ Rails.application.routes.draw do
   devise_scope :user do
     get :freelancer_registration, to: 'users/registrations#new_freelancer', as: :new_freelancer
     post :freelancer_registration, to: 'users/registrations#create_freelancer', as: :create_freelancer
+    get :freelancer_update, to: 'users/registrations#edit_freelancer', as: :edit_freelancer
+    patch :freelancer_update, to: 'users/registrations#update_freelancer', as: :update_freelancer
   end
 
   root 'services#index'
 
+  resources :alerts, only: %i[index]
   resources :appointments, except: %i[show edit]
-  resources :notifications, only: [:index, :create, :update]
+  resources :notifications, only: %i[index update]
+  resources :payments
   resources :roles
   resources :reviews
-  resources :services
+
+  resources :users do
+    get :reviews, to: 'users#reviews', only: [:show]
+    get :services, to: 'users#services', only: [:show]
+    resources :roles, module: :users, only: [:update]
+  end
+
+  resources :services do
+    collection do
+      post :category, to: 'categories#select', as: :select_category_new
+      post :set_detail, to: 'service_details#set', as: :set_detail
+      get :new_form, to: 'service_details#show', as: :detail
+    end
+  end
 
   get 'up' => 'rails/health#show', as: :rails_health_check
 
