@@ -5,4 +5,5 @@
       <%= render partial: 'appointment', locals: { appointment: appointment } %>
     <% end %>
   <% end %>
+  <%= paginate @appointments %>
 </div>

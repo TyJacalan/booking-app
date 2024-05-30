@@ -6,11 +6,9 @@ class AppointmentsController < ApplicationController
   layout 'user', only: [:index]
 
   def index
-    @appointments = Appointment.where(client_id: current_user.id)
-                               .or(Appointment
-                               .where(freelancer_id: current_user.id))
-                               .order(:start)
-    authorize @appointments
+    appointments = Appointments::FetchAppointments.call(current_user)
+    @appointments = Kaminari.paginate_array(appointments).page(params[:page]).per(5)
+    authorize appointments
   end
 
   def new
