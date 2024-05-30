@@ -5,7 +5,7 @@ class Appointment < ApplicationRecord
 
   validates :description, :start, :end, :duration, :service_id, :client_id, :freelancer_id, presence: true
 
-  enum status: { pending: 0, accepted: 1, rejected: 2, expired: 3, paid: 4, blocked: 5 }
+  enum status: { pending: 0, accepted: 1, rejected: 2, expired: 3, completed: 4, blocked: 5 }
 
   before_destroy :validate_deletion
   before_save :set_price
@@ -13,6 +13,10 @@ class Appointment < ApplicationRecord
 
   def total_hours
     ((self.end - start) / 3600).to_i
+  end
+
+  def fee_in_cents
+    (fee * 100).to_i
   end
 
   private
