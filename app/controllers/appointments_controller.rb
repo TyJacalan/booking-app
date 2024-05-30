@@ -70,6 +70,7 @@ class AppointmentsController < ApplicationController
   end
 
   def respond_to_success_with_notice(template, notice)
+    @status = true
     flash.now[:notice] = notice
     respond_to do |format|
       format.turbo_stream { render template }
@@ -77,6 +78,7 @@ class AppointmentsController < ApplicationController
   end
 
   def respond_to_failure(template, alert)
+    @status = false
     flash.now[:alert] = alert
     respond_to do |format|
       format.turbo_stream { render template }
