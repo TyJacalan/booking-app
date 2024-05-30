@@ -6,14 +6,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :set_freelancer, only: %i[edit_freelancer update_freelancer]
 
   def new_freelancer
+    @categories = Category.all
     build_resource({})
     respond_with resource
   end
 
   def create_freelancer
     if user_signed_in?
-      current_user.update(sign_up_params)
-      current_user.update(role: Role.find_by(name: 'freelancer'))
+      user = current_user
+      user.update(sign_up_params)
+      user.update(role: Role.find_by(name: 'freelancer'))
+      Rails.logger.debug "role: #{user&.role&.name}"
+      # user.save
       redirect_to root_path, notice: "Welcome to the freelancers' community!"
     else
       user = User.find_by(email: sign_up_params[:email])
@@ -58,7 +62,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     respond_with resource
   end
 
-
   def update_freelancer
     if @freelancer.update(account_update_params)
       redirect_to user_path(@freelancer), notice: 'Profile was successfully updated'
@@ -85,7 +88,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       first_name last_name email password password_confirmation
       biography skills birthdate address city country mobile
     ])
-
   end
 
   # If you have extra params to permit, append them to the sanitizer.

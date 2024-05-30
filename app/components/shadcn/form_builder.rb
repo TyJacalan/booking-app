@@ -44,6 +44,17 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
     )
   end
 
+  def date_field(method, options = {})
+    error_class = @object.errors[method].any? ? 'error' : ''
+    options[:class] = @template.tw("#{options[:class]} #{error_class}")
+    @template.render_input(
+      name: "#{object_name}[#{method}]",
+      id: "#{object_name}_#{method}",
+      value: @object.send(method),
+      type: 'date', **options
+    )
+  end
+
   def email_field(method, options = {})
     error_class = @object.errors[method].any? ? 'error' : ''
     options[:class] = @template.tw("#{options[:class]} #{error_class}")

@@ -31,7 +31,6 @@ class User < ApplicationRecord
   validates :biography, presence: true, length: { minimum: 10, maximum: 500 }, if: :freelancer_registering?
   validates :skills, presence: true, if: :freelancer_registering?
   validates :city, presence: true, if: :freelancer_registering?
-  validates :country, presence: true, if: :freelancer_registering?
   validates :role_id, presence: true
   validate :password_complexity
 
@@ -50,6 +49,7 @@ class User < ApplicationRecord
 
   def set_default_role
     self.role ||= Role.find_by(name: 'client')
+    Rails.logger.debug "default role: #{self.role}"
   end
 
   def freelancer_registering?
