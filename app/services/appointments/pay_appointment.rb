@@ -7,6 +7,7 @@ module Appointments
         params[:email] = appointment.client.email
 
         Appointments::NewAppointmentMail.call(appointment.client)
+        Appointments::NewAppointmentMailToFreelancer.call(appointment)
 
         payment_method = Paymongo::PaymentMethods.create(appointment.payment_intent_id, params)
         payment_intent_id = appointment.payment_intent_id
