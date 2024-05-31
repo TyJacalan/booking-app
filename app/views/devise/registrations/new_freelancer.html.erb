@@ -28,11 +28,12 @@
   </div>
 
   <div class="field">
-    <%= f.label :skills%><br />
+    <%= f.label :skills %><br />
     <div class="skills-checkboxes">
       <% @categories.each do |category| %>
         <div>
-          <%= f.checkbox :skills, label: category.title %>
+          <%= check_box_tag "user[skills][]", category.title, @user.skills.include?(category.title.to_s), class: "peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 peer-checked:bg-primary peer-checked:text-primary-foreground" %>
+          <%= label_tag "user_skills_#{category.title}", category.title %>
         </div>
       <% end %>
     </div>
