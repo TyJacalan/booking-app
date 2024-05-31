@@ -42,7 +42,18 @@ Rails.application.routes.draw do
 
   resources :appointments, except: [:show, :edit, :create, :update, :destroy, :index], shallow: true do
     resources :reviews, only: [:new, :show, :index, :create], shallow: true do
-      resources :comments, only: [:index, :create], shallow: true
+      resource :likes, controller: 'reviews_likes', only: [:create, :destroy] do
+        collection do
+          get 'liked_status'
+        end
+      end
+      resources :comments, only: [:index, :create], shallow: true do
+        resource :likes, controller: 'comments_likes', only: [:create, :destroy] do
+          collection do
+            get 'liked_status'
+          end
+        end
+      end
     end
   end
 

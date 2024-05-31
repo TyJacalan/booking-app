@@ -64,7 +64,7 @@
           <% end %>
         <% end %>
       </div>
-      <%= link_to "#{review.comments.count} comment/s", review_path(id: review.id), class: 'ml-4 text-sm' %>
+      <%= link_to "#{review.comments.count} comment/s", review_path(id: review.id), class: 'ml-4 text-sm', data: { turbo: false } %>
     </div>
   </div>
 <% end %>

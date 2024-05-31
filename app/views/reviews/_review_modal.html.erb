@@ -45,22 +45,24 @@
     </div>
     <div class="flex justify-end">
       <div class="text-sm">
-        <%= render_hover_card do %>
-          <%= hover_card_trigger do %>
-            <% like = review.likes_count > 0 ? 'Likes' : 'Like' %>
-            <% likes_count = review.likes_count > 0 ? review.likes_count : '' %>
-            <%= content_tag :span, "#{likes_count} #{like}", class: "text-sm" %>
-          <% end %>
-          <%= hover_card_content do %>
-            <div>
-              <ul>
-                <% Like.where(likeable_type: 'Review', likeable_id: review.id).each do |like| %>
-                  <% user_id = like.user_id %>
-                  <% user = User.find_by(id: user_id) %>
-                  <li class="text-sm"><%= user.full_name %></li>
-                <% end %>
-              </ul>
-            </div>
+        <%= turbo_frame_tag dom_id(review, :likes_count) do %>
+          <%= render_hover_card do %>
+            <%= hover_card_trigger do %>
+              <% like = review.likes_count > 0 ? 'Likes' : 'Like' %>
+              <% likes_count = review.likes_count > 0 ? review.likes_count : '' %>
+              <%= content_tag :span, "#{likes_count} #{like}", class: "text-sm" %>
+            <% end %>
+            <%= hover_card_content do %>
+              <div>
+                <ul>
+                  <% Like.where(likeable_type: 'Review', likeable_id: review.id).each do |like| %>
+                    <% user_id = like.user_id %>
+                    <% user = User.find_by(id: user_id) %>
+                    <li class="text-sm"><%= user.full_name %></li>
+                  <% end %>
+                </ul>
+              </div>
+            <% end %>
           <% end %>
         <% end %>
       </div>
@@ -83,13 +85,9 @@
     </div>
     <% if current_user %>
       <div class="flex justify-evenly mt-2">
-        <button class="group hover:text-[#ece75f] flex items-center">
-          <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="black" class="group-hover:fill-[#ece75f]">
-            <path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z"/>
-          </svg>
-          <span class="text-base">Like</span>
-        </button>
-        <%= link_to review_path(id: review.id), class: 'group hover:bg-[#f2f2f2] hover:text-[#ece75f] hover:fill-[#ece75f] flex items-center' do %>
+        <%= turbo_frame_tag dom_id(review, :like_button), src:  liked_status_review_likes_path(review_id: review.id) do %>
+        <% end %>
+        <%= link_to review_path(id: review.id), class: 'group hover:bg-[#f2f2f2] hover:text-[#ece75f] hover:fill-[#ece75f] flex items-center', data: { turbo: false } do %>
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black" class="group-hover:fill-[#ece75f]">
             <path d="M280-240q-17 0-28.5-11.5T240-280v-80h520v-360h80q17 0 28.5 11.5T880-680v600L720-240H280ZM80-280v-560q0-17 11.5-28.5T120-880h520q17 0 28.5 11.5T680-840v360q0 17-11.5 28.5T640-440H240L80-280Zm520-240v-280H160v280h440Zm-440 0v-280 280Z"/>
           </svg>

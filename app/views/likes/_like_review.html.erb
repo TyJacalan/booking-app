@@ -1,0 +1,28 @@
+<%= turbo_frame_tag dom_id(review, :like_button) do %>
+    <%= link_to review_likes_path(review), method: :delete, data: { turbo_method: :delete }, class: "group flex items-center" do %>
+        <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="#ece75f">
+            <path d="M720-120H280v-520l280-280 50 50q7 7 11.5 19t4.5 23v14l-44 174h258q32 0 56 24t24 56v80q0 7-2 15t-4 15L794-168q-9 20-30 34t-44 14Zm-360-80h360l120-280v-80H480l54-220-174 174v406Zm0-406v406-406Zm-80-34v80H160v360h120v80H80v-520h200Z"/>
+        </svg>
+        <span class="text-base text-[#ece75f]">Unlike</span>
+    <% end %>
+<% end %>
+    
+<%= turbo_frame_tag dom_id(review, :likes_count) do %>
+    <%= render_hover_card do %>
+        <%= hover_card_trigger do %>
+          <% like = likes_count > 0 ? 'Likes' : 'Like' %>
+          <%= content_tag :span, "#{likes_count} #{like}", class: "text-sm" %>
+        <% end %>
+        <%= hover_card_content do %>
+          <div>
+            <ul>
+              <% Like.where(likeable_type: 'Review', likeable_id: review.id).each do |like| %>
+                <% user_id = like.user_id %>
+                <% user = User.find_by(id: user_id) %>
+                <li class="text-sm"><%= user.full_name %></li>
+              <% end %>
+            </ul>
+          </div>
+        <% end %>
+    <% end %>
+<% end %>

@@ -1,6 +1,16 @@
 class CommentsLikesController < ApplicationController
   before_action :set_comment
 
+  def liked_status
+    @like = @comment.likes.find_by(user: current_user)
+
+    if @like
+      render json: { liked: true, like_id: @like.id }
+    else
+      render json: { liked: false }
+    end
+  end
+  
   def create
     @like = @comment.likes.build(user: current_user)
 
