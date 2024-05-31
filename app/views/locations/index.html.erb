@@ -1,0 +1,11 @@
+<%= turbo_frame_tag :cities do %>
+  <% if @cities.present? && @cities.any? %>
+    <div class="border rounded-lg shadow-md p-4 mt-2 max-w-full">
+      <% @cities.cycle.take([@cities.count, 5].min).each do |city| %>
+        <div data-action='click->location#assignValue' data-city-name='<%= city.name %>' class="flex flex-col gap-2 max-h-64 overflow-y-auto hover:bg-accent hover:cursor-pointer hover:text-accent-foreground p-2 rounded-md transition duration-200">
+          <%= city.name %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+<% end %>

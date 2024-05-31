@@ -20,6 +20,7 @@ Rails.application.routes.draw do
   resources :payments
   resources :roles
   resources :reviews
+  resources :locations, only: [:index]
 
   resources :users do
     get :reviews, to: 'users#reviews', only: [:show]
