@@ -15,7 +15,7 @@ class CommentsController < ApplicationController
   # GET /comments/:id
   def show
     respond_to do |format|
-      format.html # renders show.html.erb
+      format.html { render partial: 'comments/comment', locals: { comment: @comment, client: @comment.client, freelancer: @comment.freelancer }}
       format.json { render json: @comment }
     end
   end

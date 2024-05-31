@@ -4,7 +4,7 @@
   <div class="w-full" id="service_rating_container">
     <%= turbo_stream_from service, :overall_service_rating %>
     <%= turbo_frame_tag dom_id(service, :overall_service_rating), src: service_overall_service_ratings_path(service_id: service.id) do %>
-      <!-- Content for overall service rating -->
+      #Content for overall service rating
     <% end %>
   </div>
 
@@ -13,11 +13,11 @@
   <div class="w-full" id="service_reviews_container">
     <%= turbo_stream_from service, :review %>
     <%= turbo_frame_tag dom_id(service, :review), src: service_recent_10_reviews_path(service_id: service.id), class: "w-full flex flex-wrap" do %>
-      <!-- Content for review -->
+      #Content for review
     <% end %> 
     <div>
       <%= render_dialog do %>
-        <%= dialog_trigger do %>
+        <%= dialog_trigger dialog_class: "my-custom-dialog-class", trigger_class: "text-black bg-[#FACC15]" do %>
           <% if service.reviews.count.zero? %>
             <%= render_button("Show all #{service.reviews.count} review/s", variant: :outline, class: 'open-reviews-button border border-black rounded-md text-lg font-semibold px-6 py-2 my-4', disabled: true) %>
           <% else %>
@@ -49,7 +49,7 @@
               <!-- src in here will depend on the value of the select above -->
               <%= turbo_stream_from service, :review_modal %>
               <%= turbo_frame_tag dom_id(service, :review_modal), src: service_recent_reviews_path(service_id: service.id), class: "w-full" do %>
-                <!-- Content for review -->
+                #Content for review
               <% end %>
             </div>
           </div>
