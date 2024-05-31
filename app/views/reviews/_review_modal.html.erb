@@ -85,7 +85,7 @@
     </div>
     <% if current_user %>
       <div class="flex justify-evenly mt-2">
-        <%= turbo_frame_tag dom_id(review, :like_button), src:  liked_status_review_likes_path(review_id: review.id) do %>
+        <%= turbo_frame_tag dom_id(review, :like_button), src:  liked_status_review_likes_path(review) do %>
         <% end %>
         <%= link_to review_path(id: review.id), class: 'group hover:bg-[#f2f2f2] hover:text-[#ece75f] hover:fill-[#ece75f] flex items-center', data: { turbo: false } do %>
           <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="black" class="group-hover:fill-[#ece75f]">
