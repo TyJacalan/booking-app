@@ -38,12 +38,13 @@ Rails.application.routes.draw do
     get 'reviews/least_rated', to: 'reviews_index#least_rated_reviews', as: 'least_rated_reviews'
     get 'overall_service_ratings', to: 'overall_service_ratings#show', as: 'overall_service_ratings'
     get 'overall_service_ratings/show_modal', to: 'overall_service_ratings#show_modal', as: 'overall_service_ratings_modal'
-    resources :appointments, except: [:show, :edit, :create, :update, :destroy, :index] do
-      resources :reviews, only: [:new, :show, :index, :create], shallow: true do
-        resources :comments, only: [:index, :create], shallow: true
-      end
-    end
   end  
+
+  resources :appointments, except: [:show, :edit, :create, :update, :destroy, :index], shallow: true do
+    resources :reviews, only: [:new, :show, :index, :create], shallow: true do
+      resources :comments, only: [:index, :create], shallow: true
+    end
+  end
 
   get 'up' => 'rails/health#show', as: :rails_health_check
 

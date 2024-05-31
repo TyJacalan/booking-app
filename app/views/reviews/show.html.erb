@@ -1,0 +1,9 @@
+<div class="w-full flex justify-center">
+    <div class="w-1/2">
+        <%= render partial: 'reviews/review_modal', locals: { review: review, user: review.client } %>
+
+        <% comments.each do |comment| %>
+            <%= render partial: 'comments/comment', locals: { client: comment.client, freelancer: comment.freelancer, comment: comment, review: review} %>
+        <% end %>
+    </div>
+</div>

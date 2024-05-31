@@ -8,7 +8,7 @@ class ReviewsController < ApplicationController
   # GET /reviews/:id
   def show
     respond_to do |format|
-      format.html { render partial: 'reviews/review_with_comments', locals: { review: @review, comments: @review.comments, service: @review.service } }
+      format.html { render locals: { review: @review, comments: @review.comments, service: @review.service } }
     end
   end
 
