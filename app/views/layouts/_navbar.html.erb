@@ -3,6 +3,11 @@
     <span class='w-32'><%= link_to 'Booking App', root_path, class: 'hover:cursor-pointer' %></span>
     <div class='w-full flex flex-row justify-center gap-4 text-sm text-muted-foreground'>
       <%# Add filters triggers here %>
+      <%= link_to 'Profile', user_path(@user), class: 'hover:underline' if @user&.role&.name == 'freelancer' %>
+      <%= link_to 'Services', user_services_path(@user), class: 'hover:underline' if @user&.role&.name == 'freelancer' %>
+      <%= link_to 'Appointments', appointments_path, class: 'hover:underline' if @user == current_user %>
+      <%= link_to 'Reviews', user_reviews_path(@user) if @user.present? %>
+      <%= link_to 'Calendar' if @user == current_user %>
     </div>
   </nav>
 
