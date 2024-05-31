@@ -10,6 +10,9 @@ application.register("appointment", AppointmentController)
 import AutoSubmitController from "./auto_submit_controller"
 application.register("auto-submit", AutoSubmitController)
 
+import CheckboxSelectAllController from "./checkbox_select_all_controller"
+application.register("checkbox-select-all", CheckboxSelectAllController)
+
 import PasswordVisibilityController from "./password_visibility_controller"
 application.register("password-visibility", PasswordVisibilityController)
 
