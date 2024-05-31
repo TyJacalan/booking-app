@@ -1,38 +1,38 @@
 <h2 class="font-semibold text-2xl pb-8">Join our community and start offering your services</h2>
 
-<%= render_form_for(resource, as: resource_name, url: create_freelancer_path, html: { method: :post }, class: "flex flex-col gap-2") do |f| %>
+<%= render_form_for(resource, as: resource_name, url: create_freelancer_path, html: { method: :post }, class: "flex flex-col gap-4") do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="field">
-    <%= f.label :biography, required: true %><br />
+    <%= f.label :biography, required: true %>
     <%= f.text_area :biography %>
     <%= f.error_message :biography %>
   </div>
 
   <div class="field">
-    <%= f.label :birthdate, required: true %><br />
+    <%= f.label :birthdate, required: true %>
     <%= f.date_field :birthdate, autocomplete: 'bday', required: true %>
     <%= f.error_message :birthdate %>
   </div>
 
   <div class="field">
-    <%= f.label :city, required: true %><br />
+    <%= f.label :city, required: true %>
     <%= f.text_field :city, required: true %>
     <%= f.error_message :city %>
   </div>
 
   <div class="field">
-    <%= f.label :mobile, required: true %><br />
+    <%= f.label :mobile, required: true %>
     <%= f.text_field :mobile, required: true %>
     <%= f.error_message :mobile %>
   </div>
 
   <div class="field">
-    <%= f.label :skills %><br />
+    <%= f.label :skills %>
     <div class="skills-checkboxes">
       <% @categories.each do |category| %>
         <div>
-          <%= check_box_tag "user[skills][]", category.title, @user.skills.include?(category.title.to_s), class: "peer h-4 w-4 shrink-0 rounded-sm border border-primary ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 peer-checked:bg-primary peer-checked:text-primary-foreground" %>
+          <%= check_box_tag "user[skills][]", category.title, @user.skills.include?(category.title.to_s), class: "peer h-4 w-4 shrink-0 rounded-sm border border-primary hover:cursor-pointer focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50" %>
           <%= label_tag "user_skills_#{category.title}", category.title %>
         </div>
       <% end %>
