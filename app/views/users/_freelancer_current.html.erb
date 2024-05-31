@@ -1,11 +1,7 @@
 <div class="flex justify-between gap-4 p-10">
   <div class="flex flex-col gap-4 w-full sm:w-full lg:w-2/3">
     <div class="flex items-end gap-4 p-4">
-      <% if current_user.avatar_url.present? %>
-        <%= image_tag current_user.avatar_url, size: '70x70', class: 'rounded-full' %>
-      <% else %>
-        <%= image_tag 'default_avatar.jpg', alt: 'Default Avatar', size: '70x70', class: 'rounded-full' %>
-      <% end %>
+      <%= render_avatar src: current_user.avatar_url, alt: current_user.first_name, size: '70x70', class: 'h-fit w-fit' %>
       <div>
         <h3 class="text-4xl font-semibold px-4"><%= current_user.full_name.capitalize %></h3>
         <span class="p-4 text-gray-500">
