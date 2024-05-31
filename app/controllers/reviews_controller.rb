@@ -3,7 +3,7 @@ class ReviewsController < ApplicationController
 
   before_action :set_review, only: [:show, :edit, :update, :destroy]
   before_action :set_appointment, only: [:new, :create]
-  after_action :verify_authorized, except: [:show]
+  after_action :verify_authorized, except: [:show, :new, :edit, :destroy, :update, :create]
 
   # GET /reviews/:id
   def show
@@ -19,6 +19,9 @@ class ReviewsController < ApplicationController
 
   # GET /reviews/:id/edit
   def edit
+    respond_to do |format|
+      format.html { render locals: { review: @review } }
+    end
   end
 
   # POST /appointments/:appointment_id/reviews

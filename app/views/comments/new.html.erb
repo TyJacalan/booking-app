@@ -1,0 +1,9 @@
+<%= turbo_frame_tag dom_id(review, :new_comment) do %>
+    <%= form_with model: comment, url: review_comments_path(review), method: :post, data: { turbo_frame: dom_id(review, :comments_section) } do |f| %>
+        <div class="flex flex-col space-y-2">
+          <%= f.label :content, "Write a comment", class: "text-sm font-medium" %>
+          <%= f.text_area :content, class: "w-full p-2 border rounded", rows: 2 %>
+          <%= f.submit "Post Comment", class: "bg-[#FACC15] text-black text-base font-medium p-2 rounded" %>
+        </div>
+    <% end %>      
+<% end %>
