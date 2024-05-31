@@ -9,14 +9,15 @@ module Paymongo
                  end
 
       raise StandardError.new("#{response[:error]}") unless response[:data]
+
       response[:data]
     end
 
     def self.create(amount)
       params = {
         currency: 'PHP',
-        amount: amount,
-        payment_method_allowed: ['card', 'gcash', 'paymaya']
+        amount:,
+        payment_method_allowed: %w[card gcash paymaya]
       }
 
       call(:create_payment_intent, params)

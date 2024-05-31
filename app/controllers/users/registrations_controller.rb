@@ -58,7 +58,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
     respond_with resource
   end
 
-
   def update_freelancer
     if @freelancer.update(account_update_params)
       redirect_to user_path(@freelancer), notice: 'Profile was successfully updated'
@@ -85,7 +84,6 @@ class Users::RegistrationsController < Devise::RegistrationsController
       first_name last_name email password password_confirmation
       biography skills birthdate address city country mobile
     ])
-
   end
 
   # If you have extra params to permit, append them to the sanitizer.
