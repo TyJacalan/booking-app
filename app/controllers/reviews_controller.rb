@@ -60,11 +60,11 @@ class ReviewsController < ApplicationController
   # DELETE /reviews/:id
   def destroy
     @review.destroy
-    respond_to do |format|
-      format.html { redirect_to service_reviews_url(@review.service), notice: 'Review was successfully destroyed.' }
-      format.turbo_stream { broadcast_replace_to(@review.service, :review_modal, target: dom_id(@review, :service_modal), html: "<div class='hidden'></div>") }
-      format.turbo_stream { broadcast_replace_to(@review.service, :review, target: dom_id(@review, :service), html: "<div class='hidden'></div>") }
-    end
+    #respond_to do |format|
+      #format.html { redirect_to service_reviews_url(@review.service), notice: 'Review was successfully destroyed.' }
+      #format.turbo_stream { broadcast_replace_to(@review.service, :review_modal, target: dom_id(@review, :service_modal), html: "<div class='hidden'></div>") }
+      #format.turbo_stream { broadcast_replace_to(@review.service, :review, target: dom_id(@review, :service), html: "<div class='hidden'></div>") }
+    #end
   end
 
   private

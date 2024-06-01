@@ -1,13 +1,15 @@
 class CommentsController < ApplicationController
-  before_action :set_review, only: [:new, :create]
+  include ActionView::RecordIdentifier
+
+  before_action :set_review, only: [:index, :new, :create ]
   before_action :set_comment, only: [:show, :edit, :update, :destroy]
-  after_action :verify_authorized, except: [:show, :new, :edit, :destroy, :update, :create]
+  after_action :verify_authorized, except: [:index, :show, :new, :edit, :destroy, :update, :create]
 
   # GET /reviews/:review_id/comments
   def index
     @comments = @review.comments
     respond_to do |format|
-      format.html # renders index.html.erb
+      format.html { render locals: { review: @review, comments: @comments }}
       format.json { render json: @comments }
     end
   end
@@ -31,9 +33,8 @@ class CommentsController < ApplicationController
 
   # POST /reviews/:review_id/comments
   def create
-    @review = Review.find(params[:review_id])
     @comment = @review.comments.build(comment_params)
-    @comment.appointment_id = @review.appointment_id
+    @comment.appointment = @review.appointment
 
     # Assign client_id or freelancer_id based on current user
     if @review.client_id == current_user.id
@@ -42,19 +43,19 @@ class CommentsController < ApplicationController
       @comment.freelancer_id = current_user.id
     end
 
-    if @comment.save
-      CommentsChannel.broadcast_to(@review, @comment)
-      respond_to do |format|
-        format.html { redirect_to review_path(@review), notice: 'Comment was successfully created.' }
+    respond_to do |format|
+      if @comment.save
+        format.html { render 'new', locals: { review: @review, comment: Comment.new }, notice: 'Comment was successfully created.' }
         format.json { render json: @comment, status: :created }
-      end
-    else
-      respond_to do |format|
-        format.html { render :new, locals: { comment: @comment, review: @review, client: @review.client, freelancer: @review.freelancer }}
+      else
+        # Log errors for debugging
+        Rails.logger.error "Failed to save comment: #{@comment.errors.full_messages.join(", ")}"
+        format.html { render :new, locals: { comment: @comment, review: @review, client: @review.client, freelancer: @review.freelancer } }
         format.json { render json: @comment.errors, status: :unprocessable_entity }
       end
     end
   end
+
 
   # GET /comments/:id/edit
   def edit
@@ -82,8 +83,7 @@ class CommentsController < ApplicationController
   def destroy
     @comment.destroy
     respond_to do |format|
-      format.html { redirect_to review_path(@review), notice: 'Comment was successfully destroyed.' }
-      format.json { head :no_content }
+      format.html { render locals: { comment: @comment }}
     end
   end
 

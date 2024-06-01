@@ -2,14 +2,16 @@
     <div class="w-1/2">
         <%= render partial: 'reviews/review_modal', locals: { review: review, user: review.client } %>
 
-        <div class="max-h-[70vh] overflow-y-auto">
-            <% comments.each do |comment| %>
-                <%= render partial: 'comments/comment', locals: { client: comment.client, freelancer: comment.freelancer, comment: comment, review: review} %>
+        <% if current_user %>
+            <%= turbo_stream_from dom_id(review, :comments) %>
+        <% end %>
+
+        <%= turbo_frame_tag dom_id(review, :comments_container), src: review_comments_path(review), class: "max-h-[70vh] overflow-y-auto" do %>
+        <% end %>
+
+        <% if current_user %>
+            <%= turbo_frame_tag dom_id(review, :new_comment), src: new_review_comment_path(review), class: "mt-6" do %>
             <% end %>
-        </div>
-        <div class="mt-8">
-            <%= turbo_frame_tag dom_id(review, :new_comment), src: new_review_comment_path(review) do %>
-            <% end %>
-        </div>
+        <% end %>
     </div>
 </div>

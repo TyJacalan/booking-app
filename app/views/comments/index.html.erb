@@ -1,0 +1,5 @@
+<%= turbo_frame_tag dom_id(review, :comments_container), class: "max-h-[70vh] overflow-y-auto" do %>
+    <% comments.each do |comment| %>
+        <%= render partial: 'comments/comment', locals: { client: comment.client, freelancer: comment.freelancer, comment: comment, review: review} %>
+    <% end %>
+<% end %>
