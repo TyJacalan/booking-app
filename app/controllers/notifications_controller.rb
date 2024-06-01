@@ -1,6 +1,6 @@
 class NotificationsController < ApplicationController
   def index
-    @notifications = current_user.notifications.order(:created_at)
+    @notifications = current_user.notifications.order(:created_at).page(params[:page]).per(20)
     authorize @notifications
   end
 
