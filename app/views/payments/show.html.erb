@@ -1,0 +1,50 @@
+<div class='h-full w-full flex flex-col items-center justify-start'>
+  <%= render_form_with url: payments_path, method: :post, 
+    class: 'w-full max-w-md flex flex-col gap-4 p-6', 
+    data: { controller: 'payment' } do |f| %>
+    <%= f.hidden_field :appointment_id, value: params[:id] %>
+    <%= f.label :payment_method, label: 'Payment Method' %>
+    <%= f.select_field :payment_method, id: :_payment_method,
+      class: 'w-full',
+      data: { action: 'change->payment#toggleFields', payment_target: 'paymentMethod' } do |select| %>
+      <%= select.option value: :gcash, label: 'Gcash' %>
+      <%= select.option value: :paymaya, label: 'Paymaya' %>
+      <%= select.option value: :card, label: 'Card' %>
+    <% end %>
+
+    <%= f.label :name %>
+    <%= f.text_field :name, autocomplete: 'cc-name' %>
+
+    <%= f.label :phone %>
+    <div class='flex flex-row items-center gap-2'>
+      <span class='text-muted-foreground'>+63</span>
+      <%= f.number_field :phone, autocomplete: 'tel' %>
+    </div>
+
+    <div data-payment-target="cardFields" class='flex flex-col gap-4'>
+      <%= f.label :card_number, label: 'Card Number' %>
+      <%= f.text_field :card_number, autocomplete: 'cc-number' %>
+
+      <div class='flex flex-row justify-between gap-4'>
+        <div class='flex flex-row gap-4'>
+          <div class='w-24 flex flex-col'>
+            <%= f.label :exp_month, label: 'Month' %>
+            <%= f.text_field :exp_month, autocomplete: 'cc-exp-month' %>
+          </div>
+
+          <div class='w-24 flex flex-col'>
+            <%= f.label :exp_year, label: 'Year' %>
+            <%= f.text_field :exp_year, autocomplete: 'cc-exp-year' %>
+          </div>
+        </div>
+
+        <div class='w-24 flex flex-col'>
+          <%= f.label :cvc, label: 'cvc' %>
+          <%= f.text_field :cvc, autocomplete: 'cc-csc' %>
+        </div>
+      </div>
+    </div>
+
+    <%= f.submit 'Pay', data: { turbo: false } %>
+  <% end %>
+</div>

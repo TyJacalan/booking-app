@@ -6,18 +6,25 @@ class ServicesController < ApplicationController
   after_action :verify_authorized, except: %i[index new show]
 
   def index
+    # ULTIMATE SUPREME SEARCH LOGIC QUERY
     @q = Service.ransack(params[:q])
-    @services = if params[:q].present? && params[:q][:combined_search].present?
-                  search_combined(params[:q][:combined_search])
-                else
-                  @q.result.includes(:user)
-                end
+
+    if params[:q].present? && params[:q][:combined_search].present?
+      search_query = params[:q][:combined_search]
+      terms = search_query.split
+
+      service_ids = Service.joins(:user, :categories).where(
+        terms.map do
+          "concat_ws(' ', users.full_name, services.title, categories.title, users.city) ILIKE ?"
+        end.join(' AND '), *terms.map { |term| "%#{term}%" }
+      ).pluck(:id).uniq
+
+      @services = Service.where(id: service_ids).includes(:user, :categories)
+    else
+      @services = @q.result.includes(:user, :categories)
+    end
 
     authorize @services
-  end
-
-  def new
-    @service = Service.new
   end
 
   def create

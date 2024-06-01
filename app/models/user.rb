@@ -1,9 +1,10 @@
 class User < ApplicationRecord
-  has_many :services, dependent: :destroy
-  has_many :categories, dependent: :destroy
-  has_many :reviews, dependent: :destroy
   has_many :appointments, dependent: :destroy
+  has_many :blocked_dates, dependent: :destroy
+  has_many :categories, dependent: :destroy
   has_many :notifications, dependent: :destroy
+  has_many :reviews, dependent: :destroy
+  has_many :services, dependent: :destroy
 
   belongs_to :role
 
@@ -29,10 +30,7 @@ class User < ApplicationRecord
   validates :first_name, :last_name, presence: true, length: { minimum: 2, maximum: 30 }
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :biography, presence: true, length: { minimum: 10, maximum: 500 }, if: :freelancer_registering?
-  validates :skills, presence: true, if: :freelancer_registering?
-  validates :city, presence: true, if: :freelancer_registering?
-  validates :country, presence: true, if: :freelancer_registering?
-  validates :role_id, presence: true
+  validates :birthdate, :skills, :city, :mobile, presence: true, if: :freelancer_registering?
   validate :password_complexity
 
   after_validation :geocode, if: -> { address.present? && address_changed? }

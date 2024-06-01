@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        color: #333;
+        line-height: 1.6;
+      }
+      .container {
+        width: 80%;
+        margin: 0 auto;
+        padding: 20px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+      }
+      h1 {
+        color: #FDDA0D;
+      }
+      .appointment-details {
+        margin-top: 20px;
+      }
+      .appointment-details p {
+        margin: 5px 0;
+      }
+      .footer {
+        margin-top: 30px;
+        font-size: 0.9em;
+        color: #777;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>Hello <%= @freelancer.first_name.capitalize %>!</h1>
+
+      <p>
+        You have a new appointment scheduled with the following details:
+      </p>
+
+      <div class="appointment-details">
+        <p><strong>Client Name:</strong> <%= @appointment.client.first_name.capitalize %> <%= @appointment.client.last_name.capitalize %></p>
+        <p><strong>Description:</strong> <%= @appointment.description %></p>
+        <p><strong>Start Time:</strong> <%= @appointment.start.strftime('%B %d, %Y %H:%M') %></p>
+        <p><strong>End Time:</strong> <%= @appointment.end.strftime('%B %d, %Y %H:%M') %></p>
+        <p><strong>Duration:</strong> <%= @appointment.duration %> hours</p>
+        <p><strong>Fee:</strong> ₱<%= @appointment.fee %></p>
+      </div>
+
+      <p>
+        If you have any questions or need to reschedule, please contact us at Booking-app.com
+      </p>
+
+      <div class="footer">
+        <p>Thank you for using our platform!</p>
+        <p>Best regards,</p>
+        <p>Booking-app Team</p>
+      </div>
+    </div>
+  </body>
+</html>

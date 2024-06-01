@@ -3,6 +3,9 @@ module Components::AvatarHelper
     avatar_classes = 'relative flex h-8 w-8 shrink-0 overflow-hidden rounded-full hover:shadow-lg'
     avatar_classes << " #{options[:class]}"
     avatar_classes = tw(avatar_classes)
-    render 'components/ui/avatar', avatar_classes:, src:, data:, **options
+
+    alt = options[:alt]
+    size = options[:size]
+    render 'components/ui/avatar', avatar_classes:, src:, alt:, size:, data:, **options
   end
 end
