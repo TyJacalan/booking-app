@@ -43,4 +43,34 @@
     --input: 12 6.5% 15.1%;
     --ring: 35.5 91.7% 32.9%;
   }
+
+  [type=checkbox],[type=radio] {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding: 0;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+    display: inline-block;
+    vertical-align: middle;
+    background-origin: border-box;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+    flex-shrink: 0;
+    height: 1rem;
+    width: 1rem;
+    color: hsl(var(--primary));
+    background-color: #fff;
+    border-color: hsl(var(--primary));
+    border-width: 1px;
+    --tw-shadow: 0 0 #0000
+  }
+
+  input[type="checkbox"]:focus,
+  input[type="checkbox"]:focus-visible {
+      outline: none !important;
+      box-shadow: none !important;
+  }
+
 }
