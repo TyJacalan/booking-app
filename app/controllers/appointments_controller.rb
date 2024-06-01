@@ -3,8 +3,6 @@ class AppointmentsController < ApplicationController
   before_action :set_service, :set_fees, only: %i[new create]
   before_action :set_user, only: %i[index]
 
-  layout 'user', only: [:index]
-
   def index
     @appointments = Appointment.where(client_id: current_user.id)
                                .or(Appointment
