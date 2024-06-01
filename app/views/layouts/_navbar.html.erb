@@ -76,6 +76,9 @@
               <%= dropdown_menu_item do %>
                 <%= link_to 'My Services', user_services_path(current_user) %>
               <% end %>
+              <%= dropdown_menu_item do %>
+                <%= link_to 'My Calendar', calendars_path %>
+              <% end %>
             <% end %>
             <%= dropdown_menu_item do %>
               <%= link_to 'My Appointments', appointments_path %>

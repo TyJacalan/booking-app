@@ -1,9 +1,10 @@
 class User < ApplicationRecord
-  has_many :services, dependent: :destroy
-  has_many :categories, dependent: :destroy
-  has_many :reviews, dependent: :destroy
   has_many :appointments, dependent: :destroy
+  has_many :blocked_dates, dependent: :destroy
+  has_many :categories, dependent: :destroy
   has_many :notifications, dependent: :destroy
+  has_many :reviews, dependent: :destroy
+  has_many :services, dependent: :destroy
 
   belongs_to :role
 
