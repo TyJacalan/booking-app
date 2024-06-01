@@ -35,10 +35,29 @@
           </div>
         
 
-            <div class="w-2/3 overflow-y-auto px-4" id="service_reviews_modal_container">
-              <div id="search_review_container" class="w-full">
-                <div class="w-full flex justify-between">
-                  <span class="text-xl font-bold"><%= service.reviews.count %> Review/s</span>
+            <div class="relative w-2/3 overflow-y-auto px-4" id="service_reviews_modal_container">
+              <div id="search_review_container" class="sticky top-0 left-0 w-full bg-white pb-4 border-b">
+                <div class="flex justify-between">
+                  <div class="">
+                    <span class="text-xl font-bold"><%= service.reviews.count %> Review/s</span>
+                  </div>
+                  <div class="text-sm flex gap-2">
+                    <div class="hover:text-[#FACC15]">
+                      <%= link_to service_recent_reviews_path(service), data: {  turbo_frame: dom_id(service, :review_modal) } do %>
+                        Recent Review
+                      <% end %>
+                    </div>
+                    <div class="hover:text-[#FACC15]">
+                      <%= link_to service_least_rated_reviews_path(service), data: {  turbo_frame: dom_id(service, :review_modal) } do %>
+                        Least Rated
+                      <% end %>
+                    </div>
+                    <div class="hover:text-[#FACC15]">
+                      <%= link_to service_most_rated_reviews_path(service), data: {  turbo_frame: dom_id(service, :review_modal) } do %>
+                        Most Rated
+                      <% end %>
+                    </div>
+                  </div>
                 </div>
 
                 <div id="search_bar_review" class="mt-4 w-full">

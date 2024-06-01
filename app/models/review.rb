@@ -18,6 +18,8 @@ class Review < ApplicationRecord
 
   after_save :update_overall_service_rating
   after_destroy :update_overall_service_rating, :broadcast_destroy
+  after_create :broadcast_create
+  after_update :broadcast_update
 
   private
 
@@ -91,5 +93,11 @@ class Review < ApplicationRecord
       target: dom_id(self, :service_modal), 
       html: "<div class='hidden'></div>"
     )
+  end
+
+  def broadcast_create
+  end
+
+  def broadcast_update
   end
 end

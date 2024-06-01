@@ -4,7 +4,7 @@ class ReviewsIndexController < ApplicationController
     # GET /services/:service_id/recent_reviews
     # with pagination and streams
     def recent_10_reviews
-      @service = Service.find(params[:service_id])
+      @service = Service.find(params[:service_id]) 
       @reviews = @service.reviews.order(created_at: :desc).page(params[:page]).per(10)
   
       respond_to do |format|
@@ -31,7 +31,7 @@ class ReviewsIndexController < ApplicationController
     # with pagination and streams
     def most_rated_reviews
       @service = Service.find(params[:service_id])
-      @reviews = @service.reviews.order(likes_count: :desc).page(params[:page]).per(10)
+      @reviews = @service.reviews.order(likes_count: :asc).page(params[:page]).per(10)
   
       respond_to do |format|
         format.js { render json: @reviews }
@@ -45,7 +45,7 @@ class ReviewsIndexController < ApplicationController
     # with pagination and streams
     def least_rated_reviews
       @service = Service.find(params[:service_id])
-      @reviews = @service.reviews.order(likes_count: :asc).page(params[:page]).per(10)
+      @reviews = @service.reviews.order(likes_count: :desc).page(params[:page]).per(10)
   
       respond_to do |format|
         format.js { render json: @reviews }
