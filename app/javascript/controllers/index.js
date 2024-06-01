@@ -10,6 +10,9 @@ application.register("appointment", AppointmentController)
 import AutoSubmitController from "./auto_submit_controller"
 application.register("auto-submit", AutoSubmitController)
 
+import LocationController from "./location_controller"
+application.register("location", LocationController)
+
 import PasswordVisibilityController from "./password_visibility_controller"
 application.register("password-visibility", PasswordVisibilityController)
 
@@ -45,3 +48,6 @@ application.register("ui--toast", Ui__ToastController)
 
 import Ui__TooltipController from "./ui/tooltip_controller"
 application.register("ui--tooltip", Ui__TooltipController)
+
+import location_controller from "./location_controller"
+application.register("location", location_controller)

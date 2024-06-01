@@ -5,10 +5,11 @@ module Paymongo
       response = client.send(method, params, **options)
 
       raise StandardError.new("#{response[:error]}") unless response[:data]
+
       response[:data]
     end
- 
-    def self.create(payment_intent_id, params)
+
+    def self.create(_payment_intent_id, params)
       params = {
         type: params[:payment_method],
         details: {

@@ -15,10 +15,11 @@
     <%= f.error_message :birthdate %>
   </div>
 
-  <div class="field">
+  <div class="field" data-controller="location">
     <%= f.label :city, required: true %>
-    <%= f.text_field :city, required: true %>
+    <%= f.text_field :city, required: true, data: { action: 'input->location#updateSearchParam', location_target: 'input' } %>
     <%= f.error_message :city %>
+    <%= turbo_frame_tag :cities, src: locations_path(q: '__QUERY__'), class: 'mt-2', data: { location_target: 'frame', base_url: locations_path(q: '__QUERY__') } %>
   </div>
 
   <div class="field">
