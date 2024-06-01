@@ -2,8 +2,6 @@ class UsersController < ApplicationController
   before_action :set_user, only: %i[show reviews services]
   before_action :load_resources, only: %i[show]
 
-  layout :set_layout
-
   def index; end
 
   def show; end
@@ -72,9 +70,5 @@ class UsersController < ApplicationController
 
   def freelancer?
     @user&.role&.name == 'freelancer'
-  end
-
-  def set_layout
-    user_signed_in? ? 'user' : 'application'
   end
 end

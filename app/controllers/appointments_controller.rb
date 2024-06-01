@@ -3,8 +3,6 @@ class AppointmentsController < ApplicationController
   before_action :set_appointment, only: %i[edit update destroy]
   before_action :set_service, only: [:new]
 
-  layout 'user', only: [:index]
-
   def index
     @appointments = fetch_appointments
   end

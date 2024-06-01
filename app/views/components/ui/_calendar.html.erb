@@ -1,0 +1,31 @@
+<div class='w-full flex flex-col gap-2'>
+  <div class='w-full flex flex-row items-center gap-4'>
+    <h1 class='text-3xl font-bold'><%= @date.strftime("%B") %></h1>
+    <%= yield :calendar_controls if content_for?(:calendar_controls) %>
+  </div>
+  <%= render_table class: 'h-full w-full' do %>
+    <%= table_head do %>
+      <% %w[Sun Mon Tue Wed Thu Fri Sat].each do |day| %>
+        <%= table_header day %>
+      <% end %>
+    <% end %>
+    <%= table_body do %>
+      <% weeks.each do |week| %>
+        <%= table_row class: 'border-b hover-none' do %>
+          <% week.each do |day| %>
+            <%= table_column class: 'h-36 w-36 min-w-[150px] w-2 p-0 overflow-none' do %>
+              <div class="<%= day_classes(day) %>">
+                <div class='flex-1 flex flex-col gap-1'>
+                  <%= render_event(day) %>
+                </div>
+                <div class='w-full flex items-start text-xs text-muted-foreground'>
+                  <%= day.day %>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+    <% end %>
+  <% end %>
+</div>

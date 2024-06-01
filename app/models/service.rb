@@ -14,7 +14,7 @@ class Service < ApplicationRecord
   end
 
   def self.ransackable_associations(_auth_object = nil)
-    %w[user]
+    %w[categories user]
   end
 
   def service_fee
