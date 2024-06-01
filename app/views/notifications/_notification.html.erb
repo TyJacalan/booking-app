@@ -1,0 +1,43 @@
+<li class="h-10 w-full flex flex-row items-end gap-4 hover:bg-muted/50 hover:cursor-pointer transition-all shadow-sm <%= notification.read ? 'bg-muted' : '' %>">
+  <div class='h-full w-12 flex items-center justify-center'>
+    <%= check_box_tag :read, data: { checkbox_select_all_target: 'checkbox' } %>
+  </div>
+  <div class='h-full w-full'>
+    <div class="group h-full w-full flex flex-row items-center justify-between">
+      <div class='flex-1 truncate'>
+        <%= notification.content %>
+      </div>
+      <div class='h-full w-8 flex items-center invisible group-hover:visible text-muted-foreground'>
+        <% if notification.read %>
+          <%= render_tooltip do %>
+            <%= tooltip_trigger do %>
+              <%= render_form_for notification, method: :patch do |f| %>
+                <%= f.hidden_field :read, value: false %>
+                <%= f.button do %>
+                  <%= render 'icons/envelope' %>
+                <% end %>
+              <% end %>
+            <% end %>
+            <%= tooltip_content do %>
+              <p class="text-sm text-muted-foreground">Mark as unread</p>
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= render_tooltip do %>
+            <%= tooltip_trigger do %>
+              <%= render_form_for notification, method: :patch do |f| %>
+                <%= f.hidden_field :read, value: true %>
+                <%= f.button do %>
+                  <%= render 'icons/envelope_open' %>
+                <% end %>
+              <% end %>
+            <% end %>
+            <%= tooltip_content do %>
+              <p class="text-sm text-muted-foreground">Mark as read</p>
+            <% end %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</li>
