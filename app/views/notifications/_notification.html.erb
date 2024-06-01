@@ -1,6 +1,6 @@
 <li class="h-10 w-full flex flex-row items-end gap-4 hover:bg-muted/50 hover:cursor-pointer transition-all shadow-sm <%= notification.read ? 'bg-muted' : '' %>">
   <div class='h-full w-12 flex items-center justify-center'>
-    <%= check_box_tag 'notification_ids[]', notification.id, false, data: { checkbox_select_all_target: 'checkbox' } %>
+    <%= check_box_tag 'notification_ids[]', notification.id, false, data: { checkbox_select_all_target: 'checkbox' }, class: "peer h-4 w-4 shrink-0 rounded-sm border border-primary hover:cursor-pointer focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50"  %>
   </div>
   <div class='h-full w-full'>
     <div class="group h-full w-full flex flex-row items-center justify-between">
