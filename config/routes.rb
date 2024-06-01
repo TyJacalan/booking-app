@@ -17,10 +17,12 @@ Rails.application.routes.draw do
   resources :alerts, only: %i[index]
   resources :appointments, except: %i[show edit]
   resources :batch_update_notifications, only: [:update]
+  resources :calendars, except: %i[new show edit update]
   resources :notifications, only: %i[index update]
   resources :payments
   resources :roles
   resources :reviews
+  resources :locations, only: [:index]
 
   resources :users do
     get :reviews, to: 'users#reviews', only: [:show]

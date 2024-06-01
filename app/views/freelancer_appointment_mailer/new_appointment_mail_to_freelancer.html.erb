@@ -33,13 +33,14 @@
   </head>
   <body>
     <div class="container">
-      <h1>Hello <%= @user.first_name.capitalize %>!</h1>
+      <h1>Hello <%= @freelancer.first_name.capitalize %>!</h1>
 
       <p>
-        We are pleased to confirm your appointment with the following details:
+        You have a new appointment scheduled with the following details:
       </p>
 
       <div class="appointment-details">
+        <p><strong>Client Name:</strong> <%= @appointment.client.first_name.capitalize %> <%= @appointment.client.last_name.capitalize %></p>
         <p><strong>Description:</strong> <%= @appointment.description %></p>
         <p><strong>Start Time:</strong> <%= @appointment.start.strftime('%B %d, %Y %H:%M') %></p>
         <p><strong>End Time:</strong> <%= @appointment.end.strftime('%B %d, %Y %H:%M') %></p>
@@ -52,7 +53,7 @@
       </p>
 
       <div class="footer">
-        <p>Thank you for choosing our services!</p>
+        <p>Thank you for using our platform!</p>
         <p>Best regards,</p>
         <p>Booking-app Team</p>
       </div>

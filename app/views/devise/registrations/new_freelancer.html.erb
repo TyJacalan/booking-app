@@ -1,52 +1,48 @@
 <h2 class="font-semibold text-2xl pb-8">Join our community and start offering your services</h2>
 
-<%= render_form_for(resource, as: resource_name, url: create_freelancer_path, html: { method: :post }, class: "flex flex-col gap-2") do |f| %>
+<%= render_form_for(resource, as: resource_name, url: create_freelancer_path, html: { method: :post }, class: "flex flex-col gap-4") do |f| %>
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="field">
-    <%= f.label :biography %><br />
+    <%= f.label :biography, required: true %>
     <%= f.text_area :biography %>
     <%= f.error_message :biography %>
   </div>
 
   <div class="field">
-    <%= f.label :skills %><br />
-    <%= f.text_area :skills %>
-    <%= f.error_message :skills %>
-  </div>
-
-
-  <div class="field">
-    <%= f.label :birthdate %><br />
-    <%= f.text_field :birthdate %>
+    <%= f.label :birthdate, required: true %>
+    <%= f.date_field :birthdate, autocomplete: 'bday', required: true %>
     <%= f.error_message :birthdate %>
   </div>
 
-  <div class="field">
-    <%= f.label :address %><br />
-    <%= f.text_field :address %>
-    <%= f.error_message :address %>
-  </div>
-
-  <div class="field">
-    <%= f.label :city %><br />
-    <%= f.text_field :city %>
+  <div class="field" data-controller="location">
+    <%= f.label :city, required: true %>
+    <%= f.text_field :city, required: true, data: { action: 'input->location#updateSearchParam', location_target: 'input' } %>
     <%= f.error_message :city %>
+    <%= turbo_frame_tag :cities, src: locations_path(q: '__QUERY__'), class: 'mt-2', data: { location_target: 'frame', base_url: locations_path(q: '__QUERY__') } %>
   </div>
 
   <div class="field">
-    <%= f.label :country %><br />
-    <%= f.text_field :country %>
-    <%= f.error_message :country %>
-  </div>
-
-  <div class="field">
-    <%= f.label :mobile %><br />
-    <%= f.text_field :mobile %>
+    <%= f.label :mobile, required: true %>
+    <%= f.text_field :mobile, required: true %>
     <%= f.error_message :mobile %>
   </div>
 
-  <div class="actions">
-    <%= f.submit user_signed_in? ? "Update Profile" : "Sign Up" %>
+  <div class="field">
+    <%= f.label :skills %>
+    <div class="skills-checkboxes">
+      <% @categories.each do |category| %>
+        <div>
+          <%= check_box_tag "user[skills][]", category.title, @user.skills.include?(category.title.to_s), class: "peer h-4 w-4 shrink-0 rounded-sm border border-primary hover:cursor-pointer focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50" %>
+          <%= label_tag "user_skills_#{category.title}", category.title %>
+        </div>
+      <% end %>
+    </div>
+    <%= f.error_message :skills %>
+  </div>
+
+  <%= f.hidden_field :country, value: 'Philippines' %>
+  <div class="actions mt-4">
+    <%= f.submit current_user&.role&.name == 'freelancer' ? "Update Profile" : "Join" %>
   </div>
 <% end %>
