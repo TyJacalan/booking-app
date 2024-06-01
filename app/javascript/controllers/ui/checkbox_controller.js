@@ -1,7 +1,6 @@
 import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   connect() {
-    console.log('checkbox connected')
     this.button = this.element.querySelector("button");
     this.checkmark = this.button.querySelector("span");
   }
