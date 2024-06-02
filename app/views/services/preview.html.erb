@@ -24,13 +24,14 @@
 
       <div class="fixed bottom-0 left-0 right-0 flex justify-between p-5 bg-white shadow-md border">
         <div class="w-auto">
-          <%= link_to layout: 'layouts/new_service', template: 'services/price', class: 'shadcn-button shadcn-button-ghost' do %>
+          <%= link_to previous_services_path, class: 'shadcn-button shadcn-button-ghost' do %>
             <div class="flex justify-center items-center gap-2 text-xl">
               <i class="fa-solid fa-circle-chevron-left"></i>
               <span class="ml-2">Previous</span>
             </div>
           <% end %>
         </div>
+        
         <div class="w-auto">
           <%= button_tag type: 'button', data: { action: 'click->auto-submit#submit' } do %>
             <div class="flex justify-center items-center gap-2 text-xl">
