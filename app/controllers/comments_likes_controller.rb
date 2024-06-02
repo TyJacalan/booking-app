@@ -25,6 +25,7 @@ class CommentsLikesController < ApplicationController
       respond_to do |format|
         format.json { render json: { liked: true, like_id: @like.id } }
         format.html { render partial: 'likes/like_comment', locals: { comment: @comment, likes_count: @comment.likes.count } }
+        Notifications::CreateNotification.create_notification(@comment.freelancer || @comment.client, "#{current_user.full_name} liked your comment #{@comment.id}")
       end
     else
       render json: { error: "Unable to like comment" }, status: :unprocessable_entity

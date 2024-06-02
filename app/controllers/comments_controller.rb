@@ -47,6 +47,8 @@ class CommentsController < ApplicationController
       if @comment.save
         format.html { render 'new', locals: { review: @review, comment: Comment.new }, notice: 'Comment was successfully created.' }
         format.json { render json: @comment, status: :created }
+        Notifications::CreateNotification.create_notification(@comment.freelancer, "#{@comment.client.full_name} created a review for review #{@comment.review_id}")
+        Notifications::CreateNotification.create_notification(@comment.client, "You successfully created a comment for review #{@comment.review_id}")
       else
         # Log errors for debugging
         Rails.logger.error "Failed to save comment: #{@comment.errors.full_messages.join(", ")}"

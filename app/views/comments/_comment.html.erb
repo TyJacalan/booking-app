@@ -13,7 +13,7 @@
         </div>
         <div>
           <p class="text-base font-semibold"><%= client.full_name %></p>
-          <p class="text-base"><%= "#{client.city}, #{client.country}" %> - client</p>
+          <p class="text-base"><%= "#{client.city}, #{client.country}" %> - client <%= time_ago_in_words(comment.created_at) %></p>
         </div>
       </div>
       <div>
@@ -29,9 +29,8 @@
           <%= hover_card_content do %>
             <div>
               <ul>
-                <% Like.where(likeable_type: 'Comment', likeable_id: comment.id).each do |like| %>
-                  <% user_id = like.user_id %>
-                  <% user = User.find_by(id: user_id) %>
+                <% users = users_who_liked_comment(comment) %>
+                <% users.each do |user| %>
                   <li class="text-sm"><%= user.full_name %></li>
                 <% end %>
               </ul>
@@ -87,9 +86,8 @@
           <%= hover_card_content do %>
             <div>
               <ul>
-                <% Like.where(likeable_type: 'Comment', likeable_id: comment.id).each do |like| %>
-                  <% user_id = like.user_id %>
-                  <% user = User.find_by(id: user_id) %>
+                <% users = users_who_liked_comment(comment) %>
+                <% users.each do |user| %>
                   <li class="text-sm"><%= user.full_name %></li>
                 <% end %>
               </ul>

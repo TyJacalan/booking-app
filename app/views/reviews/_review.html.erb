@@ -23,20 +23,7 @@
         <span class="mx-2">&#183;</span>
       </div>
       <div class="font-normal text-sm">
-        <% time_ago = Time.now - review.created_at %>
-        <% if time_ago < 1.month %>
-          <% weeks_ago = (time_ago / 1.week).to_i %>
-          <%= case weeks_ago
-              when 0 then 'This week'
-              when 1 then '1 week ago'
-              when 2 then '2 weeks ago'
-              when 3 then '3 weeks ago'
-              when 4 then '4 weeks ago'
-              else "#{weeks_ago} weeks ago"
-              end %>
-        <% else %>
-          <%= review.created_at.strftime("%B %Y") %>
-        <% end %>
+        <%= time_ago_in_words(review.created_at) %>
       </div>
     </div>
     <div class="w-full mt-1 text-wrap">
@@ -54,9 +41,8 @@
           <%= hover_card_content do %>
             <div>
               <ul>
-                <% Like.where(likeable_type: 'Review', likeable_id: review.id).each do |like| %>
-                  <% user_id = like.user_id %>
-                  <% user = User.find_by(id: user_id) %> 
+                <% users = users_who_liked_review(review) %>
+                <% users.each do |user| %>
                   <li class="text-sm"><%= user.full_name %></li>
                 <% end %>
               </ul>

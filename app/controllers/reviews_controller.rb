@@ -15,12 +15,15 @@ class ReviewsController < ApplicationController
   # GET /appointments/:appointment_id/reviews/new
   def new
     @review = @appointment.reviews.new
+    respond_to do |format|
+      format.html { render locals: { review: @review, appointment: @appointment, service: @review.service } }
+    end
   end
 
   # GET /reviews/:id/edit
   def edit
     respond_to do |format|
-      format.html { render locals: { review: @review } }
+      format.html { render locals: { review: @review, appointment: @review.appointment, service: @review.service} }
     end
   end
 
@@ -35,7 +38,8 @@ class ReviewsController < ApplicationController
       if @review.save
         respond_to do |format|
           format.html { redirect_to service_review_path(@review.service, @review), notice: 'Review was successfully created.' }
-          format.turbo_stream { broadcast_prepend_to(@review.service, :review_modal, target: "review_modal_service_#{@review.service.id}", partial: 'reviews/review', locals: { user: current_user, review: @review }) }
+          Notifications::CreateNotification.create_notification(@review.freelancer, "#{@review.client.full_name} created a review for service #{@review.service.title}")
+          Notifications::CreateNotification.create_notification(@review.client, "You successfully created a review for service #{@review.service.title}")
         end
       else
         render :new, status: :unprocessable_entity
@@ -49,8 +53,7 @@ class ReviewsController < ApplicationController
   def update
     if @review.update(review_params)
       respond_to do |format|
-        format.html { redirect_to service_review_path(@review.service, @review), notice: 'Review was successfully updated.' }
-        format.turbo_stream { broadcast_replace_to(@review.service, :review_modal, target: "review_modal_service_#{@review.service.id}", partial: 'reviews/review', locals: { user: current_user, review: @review }) }
+        format.html { redirect_to service_path(@review.service), notice: 'Review was successfully updated.' }
       end
     else
       render :edit, status: :unprocessable_entity

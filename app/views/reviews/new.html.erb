@@ -1,0 +1,15 @@
+<div class='h-[60vh] max-w-[700px] rounded-md border'>
+    <h1>New Review</h1>
+    <div>
+        <h1><%= service.title %></h1>
+        <p><%= service.description %></p>
+        <h3>Appointment details</h3>
+        <p><%= appointment.description %></p>
+        <p>Start: <%= appointment.start %></p>
+        <p>End: <%= appointment.end %></p>
+        <p>Client ID: <%= appointment.client_id %></p>
+        <p>Freelancer ID: <%= appointment.freelancer_id %></p>
+    </div>
+    <%= render partial: 'reviews/form', locals: { review: review, appointment: appointment, service: service } %>
+</div>
+

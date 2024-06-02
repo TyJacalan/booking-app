@@ -96,8 +96,38 @@ class Review < ApplicationRecord
   end
 
   def broadcast_create
+    broadcast_prepend_to(
+      service, 
+      :review,
+      target: dom_id(service, :review), 
+      partial: 'reviews/review', 
+      locals: { review: review, user: review.client, current_user: client }
+    )
+      
+    broadcast_prepend_to(
+      service, 
+      :review_modal,
+      target: dom_id(service, :review_modal), 
+      partial: 'reviews/review_modal', 
+      locals: { review: review, user: review.client, current_user: client }
+    )
   end
 
   def broadcast_update
+    broadcast_update_to(
+      service, 
+      :review,
+      target: dom_id(self, :service), 
+      partial: 'reviews/review', 
+      locals: { review: review, user: review.client, current_user: client }
+    )
+      
+    broadcast_update_to(
+      service, 
+      :review_modal,
+      target: dom_id(self, :service_modal), 
+      partial: 'reviews/review_modal', 
+      locals: { review: review, user: review.client, current_user: client }
+    )
   end
 end

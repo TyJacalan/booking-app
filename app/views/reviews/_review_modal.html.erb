@@ -23,20 +23,7 @@
         <span class="mx-2">&#183;</span>
       </div>
       <div class="font-normal text-sm">
-        <% time_ago = Time.now - review.created_at %>
-        <% if time_ago < 1.month %>
-          <% weeks_ago = (time_ago / 1.week).to_i %>
-          <%= case weeks_ago
-              when 0 then 'This week'
-              when 1 then '1 week ago'
-              when 2 then '2 weeks ago'
-              when 3 then '3 weeks ago'
-              when 4 then '4 weeks ago'
-              else "#{weeks_ago} weeks ago"
-              end %>
-        <% else %>
-          <%= review.created_at.strftime("%B %Y") %>
-        <% end %>
+        <%= time_ago_in_words(review.created_at) %>
       </div>
     </div>
 
@@ -76,7 +63,7 @@
         <% end %>
         <% if current_user && current_user.id == review.client_id %>
           <div class="flex justify-end gap-4">
-            <%= link_to edit_review_path(review), class: "group hover:text-[#FACC15] flex items-center" do %>
+            <%= link_to edit_review_path(review), data: { turbo: false },  class: "group hover:text-[#FACC15] flex items-center" do %>
               <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="black" class="group-hover:fill-[#FACC15]"><path d="M200-200h57l391-391-57-57-391 391v57Zm-80 80v-170l528-527q12-11 26.5-17t30.5-6q16 0 31 6t26 18l55 56q12 11 17.5 26t5.5 30q0 16-5.5 30.5T817-647L290-120H120Zm640-584-56-56 56 56Zm-141 85-28-29 57 57-29-28Z"/></svg>
               <span>Edit</span>
             <% end %>
