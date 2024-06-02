@@ -1,8 +1,8 @@
 class ServicesController < ApplicationController
   before_action :set_service, only: %i[show edit update destroy]
-  before_action :set_categories, only: %i[new show]
-  before_action :set_session_params, only: %i[create]
-  before_action :set_session_form, only: %i[new]
+  before_action :set_categories, only: %i[new edit update show]
+  before_action :set_session_params, only: %i[create update]
+  before_action :set_session_form, only: %i[new edit]
   after_action :verify_authorized, except: %i[index new show]
 
   def index
@@ -45,6 +45,7 @@ class ServicesController < ApplicationController
   end
 
   def edit
+    assign_service_to_categories
     authorize @service
   end
 
@@ -79,13 +80,11 @@ class ServicesController < ApplicationController
   end
 
   def set_session_params
-    category_ids = session[:selected_categories].map { |category| category['id'] } || []
-
     session_params = {
       title: session[:title],
       description: session[:description],
       price: session[:price],
-      category_ids:
+      category_ids: session[:selected_categories].map { |category| category['id'] } || []
     }
     params[:service] ||= {}
     params[:service].merge!(session_params)
@@ -100,6 +99,15 @@ class ServicesController < ApplicationController
 
   def set_categories
     @categories = Category.all
+  end
+
+  def assign_service_to_categories
+    session[:id] = @service.id
+    session[:title] = @service.title
+    session[:description] = @service.description
+    session[:price] = @service.price
+    session[:selected_categories] = @service.categories
+    session[:action] = 'edit'
   end
 
   def search_combined(query)
