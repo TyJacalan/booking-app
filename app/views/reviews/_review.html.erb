@@ -43,7 +43,7 @@
               <ul>
                 <% users = users_who_liked_review(review) %>
                 <% users.each do |user| %>
-                  <li class="text-sm"><%= user.full_name %></li>
+                  <li class="text-sm"><%= user %></li>
                 <% end %>
               </ul>
             </div>

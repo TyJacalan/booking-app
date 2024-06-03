@@ -44,7 +44,16 @@
           <%= hover_card_content do %>
             <div>
               <ul>
-                <!-- Populate comment details here if necessary -->
+                <% users = users_who_commented_on_review(review) %>
+                <% if users.any? %>
+                  <ul>
+                    <% users.each do |user| %>
+                      <li class="text-sm"><%= user %></li>
+                    <% end %>
+                  </ul>
+                <% else %>
+                  <p>No users have commented on this review.</p>
+                <% end %>              
               </ul>
             </div>
           <% end %>
