@@ -25,6 +25,11 @@ class ServicesController < ApplicationController
     end
 
     authorize @services
+
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def create
