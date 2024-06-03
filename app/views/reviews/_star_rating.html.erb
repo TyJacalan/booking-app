@@ -1,8 +1,8 @@
-<div class="star-rating w-[70%]" data-controller="star-rating" data-field-name="<%= field_name %>">
+<div class="star-rating w-[70%]" data-controller="star-rating">
   <% 5.downto(1) do |i| %>
-    <%= label_tag "#{field_name}_#{i}", class: 'star py-auto mx-2 h-4 w-4', data: { action: "click->star-rating#select", value: i } do %>
-      <%= radio_button_tag "review[#{field_name}]", i, i == rating || rating.blank?, id: "#{field_name}_#{i}" %>
-      <i class="fa fa-star h-4 w-4"></i>
+    <%= label_tag "#{field_name}_#{i}", class: 'star py-auto mx-2 h-4 w-4 cursor-pointer' do %>
+      <%= radio_button_tag "review[#{field_name}]", i, i == rating || rating.blank?, id: "#{field_name}_#{i}", class: "hidden" %>
+      <i class="fa fa-star h-4 w-4" data-value="<%= i %>" data-action="click->star-rating#select"></i>
     <% end %>
   <% end %>
 </div>

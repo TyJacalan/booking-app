@@ -33,4 +33,8 @@ module ApplicationHelper
     user_ids = Comment.where(review_id: review.id).pluck(:client_id, :freelancer_id).flatten.compact.uniq
     User.where(id: user_ids).pluck(:full_name)
   end
+
+  def appointments_needing_review(user, service)
+    Appointment.where(client_id: user.id, service_id: service.id, is_completed: true).left_joins(:review).where(reviews: { id: nil })
+  end  
 end

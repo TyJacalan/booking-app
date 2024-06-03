@@ -1,6 +1,22 @@
 <div class="w-full">
   <div class="w-full border-t my-8"></div>
 
+  <% appointments = appointments_needing_review(current_user, service) %>
+  <% if appointments.any? %>
+    <ul>
+      <% appointments.each do |appointment| %>
+        <li>
+          Appointment on <%= appointment.completed_at.strftime("%B %d, %Y") %> 
+          <%= link_to 'Create Review', new_review_path(appointment_id: appointment.id) %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No reviews needed to review at the moment.</p>
+  <% end %>
+
+  <div class="w-full border-t my-8"></div>
+
   <div class="w-full" id="service_rating_container">
     <%= turbo_stream_from service, :overall_service_rating %>
     <%= turbo_frame_tag dom_id(service, :overall_service_rating), src: service_overall_service_ratings_path(service_id: service.id) do %>

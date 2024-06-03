@@ -101,7 +101,7 @@ class Review < ApplicationRecord
       :review,
       target: dom_id(service, :review), 
       partial: 'reviews/review', 
-      locals: { review: review, user: review.client, current_user: client }
+      locals: { review: self, user: self.client, current_user: client }
     )
       
     broadcast_prepend_to(
@@ -109,7 +109,7 @@ class Review < ApplicationRecord
       :review_modal,
       target: dom_id(service, :review_modal), 
       partial: 'reviews/review_modal', 
-      locals: { review: review, user: review.client, current_user: client }
+      locals: { review: self, user: self.client, current_user: client }
     )
   end
 
@@ -119,7 +119,7 @@ class Review < ApplicationRecord
       :review,
       target: dom_id(self, :service), 
       partial: 'reviews/review', 
-      locals: { review: review, user: review.client, current_user: client }
+      locals: { review: self, user: self.client, current_user: client }
     )
       
     broadcast_update_to(
@@ -127,7 +127,7 @@ class Review < ApplicationRecord
       :review_modal,
       target: dom_id(self, :service_modal), 
       partial: 'reviews/review_modal', 
-      locals: { review: review, user: review.client, current_user: client }
+      locals: { review: self, user: self.client, current_user: client }
     )
   end
 end

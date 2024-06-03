@@ -50,7 +50,29 @@
           <% end %>
         <% end %>
       </div>
+      <%= render_hover_card do %>
+        <%= hover_card_trigger do %>
+          <% comment = review.comments.count > 0 ? 'Comments' : 'Comment' %>
+          <% comments_count = review.comments.count > 0 ? review.comments.count : '' %>
       <%= link_to "#{review.comments.count} comment/s", review_path(id: review.id), class: 'ml-4 text-sm', data: { turbo: false } %>
+        <% end %>
+        <%= hover_card_content do %>
+          <div>
+            <ul>
+              <% users = users_who_commented_on_review(review) %>
+              <% if users.any? %>
+                <ul>
+                  <% users.each do |user| %>
+                    <li class="text-sm"><%= user %></li>
+                  <% end %>
+                </ul>
+              <% else %>
+                <p>No users have commented on this review.</p>
+              <% end %>              
+            </ul>
+          </div>
+        <% end %>
+      <% end %>
     </div>
   </div>
 <% end %>
