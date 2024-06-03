@@ -18,7 +18,7 @@
     <%= render_card class: 'h-fit max-w-sm text-sm' do %>
       <%= turbo_frame_tag :new_appointment, 
         id: :new_appointment,
-        src: new_appointment_path(id: @service.id) do %>
+        src: new_appointment_path(service_id: @service.id) do %>
       <% end %>
     <% end %>
   </div>

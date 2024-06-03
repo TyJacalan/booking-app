@@ -4,6 +4,6 @@ class CategoriesController < ApplicationController
     session[:selected_categories] ||= []
     session[:selected_categories] << @category unless session[:selected_categories].include?(@category)
 
-    # authorize Service, :select_category?
+    authorize Service, :select_category?
   end
 end

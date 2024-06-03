@@ -46,7 +46,7 @@ class ServiceDetailsController < ApplicationController
   private
 
   def set_service
-    category_ids = session[:selected_categories].map { |category_hash| category_hash['id'] }
+    category_ids = session[:selected_categories]&.map { |category_hash| category_hash['id'] }
     categories = Category.where(id: category_ids)
 
     @service = Service.new
