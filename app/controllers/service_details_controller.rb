@@ -1,15 +1,36 @@
 class ServiceDetailsController < ApplicationController
-  before_action :authorize_service, only: %i[set show]
+  before_action :authorize_service, only: %i[set show previous]
   before_action :set_service, only: [:show]
   before_action :set_categories, only: [:show]
+  before_action :retrieve_previous, only: %i[previous show]
 
   def set
-    case session[:form]
-    when 'title'
-      session[:title] = params[:service]&.fetch(:title, '')
-      session[:description] = params[:service]&.fetch(:description, '')
-    when 'price'
-      session[:price] = params[:service]&.fetch(:price, '')
+    begin
+      case session[:form]
+      when 'title'
+        title = params[:service]&.fetch(:title, '')
+        description = params[:service]&.fetch(:description, '')
+
+        if title.blank? || description.blank?
+          flash[:alert] = 'Title and description cannot be empty'
+          redirect_back(fallback_location: detail_services_path) and return
+        end
+
+        session[:title] = title
+        session[:description] = description
+      when 'price'
+        price = params[:service]&.fetch(:price, '')
+
+        if price.blank?
+          flash[:alert] = 'Price cannot be empty'
+          redirect_back(fallback_location: detail_services_path) and return
+        end
+
+        session[:price] = price
+      end
+    rescue ActionController::ParameterMissing => e
+      flash[:alert] = "Invalid form parameters: #{e.message}"
+      redirect_back(fallback_location: detail_services_path) and return
     end
 
     redirect_to detail_services_path
@@ -22,25 +43,30 @@ class ServiceDetailsController < ApplicationController
         flash.now[:alert] = 'Choose at least one category'
         render layout: 'new_service', template: 'services/categories' and return
       end
-      session[:form] = 'title'
+      session[:form] = 'title' unless @previous
     when 'title'
-      if session[:title].blank?
-        flash.now[:alert] = 'Provide title'
-        render layout: 'new_service', template: 'services/title' and return
-      elsif session[:description].blank?
-        flash.now[:alert] = 'Provide description'
-        render layout: 'new_service', template: 'services/title' and return
-      end
-      session[:form] = 'price'
+      session[:form] = 'price' if session[:title].present? && session[:description].present? && !@previous
     when 'price'
-      if session[:price].blank?
-        flash.now[:alert] = 'Set your price'
-        render layout: 'new_service', template: 'services/price' and return
-      end
-      render 'services/preview' and return
+      session[:form] = 'preview' if session[:price].present? && !@previous
     end
 
-    render layout: 'new_service', template: "services/#{session[:form]}"
+    render_next_form
+  end
+
+  def previous
+    case session[:form]
+    when 'categories'
+      redirect_to root_path and return
+    when 'title'
+      session[:form] = 'categories'
+    when 'price'
+      session[:form] = 'title'
+    when 'preview'
+      session[:form] = 'price'
+    end
+
+    session[:previous] = true
+    redirect_to detail_services_path
   end
 
   private
@@ -49,12 +75,11 @@ class ServiceDetailsController < ApplicationController
     category_ids = session[:selected_categories]&.map { |category_hash| category_hash['id'] }
     categories = Category.where(id: category_ids)
 
-    @service = Service.new
     @service = Service.new(
       title: session[:title],
       price: session[:price],
       description: session[:description],
-      categories:
+      categories: categories
     )
   end
 
@@ -64,5 +89,17 @@ class ServiceDetailsController < ApplicationController
 
   def set_categories
     @categories = Category.all
+  end
+
+  def retrieve_previous
+    @previous = session.delete(:previous) || false
+  end
+
+  def render_next_form
+    if session[:form] == 'preview'
+      render 'services/preview'
+    else
+      render layout: 'new_service', template: "services/#{session[:form]}"
+    end
   end
 end
