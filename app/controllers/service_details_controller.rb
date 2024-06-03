@@ -33,6 +33,11 @@ class ServiceDetailsController < ApplicationController
       redirect_back(fallback_location: detail_services_path) and return
     end
 
+    puts "set service: #{session[:title]}"
+    puts "set service: #{session[:description]}"
+    puts "set service: #{session[:price]}"
+    puts "set service: #{session[:form]}"
+
     redirect_to detail_services_path
   end
 
@@ -41,7 +46,7 @@ class ServiceDetailsController < ApplicationController
     when 'categories'
       if session[:selected_categories].blank?
         flash.now[:alert] = 'Choose at least one category'
-        render layout: 'new_service', template: 'services/categories' and return
+        render layout: 'service', template: 'services/categories' and return
       end
       session[:form] = 'title' unless @previous
     when 'title'
@@ -72,15 +77,25 @@ class ServiceDetailsController < ApplicationController
   private
 
   def set_service
-    category_ids = session[:selected_categories]&.map { |category_hash| category_hash['id'] }
-    categories = Category.where(id: category_ids)
-
-    @service = Service.new(
+    puts "session id: #{session[:service_id]}"
+    @service = session[:service_id].present? ? Service.find(session[:service_id]) : Service.new
+    @service.assign_attributes(
+      id: session[:service_id],
       title: session[:title],
       price: session[:price],
       description: session[:description],
-      categories: categories
+      categories: retrieve_categories
     )
+    puts "service: #{@service.id}"
+    puts "service: #{@service.title}"
+    puts "service: #{@service.description}"
+    puts "service: #{@service.price}"
+    puts "service: #{@service.categories}"
+  end
+
+  def retrieve_categories
+    category_ids = session[:selected_categories]&.map { |category| category['id'] }
+    Category.where(id: category_ids)
   end
 
   def authorize_service
@@ -97,9 +112,14 @@ class ServiceDetailsController < ApplicationController
 
   def render_next_form
     if session[:form] == 'preview'
+      puts "preview service: #{@service.id}"
+      puts "service: #{@service.title}"
+      puts "service: #{@service.description}"
+      puts "service: #{@service.price}"
+      puts "service: #{@service.categories}"
       render 'services/preview'
     else
-      render layout: 'new_service', template: "services/#{session[:form]}"
+      render layout: 'service', template: "services/#{session[:form]}"
     end
   end
 end

@@ -40,16 +40,17 @@ class ServicesController < ApplicationController
   end
 
   def show
-    @service = set_service
     authorize @service
   end
 
   def edit
-    assign_service_to_categories
+    assign_service_to_sessions
+    puts "action: #{session[:action]}, #{@service.id}"
     authorize @service
   end
 
   def update
+    puts "updating? #{@service.id}"
     authorize @service
 
     if @service.update(service_params)
@@ -101,18 +102,12 @@ class ServicesController < ApplicationController
     @categories = Category.all
   end
 
-  def assign_service_to_categories
-    session[:id] = @service.id
+  def assign_service_to_sessions
+    session[:service_id] = @service.id
     session[:title] = @service.title
     session[:description] = @service.description
     session[:price] = @service.price
     session[:selected_categories] = @service.categories
     session[:action] = 'edit'
-  end
-
-  def search_combined(query)
-    Service.joins(:user).where(
-      "concat_ws(' ', users.full_name, services.title, users.city) ILIKE ?", "%#{query}%"
-    )
   end
 end
