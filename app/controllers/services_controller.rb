@@ -45,12 +45,10 @@ class ServicesController < ApplicationController
 
   def edit
     assign_service_to_sessions
-    puts "action: #{session[:action]}, #{@service.id}"
     authorize @service
   end
 
   def update
-    puts "updating? #{@service.id}"
     authorize @service
 
     if @service.update(service_params)

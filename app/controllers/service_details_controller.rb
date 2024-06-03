@@ -33,11 +33,6 @@ class ServiceDetailsController < ApplicationController
       redirect_back(fallback_location: detail_services_path) and return
     end
 
-    puts "set service: #{session[:title]}"
-    puts "set service: #{session[:description]}"
-    puts "set service: #{session[:price]}"
-    puts "set service: #{session[:form]}"
-
     redirect_to detail_services_path
   end
 
@@ -77,7 +72,6 @@ class ServiceDetailsController < ApplicationController
   private
 
   def set_service
-    puts "session id: #{session[:service_id]}"
     @service = session[:service_id].present? ? Service.find(session[:service_id]) : Service.new
     @service.assign_attributes(
       id: session[:service_id],
@@ -86,11 +80,6 @@ class ServiceDetailsController < ApplicationController
       description: session[:description],
       categories: retrieve_categories
     )
-    puts "service: #{@service.id}"
-    puts "service: #{@service.title}"
-    puts "service: #{@service.description}"
-    puts "service: #{@service.price}"
-    puts "service: #{@service.categories}"
   end
 
   def retrieve_categories
@@ -112,11 +101,6 @@ class ServiceDetailsController < ApplicationController
 
   def render_next_form
     if session[:form] == 'preview'
-      puts "preview service: #{@service.id}"
-      puts "service: #{@service.title}"
-      puts "service: #{@service.description}"
-      puts "service: #{@service.price}"
-      puts "service: #{@service.categories}"
       render 'services/preview'
     else
       render layout: 'service', template: "services/#{session[:form]}"
