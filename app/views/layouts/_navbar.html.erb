@@ -81,20 +81,23 @@
               <% end %>
             <% end %>
             <%= dropdown_menu_item do %>
+              <%= link_to 'My Notifications', notifications_path %>
+            <% end %>
+            <%= dropdown_menu_item do %>
               <%= link_to 'My Appointments', appointments_path %>
             <% end %>
+            <%= render_separator class: 'my-1' %>
             <% if current_user&.role&.name == 'client' %>
               <%= dropdown_menu_item do %>
-                <%= button_to 'Switch to freelancing', user_role_path(current_user.id, current_user.role.id), method: :patch, class: 'text-muted-foreground' %>
+                <%= button_to 'Switch to freelancing', user_role_path(current_user.id, current_user.role.id), method: :patch %>
+              <% end %>
+            <% elsif current_user&.role&.name == 'freelancer' %>
+              <%= dropdown_menu_item do %>
+                <%= button_to 'Switch to client', user_role_path(current_user.id, current_user.role.id), method: :patch %>
               <% end %>
             <% end %>
-            <% if current_user&.role&.name == 'freelancer' %>
-              <%= dropdown_menu_item do %>
-                <%= button_to 'Switch to client', user_role_path(current_user.id, current_user.role.id), method: :patch, class: 'text-muted-foreground' %>
-              <% end %>
-           <% end %>
             <%= dropdown_menu_item do %>
-              <%= button_to "Logout", destroy_user_session_path, method: :delete, class: 'text-muted-foreground' %>
+              <%= button_to "Logout", destroy_user_session_path, method: :delete %>
             <% end %>
           <% end %>
         <% end %>

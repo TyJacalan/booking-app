@@ -10,6 +10,9 @@ application.register("appointment", AppointmentController)
 import AutoSubmitController from "./auto_submit_controller"
 application.register("auto-submit", AutoSubmitController)
 
+import CheckboxSelectAllController from "./checkbox_select_all_controller"
+application.register("checkbox-select-all", CheckboxSelectAllController)
+
 import LocationController from "./location_controller"
 application.register("location", LocationController)
 
