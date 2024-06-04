@@ -3,6 +3,8 @@ class CategoriesController < ApplicationController
     @category = Category.find(params[:id])
     session[:selected_categories] ||= []
     category_in_session = session[:selected_categories].find { |c| c['id'] == @category.id }
+
+    puts "in session? #{category_in_session}"
     if category_in_session
       # Remove category if it's already in the session
       session[:selected_categories].delete_if { |c| c['id'] == @category.id }
