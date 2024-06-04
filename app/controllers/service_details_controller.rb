@@ -41,7 +41,7 @@ class ServiceDetailsController < ApplicationController
     when 'categories'
       if session[:selected_categories].blank?
         flash.now[:alert] = 'Choose at least one category'
-        render layout: 'new_service', template: 'services/categories' and return
+        render layout: 'service', template: 'services/categories' and return
       end
       session[:form] = 'title' unless @previous
     when 'title'
@@ -72,15 +72,19 @@ class ServiceDetailsController < ApplicationController
   private
 
   def set_service
-    category_ids = session[:selected_categories]&.map { |category_hash| category_hash['id'] }
-    categories = Category.where(id: category_ids)
-
-    @service = Service.new(
+    @service = session[:service_id].present? ? Service.find(session[:service_id]) : Service.new
+    @service.assign_attributes(
+      id: session[:service_id],
       title: session[:title],
       price: session[:price],
       description: session[:description],
-      categories: categories
+      categories: retrieve_categories
     )
+  end
+
+  def retrieve_categories
+    category_ids = session[:selected_categories]&.map { |category| category['id'] }
+    Category.where(id: category_ids)
   end
 
   def authorize_service
@@ -99,7 +103,7 @@ class ServiceDetailsController < ApplicationController
     if session[:form] == 'preview'
       render 'services/preview'
     else
-      render layout: 'new_service', template: "services/#{session[:form]}"
+      render layout: 'service', template: "services/#{session[:form]}"
     end
   end
 end
