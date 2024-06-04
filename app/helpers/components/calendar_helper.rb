@@ -20,7 +20,7 @@ module Components::CalendarHelper
     events_for_day.map do |event|
       render_button(event.service.title,
                     as: :link,
-                    href: service_path(event.service.id),
+                    href: "appointments/?q%5Bid_eq%5D=#{event.service_id}",
                     class: 'h-fit w-full py-2 px-4 rounded-md bg-muted text-left truncate',
                     variant: :outline)
     end.join.html_safe
