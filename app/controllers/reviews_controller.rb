@@ -3,7 +3,7 @@ class ReviewsController < ApplicationController
 
   before_action :set_review, only: [:show, :edit, :update, :destroy]
   before_action :set_appointment, only: [:new, :create]
-  after_action :verify_authorized, except: [:show, :new, :edit, :destroy, :update, :create]
+  after_action :verify_authorized
 
   # GET /reviews/:id
   def show
@@ -15,6 +15,7 @@ class ReviewsController < ApplicationController
   # GET /appointments/:appointment_id/reviews/new
   def new
     @review = @appointment.reviews.new
+    authorize @appointment,
     respond_to do |format|
       format.html { render locals: { review: @review, appointment: @appointment, service: @review.service } }
     end
@@ -22,6 +23,7 @@ class ReviewsController < ApplicationController
 
   # GET /reviews/:id/edit
   def edit
+    authorize @review
     respond_to do |format|
       format.html { render locals: { review: @review, appointment: @review.appointment, service: @review.service} }
     end
@@ -29,6 +31,7 @@ class ReviewsController < ApplicationController
 
   # POST /appointments/:appointment_id/reviews
   def create
+    authorize @appointment
     ActiveRecord::Base.transaction do
       @review = @appointment.reviews.new(review_params)
       @review.service_id = @appointment.service.id
@@ -51,6 +54,7 @@ class ReviewsController < ApplicationController
 
   # PATCH/PUT /reviews/:id
   def update
+    authorize @review
     if @review.update(review_params)
       respond_to do |format|
         format.html { redirect_to service_path(@review.service), notice: 'Review was successfully updated.' }
@@ -62,12 +66,11 @@ class ReviewsController < ApplicationController
 
   # DELETE /reviews/:id
   def destroy
+    authorize @review
     @review.destroy
-    #respond_to do |format|
-      #format.html { redirect_to service_reviews_url(@review.service), notice: 'Review was successfully destroyed.' }
-      #format.turbo_stream { broadcast_replace_to(@review.service, :review_modal, target: dom_id(@review, :service_modal), html: "<div class='hidden'></div>") }
-      #format.turbo_stream { broadcast_replace_to(@review.service, :review, target: dom_id(@review, :service), html: "<div class='hidden'></div>") }
-    #end
+    rrespond_to do |format|
+      format.html { render locals: { comment: @comment } }
+    end
   end
 
   private

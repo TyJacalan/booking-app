@@ -1,15 +1,19 @@
-<div class='h-[60vh] max-w-[700px] rounded-md border'>
-    <h1>New Review</h1>
-    <div>
-        <h1><%= service.title %></h1>
-        <p><%= service.description %></p>
-        <h3>Appointment details</h3>
-        <p><%= appointment.description %></p>
-        <p>Start: <%= appointment.start %></p>
-        <p>End: <%= appointment.end %></p>
-        <p>Client ID: <%= appointment.client_id %></p>
-        <p>Freelancer ID: <%= appointment.freelancer_id %></p>
+<div class="w-full flex justify-center items-center">
+    <div class='h-[85vh] max-w-[700px] rounded-md border p-4 mt-4'>
+        <h1 class=" w-full text-center text-xl font-bold">New Review</h1>
+        <div class="w-full">
+            <div class="w-full border-b pb-4">
+                <h1 class="text-xl font-bold"><%= service.title %></h1>
+                <p class="text-base"><%= service.description %></p>
+            </div>
+            <div class="w-full py-4 border-b">
+                <h3 class="text-center text-lg font-bold">Appointment details</h3>
+                <p class="text-base font-semibold">Client: <span class="font-normal"><%= appointment.client.full_name %></span></p>
+                <p class="text-base font-semibold">Description: <span class="font-normal"><%= appointment.description %></span></p>
+                <p class="text-base font-semibold">Start: <span class="font-normal"><%= time_tag appointment.start %></span></p>
+                <p class="text-base font-semibold">End: <span class="font-normal"><%= time_tag appointment.end %></span></p>
+            </div>
+        </div>
+        <%= render partial: 'reviews/form', locals: { review: review, appointment: appointment, service: service } %>
     </div>
-    <%= render partial: 'reviews/form', locals: { review: review, appointment: appointment, service: service } %>
 </div>
-

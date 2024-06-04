@@ -6,7 +6,10 @@ export default class extends Controller {
   static targets = [];
 
   connect() {
-    console.log('Star rating controller connected');
+    const selectedRadioButton = this.element.querySelector("input[type='radio']:checked");
+    const value = parseInt(selectedRadioButton.value);
+    this.updateStarRatingConnect(value);
+    console.log(value)
   }
 
   select(event) {
@@ -14,26 +17,40 @@ export default class extends Controller {
     const star = event.currentTarget;
     const value = parseInt(star.getAttribute("data-value"));
     this.updateStarRating(value);
-    console.log(value)
-    // Find the corresponding radio button and update its value
+
     const label = star.closest("label");
     const forAttribute = label.getAttribute("for");
     const radioButton = document.getElementById(forAttribute);
     if (radioButton) {
       radioButton.checked = true;
-      radioButton.dispatchEvent(new Event("change")); // Trigger change event to update UI
+      radioButton.dispatchEvent(new Event("change"));
     }
-    console.log(radioButton.checked)
+  }
+
+  updateStarRatingConnect(value) {
+    console.log(value)
+    this.element.querySelectorAll("i").forEach((star, index) => {
+      console.log(123)
+      const index_new = (index - 4) * (-1)
+      if (index_new < value) {
+        star.classList.add("yellow-star"); 
+        value -= 1
+      } else {
+        star.classList.remove("yellow-star");
+      }
+    });
   }
 
   updateStarRating(value) {
-    // Update star visuals based on the selected value
-    console.log(`Selected star rating: ${value}`);
-    this.element.querySelectorAll("i").forEach((star, index) => {
-      if (index < value) {
-        star.classList.add("text-yellow-500"); // Apply a yellow color for filled stars
+    console.log(value)
+    this.element.querySelectorAll("svg").forEach((star, index) => {
+      console.log(123)
+      const index_new = (index - 4) * (-1)
+      if (index_new < value) {
+        star.classList.add("yellow-star"); 
+        value -= 1
       } else {
-        star.classList.remove("text-yellow-500");
+        star.classList.remove("yellow-star");
       }
     });
   }

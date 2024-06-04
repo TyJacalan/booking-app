@@ -116,12 +116,12 @@
     cursor: pointer;
   }
   
-  .star-rating input[type="radio"]:checked ~ label {
-    color: #f5c518;
-  }
-  
   .star-rating label:hover,
   .star-rating label:hover ~ label {
     color: #f5c518;
   }
   
+
+  .yellow-star {
+    color: #f5c518;
+  }

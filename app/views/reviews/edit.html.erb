@@ -10,8 +10,8 @@
                 <h3 class="text-center text-lg font-bold">Appointment details</h3>
                 <p class="text-base font-semibold">Client: <span class="font-normal"><%= appointment.client.full_name %></span></p>
                 <p class="text-base font-semibold">Description: <span class="font-normal"><%= appointment.description %></span></p>
-                <p class="text-base font-semibold">Start: <span class="font-normal"><%= appointment.start %></span></p>
-                <p class="text-base font-semibold">End: <span class="font-normal"><%= appointment.end %></span></p>
+                <p class="text-base font-semibold">Start: <span class="font-normal"><%= time_tag appointment.start %></span></p>
+                <p class="text-base font-semibold">End: <span class="font-normal"><%= time_tag appointment.end %></span></p>
             </div>
         </div>
         <%= render partial: 'reviews/form', locals: { review: review, appointment: appointment, service: service } %>
