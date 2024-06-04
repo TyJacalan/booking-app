@@ -1,33 +1,34 @@
 <% if user_signed_in? && @user == current_user %>
   <%= render_tooltip do %>
-  <%= tooltip_trigger do %>
-    <div class="flex justify-center items-center p-2 mt-10">
-      <%= link_to new_service_path do %>
-        <i class="fa-solid fa-circle-plus text-3xl hover:cursor-pointer hover:text-primary hover:drop-shadow-md"></i>
-      <% end %>
-    </div>
-  <% end %>
-  <%= tooltip_content do %>
-    <div class="grid gap-2">
-      <div class="space-y-2">
-        <p class="text-sm text-muted-foreground">New service</p>
-      </div>
-    </div>
-  <% end %>
-<% end %>
-
-<% end %>
-<div class="container mx-auto p-10 pt-20 overflow-y-auto">
-
-  <div class="flex justify-center gap-12 mb-12">
-    <% Category.all.each do |category| %>
-      <div class="flex flex-col justify-center items-center">
-        <span><i class="text-3xl p-2 <%= category.icon %>"></i></span>
-        <%= link_to category.title, services_path(q: { combined_search: category.title }), class: "filter-link hover:underline font-light", data: { turbo_frame: "services_results" } %>
+    <%= tooltip_trigger do %>
+      <div class="flex justify-center items-center p-2 mt-10">
+        <%= link_to new_service_path do %>
+          <i class="fa-solid fa-circle-plus text-3xl hover:cursor-pointer hover:text-primary hover:drop-shadow-md"></i>
+        <% end %>
       </div>
     <% end %>
-  </div>
+    <%= tooltip_content do %>
+      <div class="grid gap-2">
+        <div class="space-y-2">
+          <p class="text-sm text-muted-foreground">New service</p>
+        </div>
+      </div>
+    <% end %>
+  <% end %>
+<% end %>
 
+<div class="flex justify-evenly gap-2 mt-12 shadow-xs w-full px-2 overflow-x-auto">
+  <% Category.all.each do |category| %>
+    <%= link_to services_path(q: { combined_search: category.title }), data: { turbo_frame: "services_results" } do %>
+      <div class="flex flex-col justify-center items-center group p-4 hover:bg-accent hover:text-accent-foreground hover:font-semibold rounded-md hover:cursor-pointer">
+        <span><i class="group-hover:text-primary text-3xl p-2 <%= category.icon %>"></i></span>
+        <%= category.title %>
+      </div>
+    <% end %>
+  <% end %>
+</div>
+
+<div class="container mx-auto p-10 overflow-y-auto">
   <div class="flex flex-wrap justify-evenly items-stretch gap-4">
     <% @services.each do |service| %>
       <div class="w-full sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4 py-2">
