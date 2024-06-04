@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class CalendarsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     @date = params[:date] ? Date.parse(params[:date]) : Date.today
     @appointments = Appointment.where(freelancer_id: current_user.id, start: @date.beginning_of_month.beginning_of_week..@date.end_of_month.end_of_week)
