@@ -13,16 +13,18 @@
   <div class="w-full">
     <% if user_signed_in? %>
       <div class="flex w-full items-center justify-end gap-4  md:gap-2 lg:gap-4">
-        <% unless current_user.registered_freelancer? %>
-          <%= render_button as: :link,
+        <% if current_user&.registered_freelancer? && current_user&.role&.name == 'freelancer' %>
+          <%= render_button 'Offer your services',
+            as: :link,
             variant: :outline,
-            href: policy(Service).new? ? new_service_path : new_freelancer_path do %>
-            <% if current_user&.role&.name == 'freelancer' %>
-              Offer your services
-            <% else %>
-              Become a freelancer  
-            <% end %>
-          <% end %>
+            href: new_service_path %>
+        <% end %>
+
+        <% unless current_user&.registered_freelancer? %>
+          <%= render_button 'Become a freelancer',
+            as: :link,
+            variant: :outline,
+            href: new_freelancer_path %>
         <% end %>
 
         <%# mode toggle %>
