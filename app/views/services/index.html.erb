@@ -1,4 +1,6 @@
 <%= turbo_frame_tag "services_results", class: "flex flex-wrap justify-evenly items-start gap-4" do %>
-  <%= render 'search_form' %>
+  <div class="flex justify-center items-center w-full min-h-[200px] shadow-sm">
+    <%= render 'search_form' %>
+  </div>
   <%= render 'services' %>
 <% end %>
