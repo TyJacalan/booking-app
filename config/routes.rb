@@ -30,6 +30,7 @@ Rails.application.routes.draw do
       get :services, to: 'users#services', only: [:show]
     end
     resources :roles, module: :users, only: [:update]
+    resources :blocked_dates, module: :users, only: [:index]
   end
 
   resources :services do
