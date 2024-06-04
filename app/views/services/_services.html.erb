@@ -1,3 +1,22 @@
+<% if @user == current_user %>
+  <%= render_tooltip do %>
+  <%= tooltip_trigger do %>
+    <div class="flex justify-center items-center p-2 mt-10">
+      <%= link_to new_service_path do %>
+        <i class="fa-solid fa-circle-plus text-3xl hover:cursor-pointer hover:text-primary hover:drop-shadow-md"></i>
+      <% end %>
+    </div>
+  <% end %>
+  <%= tooltip_content do %>
+    <div class="grid gap-2">
+      <div class="space-y-2">
+        <p class="text-sm text-muted-foreground">New service</p>
+      </div>
+    </div>
+  <% end %>
+<% end %>
+
+<% end %>
 <div class="container mx-auto p-10 pt-20 overflow-y-auto">
 
   <div class="flex justify-center gap-12 mb-12">
@@ -15,6 +34,11 @@
         <%= render_card class: "group hover:bg-primary hover:text-primary-foreground" do %>
           <div>
             <h2><%= link_to service.title.titleize, service_path(service), class: "font-semibold text-2xl hover:cursor-pointer group-hover:text-white" %></h2>
+            <% if service.user == current_user %>
+              <%= link_to edit_service_path(service) do %>
+                <i class="fa-solid fa-pen hover:cursor-pointer hover:text-primary-foreground"></i>
+              <% end %>
+            <% end %>
           </div>
           <div class="flex flex-col gap-2 mt-8">
             <span><%= link_to service.user&.full_name&.titleize, user_path(service.user), class: "hover:underline hover:cursor-pointer group-hover:text-white" %></span>
