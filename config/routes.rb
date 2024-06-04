@@ -25,8 +25,10 @@ Rails.application.routes.draw do
   resources :locations, only: [:index]
 
   resources :users do
-    get :reviews, to: 'users#reviews', only: [:show]
-    get :services, to: 'users#services', only: [:show]
+    member do
+      get :reviews, to: 'users#reviews', only: [:show]
+      get :services, to: 'users#services', only: [:show]
+    end
     resources :roles, module: :users, only: [:update]
   end
 
