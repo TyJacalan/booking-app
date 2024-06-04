@@ -2,11 +2,15 @@
   <nav class='md:w-full hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:justify-between md:gap-4 md:text-sm lg:gap-6'>
     <span class='w-32'><%= link_to 'Booking App', root_path, class: 'hover:cursor-pointer' %></span>
     <div class='w-full flex flex-row justify-center gap-4 text-sm text-muted-foreground'>
-      <%= link_to 'Profile', user_path(@user), class: 'hover:underline' if @user&.role&.name == 'freelancer' %>
-      <%= link_to 'Services', user_services_path(@user), class: 'hover:underline' if @user&.role&.name == 'freelancer' %>
-      <%= link_to 'Appointments', appointments_path, class: 'hover:underline' if @user == current_user %>
-      <%= link_to 'Reviews', user_reviews_path(@user) if @user.present? %>
-      <%= link_to 'Calendar' if @user == current_user %>
+      <% if params[:controller] == 'users' && user_signed_in? %>
+        <%= link_to 'Profile', user_path, class: 'hover:underline' %>
+        <%= link_to 'Services', services_user_path, class: 'hover:underline' if @user&.role&.name == 'freelancer' %>
+        <%= link_to 'Reviews', reviews_user_path %>
+        <% if @user == current_user %>
+          <%= link_to 'Appointments', appointments_path, class: 'hover:underline' %>
+          <%= link_to 'Calendar', calendars_path %>
+        <% end %>
+      <% end %>
     </div>
   </nav>
 
@@ -74,7 +78,7 @@
             <% end %>
             <% if current_user&.role&.name == 'freelancer' %>
               <%= dropdown_menu_item do %>
-                <%= link_to 'My Services', user_services_path(current_user) %>
+                <%= link_to 'My Services', services_user_path(current_user) %>
               <% end %>
               <%= dropdown_menu_item do %>
                 <%= link_to 'My Calendar', calendars_path %>
