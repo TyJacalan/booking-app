@@ -1,4 +1,4 @@
-<% if @user == current_user %>
+<% if user_signed_in? && @user == current_user %>
   <%= render_tooltip do %>
   <%= tooltip_trigger do %>
     <div class="flex justify-center items-center p-2 mt-10">
