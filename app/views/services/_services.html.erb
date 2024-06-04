@@ -20,7 +20,7 @@
 <div class="flex justify-evenly gap-2 shadow-xs w-full p-2 overflow-x-auto">
   <% Category.all.each do |category| %>
     <%= link_to services_path(q: { combined_search: category.title }), data: { turbo_frame: "services_results" } do %>
-      <div class="flex flex-col justify-center items-center group p-4 hover:bg-accent hover:text-accent-foreground hover:font-semibold rounded-md hover:cursor-pointer">
+      <div class="flex flex-col justify-center items-center group p-4 hover:text-accent-foreground rounded-md hover:cursor-pointer">
         <span><i class="group-hover:text-primary text-3xl p-2 <%= category.icon %>"></i></span>
         <%= category.title %>
       </div>
