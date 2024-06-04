@@ -2,7 +2,6 @@
   <nav class='md:w-full hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:justify-between md:gap-4 md:text-sm lg:gap-6'>
     <span class='w-32'><%= link_to 'Booking App', root_path, class: 'hover:cursor-pointer' %></span>
     <div class='w-full flex flex-row justify-center gap-4 text-sm text-muted-foreground'>
-      <%# Add filters triggers here %>
       <%= link_to 'Profile', user_path(@user), class: 'hover:underline' if @user&.role&.name == 'freelancer' %>
       <%= link_to 'Services', user_services_path(@user), class: 'hover:underline' if @user&.role&.name == 'freelancer' %>
       <%= link_to 'Appointments', appointments_path, class: 'hover:underline' if @user == current_user %>
@@ -14,18 +13,17 @@
   <div class="w-full">
     <% if user_signed_in? %>
       <div class="flex w-full items-center justify-end gap-4  md:gap-2 lg:gap-4">
-        <%# Add Service %>
-        <div class="flex justify-center items-center">
-          <div class="rounded-lg hover:bg-gray-100 p-2 transition duration-300 ease-in-out">
-            <%= link_to policy(Service).new? ? new_service_path : new_freelancer_path, class: "font-semibold" do %>
-              <% if current_user&.role&.name == 'freelancer' %>
-                Offer your services
-              <% else %>
-                Become a freelancer  
-              <% end %>
+        <% unless current_user.registered_freelancer? %>
+          <%= render_button as: :link,
+            variant: :outline,
+            href: policy(Service).new? ? new_service_path : new_freelancer_path do %>
+            <% if current_user&.role&.name == 'freelancer' %>
+              Offer your services
+            <% else %>
+              Become a freelancer  
             <% end %>
-          </div>
-        </div>
+          <% end %>
+        <% end %>
 
         <%# mode toggle %>
         <%= render_dropdown_menu do %>
@@ -87,7 +85,7 @@
               <%= link_to 'My Appointments', appointments_path %>
             <% end %>
             <%= render_separator class: 'my-1' %>
-            <% if current_user&.role&.name == 'client' %>
+            <% if current_user&.role&.name == 'client' && current_user.registered_freelancer? %>
               <%= dropdown_menu_item do %>
                 <%= button_to 'Switch to freelancing', user_role_path(current_user.id, current_user.role.id), method: :patch %>
               <% end %>
