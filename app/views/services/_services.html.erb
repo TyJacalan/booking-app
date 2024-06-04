@@ -1,23 +1,23 @@
 <% if user_signed_in? && @user == current_user %>
-  <%= render_tooltip do %>
-    <%= tooltip_trigger do %>
-      <div class="flex justify-center items-center p-2 mt-10">
-        <%= link_to new_service_path do %>
-          <i class="fa-solid fa-circle-plus text-3xl hover:cursor-pointer hover:text-primary hover:drop-shadow-md"></i>
-        <% end %>
-      </div>
-    <% end %>
-    <%= tooltip_content do %>
-      <div class="grid gap-2">
-        <div class="space-y-2">
+  <div class="absolute bottom-5 right-5">
+    <%= render_tooltip do %>
+      <%= tooltip_trigger do %>
+        <div class="flex justify-center items-center p-2 mt-10">
+          <%= link_to new_service_path do %>
+            <i class="fa-solid fa-circle-plus text-3xl hover:cursor-pointer hover:text-primary hover:drop-shadow-md"></i>
+          <% end %>
+        </div>
+      <% end %>
+      <%= tooltip_content do %>
+        <div class="space-y-2 w-fit">
           <p class="text-sm text-muted-foreground">New service</p>
         </div>
-      </div>
+      <% end %>
     <% end %>
-  <% end %>
+  </div>
 <% end %>
 
-<div class="flex justify-evenly gap-2 shadow-xs w-full px-2 overflow-x-auto">
+<div class="flex justify-evenly gap-2 shadow-xs w-full p-2 overflow-x-auto">
   <% Category.all.each do |category| %>
     <%= link_to services_path(q: { combined_search: category.title }), data: { turbo_frame: "services_results" } do %>
       <div class="flex flex-col justify-center items-center group p-4 hover:bg-accent hover:text-accent-foreground hover:font-semibold rounded-md hover:cursor-pointer">
