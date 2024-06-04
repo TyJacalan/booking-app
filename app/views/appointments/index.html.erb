@@ -9,7 +9,7 @@
         <%= select.option label: status[0].capitalize, value: status[1] %>
       <% end %>
     <% end %>
-    <%= f.text_field 'q[service_title_or_client_full_name_or_freelancer_full_name_cont]',
+    <%= f.text_field 'q[service_title_or_client_full_name_or_freelancer_full_name_or_freelancer_city_cont]',
       placeholder: 'Search appointments...',
       ransack: true %>
     <%= f.submit 'Search' %>
