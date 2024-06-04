@@ -2,7 +2,17 @@
 
 25.times do
   Service.create!(
-    title: Faker::Job.title,
+    title: [
+      'Choreographer',
+      'Entertainer',
+      'Event Host',
+      'Event Planner',
+      'Makeup Artist',
+      'Musician',
+      'Photographer',
+      'Stylist',
+      'Videographer'
+    ].sample,
     description: Faker::Lorem.sentence(word_count: 20),
     price: Faker::Number.between(from: 100, to: 10_000),
     categories: Category.order('RANDOM()').limit(rand(1..3)),
