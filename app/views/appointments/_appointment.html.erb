@@ -13,8 +13,13 @@
     <% end %>
   </div>
   <div class='flex flex-row gap-4 items-center'>
-    <%= render_avatar src: appointment.freelancer.avatar_url, alt: appointment.freelancer.first_name %>
-    <%= appointment.freelancer.full_name %>
+  <% if current_user == appointment.client %>
+      <%= render_avatar src: appointment.freelancer.avatar_url, alt: appointment.freelancer.first_name %>
+      <%= link_to appointment.freelancer.full_name, user_path(appointment.freelancer), data: { turbo: false } %>
+  <% else %>
+      <%= render_avatar src: appointment.client.avatar_url, alt: appointment.client.first_name %>
+      <%= link_to appointment.client.full_name, user_path(appointment.client), data: { turbo: false } %>
+  <% end %>
   </div>
   <div class="text-xl mt-4">
     <%= number_to_currency(appointment.fee, unit: '₱') %>

@@ -7,20 +7,38 @@ export default class extends Controller {
                     'durationInput',
                     'endDate', 
                     'fee',
+                    'freelancerId',
                     'price',
                     'serviceFee',
                     'startDate',
                     'totalFee' ]
 
   connect() {
+    this.initFlatpickr();
+  }
+  
+  async initFlatpickr() {
+    const dates = await this.fetchBlockedDates();
+
     flatpickr(this.dateInputTarget, {
       mode: 'range',
+      disable: dates,
+      dateFormat: "Y-m-d",
       minDate: this.dateInputTarget.value || new Date().fp_incr(3),
       onChange: (selectedDates) => {
         this.handleDateChange(selectedDates);
         this.handleDurationChange();
       },
     });
+  }
+
+  async fetchBlockedDates() {
+    const response = await fetch(`/users/${this.freelancerIdTarget.value}/blocked_dates`); 
+    if (!response.ok) {
+      throw new Error('Failed to fetch blocked dates');
+    }
+    const data = await response.json();
+    return data.blocked_dates;
   }
 
   handleDateChange(selectedDates) {

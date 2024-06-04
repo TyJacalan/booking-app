@@ -15,7 +15,7 @@ Rails.application.routes.draw do
   root 'services#index'
 
   resources :alerts, only: %i[index]
-  resources :appointments, except: %i[show edit]
+  resources :appointments, except: %i[show]
   resources :batch_update_notifications, only: [:update]
   resources :calendars, except: %i[new show edit update]
   resources :notifications, only: %i[index update]
@@ -30,6 +30,7 @@ Rails.application.routes.draw do
       get :services, to: 'users#services', only: [:show]
     end
     resources :roles, module: :users, only: [:update]
+    resources :blocked_dates, module: :users, only: [:index]
   end
 
   resources :services do

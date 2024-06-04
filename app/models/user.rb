@@ -44,6 +44,10 @@ class User < ApplicationRecord
     end
   end
 
+  def registered_freelancer?
+    [biography, birthdate, skills, mobile, address].all?(&:present?)
+  end
+
   private
 
   def set_default_role
