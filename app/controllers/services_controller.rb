@@ -1,4 +1,5 @@
 class ServicesController < ApplicationController
+  before_action :authorize_service
   before_action :set_service, only: %i[show edit update destroy]
   before_action :set_categories, only: %i[new edit update show]
   before_action :set_session_params, only: %i[create update]
@@ -24,7 +25,7 @@ class ServicesController < ApplicationController
       @services = @q.result.includes(:user, :categories)
     end
 
-    authorize @services
+    @services = @services.page(params[:page]).per(12)
 
     respond_to do |format|
       format.html
@@ -34,8 +35,6 @@ class ServicesController < ApplicationController
 
   def create
     @service = current_user.services.build(service_params)
-    authorize @service
-
     if @service.save
       clear_session_params
       redirect_to @service, notice: 'Service was successfully created.'
@@ -44,18 +43,13 @@ class ServicesController < ApplicationController
     end
   end
 
-  def show
-    authorize @service
-  end
+  def show; end
 
   def edit
     assign_service_to_sessions
-    authorize @service
   end
 
   def update
-    authorize @service
-
     if @service.update(service_params)
       redirect_to @service, notice: 'Service was successfully updated.'
     else
@@ -64,7 +58,6 @@ class ServicesController < ApplicationController
   end
 
   def destroy
-    authorize @service
     @service.destroy
     redirect_to services_path, notice: 'Service was successfully deleted.'
   end
@@ -112,5 +105,9 @@ class ServicesController < ApplicationController
     session[:price] = @service.price
     session[:selected_categories] = @service.categories
     session[:action] = 'edit'
+  end
+
+  def authorize_service
+    authorize Service
   end
 end
