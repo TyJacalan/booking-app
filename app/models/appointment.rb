@@ -11,6 +11,14 @@ class Appointment < ApplicationRecord
   before_save :set_price
   before_update :validate_update
 
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[client_id freelancer_id service_id id status]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[client freelancer service]
+  end
+
   def total_hours
     ((self.end - start) / 3600).to_i
   end

@@ -1,6 +1,24 @@
 <div class='h-fit w-full flex flex-col gap-4 p-10'>
+  <div class='h-fit w-full flex flex-row gap-2'>
+    <%= render_form_for appointments_path, method: :get, class: 'flex-1 flex flex-row gap-2', data: { controller: 'auto-submit' } do |f| %>
+      <%= f.select_field 'q[status_eq]',
+        class: 'w-48 text-muted-foreground cursor-pointer',
+        data: { action: 'change->auto-submit#submit' },
+        ransack: true do |select| %>
+        <%= select.option label: 'Filter by Status', value: nil %>
+        <% @statuses.each do |status| %>
+          <%= select.option label: status[0].capitalize, value: status[1] %>
+        <% end %>
+      <% end %>
+      <%= f.text_field 'q[service_title_or_client_full_name_or_freelancer_full_name_or_freelancer_city_cont]',
+        placeholder: 'Search appointments...',
+        ransack: true %>
+      <%= f.submit 'Search' %>
+    <% end %>
+    <%= render_button 'Clear', as: :link, href: appointments_path, variant: :outline %> 
+  </div>
   <% @appointments.each do |appointment| %> 
-    <%= render_card class: 'relative flex flex-col min-w-[450px]', id: "appointment_#{appointment.id}" do %>
+    <%= render_card class: 'flex-1 relative flex flex-col min-w-[450px]', id: "appointment_#{appointment.id}" do %>
       <%= render partial: 'appointment', locals: { appointment: appointment } %>
     <% end %>
   <% end %>
