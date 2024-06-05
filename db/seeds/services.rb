@@ -3,7 +3,7 @@
 25.times do
   categories = Category.order('RANDOM()').limit(rand(1..3))
   Service.create!(
-    title: categories.first.title,
+    title: categories.map(&:title).join(', '),
     description: Faker::Lorem.sentence(word_count: 20),
     price: Faker::Number.between(from: 1000, to: 10_000),
     categories:,
