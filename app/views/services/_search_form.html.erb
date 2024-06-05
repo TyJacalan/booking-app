@@ -1,19 +1,21 @@
-<form class="w-1/2 mx-auto">
-  <div class="relative">
-    <%= search_form_for @q, url: services_path, method: :get do |f| %>
-      <div class="form-group flex flex-row">
-        <%= f.search_field :combined_search, class: "block w-full shadow-lg h-16 p-8 ps-4 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500 dark:text-slate-50 dark:bg-black", placeholder: "Search Freelancer, Category, Service, City...", value: params.dig(:q, :combined_search) %>
-        <span class="absolute right-16">
-          <% if params.dig(:q, :combined_search).present? %>
-            <%= link_to 'x', services_path, class: "text-primary absolute right-2 top-5 dark:text-white", data: { turbo_frame: "services_results" } %>
+<div class="flex justify-center items-center w-full min-h-[200px] shadow-sm">
+  <form class="w-1/2 mx-auto">
+    <div class="relative">
+      <%= search_form_for @q, url: services_path, method: :get do |f| %>
+        <div class="form-group flex flex-row">
+          <%= f.search_field :combined_search, class: "block w-full shadow-lg h-16 p-8 ps-4 text-sm text-gray-900 border border-gray-300 rounded-full bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500 dark:text-slate-50 dark:bg-black", placeholder: "Search Freelancer, Category, Service, City...", value: params.dig(:q, :combined_search) %>
+          <span class="absolute right-16">
+            <% if params.dig(:q, :combined_search).present? %>
+              <%= link_to 'x', services_path, class: "text-primary absolute right-2 top-5 dark:text-white", data: { turbo_frame: "services_results" } %>
+            <% end %>
+          </span>
+          <%= button_tag(type: 'submit', class: "text-white absolute end-2.5 bottom-2.5 bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-full text-sm px-4 py-4 dark:bg-primary") do %>
+            <%= content_tag(:svg, class: "w-4 h-4 text-white", aria: { hidden: true }, xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 20 20") do %>
+              <%= content_tag(:path, nil, stroke: "currentColor", "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "2", d: "m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z") %>
+            <% end %>
           <% end %>
-        </span>
-        <%= button_tag(type: 'submit', class: "text-white absolute end-2.5 bottom-2.5 bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-full text-sm px-4 py-4 dark:bg-primary") do %>
-          <%= content_tag(:svg, class: "w-4 h-4 text-white", aria: { hidden: true }, xmlns: "http://www.w3.org/2000/svg", fill: "none", viewBox: "0 0 20 20") do %>
-            <%= content_tag(:path, nil, stroke: "currentColor", "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "2", d: "m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z") %>
-          <% end %>
-        <% end %>
-      </div>
-    <% end %>
-  </div>
-</form>
+        </div>
+      <% end %>
+    </div>
+  </form>
+</div>

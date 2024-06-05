@@ -17,44 +17,35 @@
   </div>
 <% end %>
 
-<div class="flex justify-evenly gap-2 shadow-xs w-full p-2 overflow-x-auto">
-  <% Category.all.each do |category| %>
-    <%= link_to services_path(q: { combined_search: category.title }), data: { turbo_frame: "services_results" } do %>
-      <div class="flex flex-col justify-center items-center text-muted text-sm font-semibold group p-4 hover:text-accent-foreground rounded-md hover:cursor-pointer">
-        <span><i class="group-hover:text-primary text-muted text-xl p-2 <%= category.icon %>"></i></span>
-        <%= category.title %>
-      </div>
-    <% end %>
-  <% end %>
-</div>
-
- <div class="container mx-auto p-2">
-  <div class="flex flex-wrap justify-evenly items-stretch">
-    <% @services.each do |service| %>
-      <div class="w-full sm:w-full md:w-1/2 lg:w-1/3 p-5">
-        <%= render_card class: "flex flex-col justify-between shadow-lg group hover:bg-primary hover:text-primary-foreground h-full transition ease-in-out duration-300" do %>
-          <div class="flex flex-col gap-1">
-            <span class="self-end text-accent group-hover:text-primary-foreground">
-              <% icons_html = service.categories.map { |category| "<i class=\"#{category.icon}\"></i>" }.join('  ') %>
-              <%= raw icons_html %>
-            </span>
-            <h2><%= link_to service.title.titleize, service_path(service), class: "font-semibold text-xl hover:cursor-pointer group-hover:text-white" %></h2>
-          </div>
-          <div class="flex flex-col gap-2 mt-8">
-            <div class="flex gap-2 items-center">
-              <%= render_avatar src: service.user.avatar_url, alt: service.user.first_name, size: '60x60', class: "h-fit w-fit" %>
-              <div class="flex flex-col">
-                <span class="font-semibold text-lg"><%= number_to_currency(service.price, precision: 2, unit: "₱") %></span>
-                <span><%= link_to service.user&.full_name&.titleize, user_path(service.user), class: "text-sm hover:underline hover:cursor-pointer group-hover:text-white" %></span>
-                <span class="text-xs text-muted"><%= service.user.city.titleize %></span>
+  <%= turbo_frame_tag "services_results" do %>
+  <div class="container mx-auto p-2">
+    <div class="flex flex-wrap justify-evenly items-stretch">
+        <% @services.each do |service| %>
+          <div class="w-full sm:w-full md:w-1/2 lg:w-1/3 p-5">
+            <%= render_card class: "flex flex-col justify-between shadow-lg group hover:bg-primary hover:text-primary-foreground h-full transition ease-in-out duration-300" do %>
+              <div class="flex flex-col gap-1">
+                <span class="self-end text-accent group-hover:text-primary-foreground">
+                  <% icons_html = service.categories.map { |category| "<i class=\"#{category.icon}\"></i>" }.join('  ') %>
+                  <%= raw icons_html %>
+                </span>
+                <h2><%= link_to service.title.titleize, service_path(service), class: "font-semibold text-xl hover:cursor-pointer group-hover:text-white" %></h2>
               </div>
-            </div>
+              <div class="flex flex-col gap-2 mt-8">
+                <div class="flex gap-2 items-center">
+                  <%= render_avatar src: service.user.avatar_url, alt: service.user.first_name, size: '60x60', class: "h-fit w-fit" %>
+                  <div class="flex flex-col">
+                    <span class="font-semibold text-lg"><%= number_to_currency(service.price, precision: 2, unit: "₱") %></span>
+                    <span><%= link_to service.user&.full_name&.titleize, user_path(service.user), data: { turbo: false }, class: "text-sm hover:underline hover:cursor-pointer group-hover:text-white" %></span>
+                    <span class="text-xs text-muted"><%= service.user.city.titleize %></span>
+                  </div>
+                </div>
+              </div>
+            <% end %>
           </div>
         <% end %>
-      </div>
-    <% end %>
-  </div>
-  <div class="flex justify-center items-center text-sm text-muted p-10 mb-10">
-    <%= paginate @services %>
-  </div>
+    </div>
+    <div class="flex justify-center items-center text-sm text-muted p-10 mb-10">
+      <%= paginate @services %>
+    </div>
+  <% end %>
 </div> 
