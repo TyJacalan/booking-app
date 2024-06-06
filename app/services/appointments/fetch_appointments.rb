@@ -1,11 +1,9 @@
 module Appointments
   class FetchAppointments
     def self.call(user)
-      if user.freelancer?
-        user.freelancer_appointments.order(:start)
-      else
-        user.client_appointments.order(:start)
-      end
+      Appointment.where(client_id: user.id)
+                 .or(Appointment.where(freelancer_id: user.id))
+                 .order(:start)
     end
   end
 end
