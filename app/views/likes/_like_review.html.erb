@@ -6,23 +6,3 @@
         <span class="text-base text-[#FACC15]">Unlike</span>
     <% end %>
 <% end %>
-    
-<%= turbo_frame_tag dom_id(review, :likes_count) do %>
-    <%= render_hover_card do %>
-        <%= hover_card_trigger do %>
-          <% like = likes_count > 0 ? 'Likes' : 'Like' %>
-          <%= content_tag :span, "#{likes_count} #{like}", class: "text-sm" %>
-        <% end %>
-        <%= hover_card_content do %>
-          <div>
-            <ul>
-              <% Like.where(likeable_type: 'Review', likeable_id: review.id).each do |like| %>
-                <% user_id = like.user_id %>
-                <% user = User.find_by(id: user_id) %>
-                <li class="text-sm"><%= user.full_name %></li>
-              <% end %>
-            </ul>
-          </div>
-        <% end %>
-    <% end %>
-<% end %>

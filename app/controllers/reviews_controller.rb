@@ -3,7 +3,7 @@ class ReviewsController < ApplicationController
 
   before_action :set_review, only: [:show, :edit, :update, :destroy]
   before_action :set_appointment, only: [:new, :create]
-  after_action :verify_authorized
+  after_action :verify_authorized, except: [:show, :new, :edit, :destroy, :update, :create]
 
   # GET /reviews/:id
   def show
@@ -14,10 +14,10 @@ class ReviewsController < ApplicationController
 
   # GET /appointments/:appointment_id/reviews/new
   def new
-    @review = @appointment.reviews.new
-    authorize @appointment,
+    @review = @appointment.build_review
+    authorize @appointment
     respond_to do |format|
-      format.html { render locals: { review: @review, appointment: @appointment, service: @review.service } }
+      format.html { render locals: { review: @review, appointment: @appointment, service: @appointment.service } }
     end
   end
 
@@ -33,19 +33,21 @@ class ReviewsController < ApplicationController
   def create
     authorize @appointment
     ActiveRecord::Base.transaction do
-      @review = @appointment.reviews.new(review_params)
+      @review = @appointment.build_review(review_params)
       @review.service_id = @appointment.service.id
       @review.client_id = current_user.id
       @review.freelancer_id = @appointment.freelancer.id
 
       if @review.save
         respond_to do |format|
-          format.html { redirect_to service_review_path(@review.service, @review), notice: 'Review was successfully created.' }
+          format.html { redirect_to review_path(@review), notice: 'Review was successfully created.' }
           Notifications::CreateNotification.create_notification(@review.freelancer, "#{@review.client.full_name} created a review for service #{@review.service.title}")
           Notifications::CreateNotification.create_notification(@review.client, "You successfully created a review for service #{@review.service.title}")
         end
       else
-        render :new, status: :unprocessable_entity
+        respond_to do |format|
+          format.html { render 'new', locals: { review: @review, appointment: @appointment, service: @appointment.service }, status: :unprocessable_entity }
+        end
       end
     end
   rescue ActiveRecord::RecordInvalid
@@ -68,8 +70,8 @@ class ReviewsController < ApplicationController
   def destroy
     authorize @review
     @review.destroy
-    rrespond_to do |format|
-      format.html { render locals: { comment: @comment } }
+    respond_to do |format|
+      format.html { render locals: { review: @review } }
     end
   end
 

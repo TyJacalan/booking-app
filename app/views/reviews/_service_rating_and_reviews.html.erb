@@ -5,9 +5,9 @@
   <% if appointments.any? %>
     <ul>
       <% appointments.each do |appointment| %>
-        <li>
-          Appointment on <%= appointment.completed_at.strftime("%B %d, %Y") %> 
-          <%= link_to 'Create Review', new_review_path(appointment_id: appointment.id) %>
+        <li class="mb-2 text-base font-semibold">
+          Appointment on <%= appointment.end.strftime("%B %d, %Y") %> 
+          <%= link_to 'Create Review', new_appointment_review_path(appointment), class: "bg-[#FACC15] text-black text-base font-medium p-2 rounded ml-4" %>
         </li>
       <% end %>
     </ul>

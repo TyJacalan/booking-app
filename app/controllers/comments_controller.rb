@@ -49,8 +49,10 @@ class CommentsController < ApplicationController
       if @comment.save
         format.html { render 'new', locals: { review: @review, comment: Comment.new }, notice: 'Comment was successfully created.' }
         format.json { render json: @comment, status: :created }
-        Notifications::CreateNotification.create_notification(@comment.freelancer, "#{@comment.client.full_name} created a comment for review #{@comment.review_id}")
-        Notifications::CreateNotification.create_notification(@comment.client, "You successfully created a comment for review #{@comment.review_id}")
+        if @comment.client 
+          Notifications::CreateNotification.create_notification(@review.freelancer, "#{@comment.client.full_name} created a comment for review #{@comment.review_id}")
+          Notifications::CreateNotification.create_notification(@comment.client, "You successfully created a comment for review #{@comment.review_id}")
+        end
       else
         if current_user != @review.freelancer_id && current_user != @review.client_id
           format.html { redirect_to service_path(@review.service), status: :unprocessable_entity, notice: "Current user can't create a comment on this review" }

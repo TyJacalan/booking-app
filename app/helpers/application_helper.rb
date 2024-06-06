@@ -36,5 +36,9 @@ module ApplicationHelper
 
   def appointments_needing_review(user, service)
     Appointment.where(client_id: user.id, service_id: service.id, is_completed: true).left_joins(:review).where(reviews: { id: nil })
-  end  
+  end
+
+  def can_comment?(user, review)
+    user.id == review.client_id || user.id == review.freelancer_id
+  end
 end

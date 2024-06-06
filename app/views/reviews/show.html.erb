@@ -11,9 +11,11 @@
             <% end %>
         </div>
 
-        <% if current_user %>
+        <% if can_comment?(current_user, review) %>
             <%= turbo_frame_tag dom_id(review, :new_comment), src: new_review_comment_path(review), class: "mt-6 absolute bottom-0 left-0 bg-white w-full" do %>
             <% end %>
+        <% else %>
+            <div class="w-full text-center text-base font-semibold">You don't have permission to comment</div>
         <% end %>
     </div>
 </div>
