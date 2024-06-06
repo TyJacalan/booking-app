@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2024_05_30_113922) do
+ActiveRecord::Schema[7.1].define(version: 2024_06_06_122646) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -34,12 +34,12 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_113922) do
     t.index ["service_id"], name: "index_appointments_on_service_id"
   end
 
-  create_table 'blocked_dates', force: :cascade do |t|
-    t.date 'date', null: false
-    t.datetime 'created_at', null: false
-    t.datetime 'updated_at', null: false
-    t.bigint 'user_id', null: false
-    t.index ['user_id'], name: 'index_blocked_dates_on_user_id'
+  create_table "blocked_dates", force: :cascade do |t|
+    t.date "date", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["user_id"], name: "index_blocked_dates_on_user_id"
   end
 
   create_table "categories", force: :cascade do |t|
@@ -48,11 +48,11 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_113922) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
-  
-  create_table 'categories_services', id: false, force: :cascade do |t|
-    t.bigint 'service_id', null: false
-    t.bigint 'category_id', null: false
-    t.index ['service_id', 'category_id'], name: 'index_categories_services_on_service_id_and_category_id'
+
+  create_table "categories_services", id: false, force: :cascade do |t|
+    t.bigint "service_id", null: false
+    t.bigint "category_id", null: false
+    t.index ["service_id", "category_id"], name: "index_categories_services_on_service_id_and_category_id"
   end
 
   create_table "comments", force: :cascade do |t|
@@ -168,7 +168,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_05_30_113922) do
   add_foreign_key "appointments", "services"
   add_foreign_key "appointments", "users", column: "client_id"
   add_foreign_key "appointments", "users", column: "freelancer_id"
-  add_foreign_key 'blocked_dates', 'users'
+  add_foreign_key "blocked_dates", "users"
   add_foreign_key "comments", "appointments"
   add_foreign_key "comments", "reviews"
   add_foreign_key "comments", "users", column: "client_id"
