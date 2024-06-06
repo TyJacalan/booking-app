@@ -3,8 +3,8 @@
     <span class='w-32'><%= link_to 'Booking App', root_path, class: 'hover:cursor-pointer' %></span>
     <div class='w-full flex flex-row justify-center gap-4 text-sm text-muted-foreground'>
       <%# Add filters triggers here %>
-        <%= link_to 'Profile', user_path(current_user), class: 'hover:underline' if @user&.role&.name == 'freelancer' %>
-        <%= link_to 'Services', services_path, class: 'hover:underline' if @user&.role&.name == 'freelancer' %>
+        <%= link_to 'Profile', user_path(current_user), class: 'hover:underline' if @user&.freelancer? %>
+        <%= link_to 'Services', services_path, class: 'hover:underline' if @user&.freelancer? %>
         <%= link_to 'Appointments', appointments_path, class: 'hover:underline' if current_user == current_user %>
         <%= link_to 'Reviews', user_reviews_path(current_user) if user_signed_in? %>
         <%= link_to 'Calendar' if user_signed_in? %>
@@ -58,7 +58,7 @@
             <%= dropdown_menu_item do %>
               <%= link_to current_user.role.name == 'client' ? 'Profile' : 'Dashboard', current_user.role.name == 'client' ? edit_user_registration_path : user_path(current_user) %>
             <% end %>
-            <% if current_user&.role&.name == 'freelancer' %>
+            <% if current_user&.freelancer? %>
               <%= dropdown_menu_item do %>
                 <%= link_to 'My Services', services_path %>
               <% end %>
