@@ -10,7 +10,7 @@ module Notifications
     def self.notify_updated_appointment(appointment, user)
       content_for_client = "#{appointment.freelancer.full_name} #{appointment.status} your request."
       content_for_freelancer = "#{appointment.client.full_name} updated their request."
-      content = user.freelancer? ? content_for_client : content_for_freelancer
+      content = user.role.name == 'freelancer' ? content_for_client : content_for_freelancer
       create_notification(appointment.client, content)
     end
 

@@ -17,7 +17,7 @@
   <div class="w-full">
     <% if user_signed_in? %>
       <div class="flex w-full items-center justify-end gap-4  md:gap-2 lg:gap-4">
-        <% if current_user&.registered_freelancer? && current_user&.freelancer? %>
+        <% if current_user&.registered_freelancer? && current_user&.role&.name == 'freelancer' %>
           <%= render_button 'Offer your services',
             as: :link,
             variant: :outline,
@@ -76,7 +76,7 @@
             <%= dropdown_menu_item do %>
               <%= link_to current_user.role.name == 'client' ? 'Profile' : 'Dashboard', current_user.role.name == 'client' ? edit_user_registration_path : user_path(current_user) %>
             <% end %>
-            <% if current_user&.freelancer? %>
+            <% if current_user&.role&.name == 'freelancer' %>
               <%= dropdown_menu_item do %>
                 <%= link_to 'My Services', services_user_path(current_user) %>
               <% end %>
@@ -91,11 +91,11 @@
               <%= link_to 'My Appointments', appointments_path %>
             <% end %>
             <%= render_separator class: 'my-1' %>
-            <% if !current_user&.freelancer? && current_user.registered_freelancer? %>
+            <% if current_user&.role&.name == 'client' && current_user.registered_freelancer? %>
               <%= dropdown_menu_item do %>
                 <%= button_to 'Switch to freelancing', user_role_path(current_user.id, current_user.role.id), method: :patch %>
               <% end %>
-            <% elsif current_user&.freelancer? %>
+            <% elsif current_user&.role&.name == 'freelancer' %>
               <%= dropdown_menu_item do %>
                 <%= button_to 'Switch to client', user_role_path(current_user.id, current_user.role.id), method: :patch %>
               <% end %>
