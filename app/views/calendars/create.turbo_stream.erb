@@ -1,0 +1,5 @@
+<%= turbo_stream.update 'toasts', partial: 'layouts/toasts' %>
+
+<%= turbo_stream.prepend "day_content_#{@blocked_date.date}",
+  partial: 'components/ui/shared/blocked_badge',
+  locals: { date: @blocked_date.date } %>

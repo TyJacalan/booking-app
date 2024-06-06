@@ -1,3 +1,4 @@
+<%= turbo_frame_tag "services_results" do %>
 <div class="flex justify-between p-4 gap-2 w-full">
   <div class="lg:w-2/3 sm:w-full md:w-full p-4">
     <div class="mb-10">
@@ -18,9 +19,10 @@
     <%= render_card class: 'h-fit max-w-sm text-sm' do %>
       <%= turbo_frame_tag :new_appointment, 
         id: :new_appointment,
-        src: new_appointment_path(id: @service.id) do %>
+        src: new_appointment_path(service_id: @service.id) do %>
       <% end %>
     <% end %>
   </div>
 
 </div>
+<% end %>

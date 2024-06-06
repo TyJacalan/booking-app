@@ -1,37 +1,48 @@
 <% role = current_user&.role&.name %>
-<div class="flex flex-row gap-2 items-center mb-4">
-  <% if role == 'client' %> 
-    <span class="text-blue-500 font-semibold"><%= appointment.status.capitalize %></span>
-  <% elsif role == 'freelancer' %>
-    <%= render partial: 'form_edit_status', locals: { appointment: appointment } %>
+<div class='flex flex-col mb-4'>
+  <div class="flex flex-row gap-2 items-center mb-4">
+    <% if role == 'client' %> 
+      <span class="text-blue-500 font-semibold"><%= appointment.status.capitalize %></span>
+    <% elsif role == 'freelancer' %>
+      <%= render partial: 'form_edit_status', locals: { appointment: appointment } %>
+    <% end %>
+    <h2 class="text-lg text-gray-600 truncate"><%= appointment.service.title %></h2>
+    <% if current_user&.role&.name == 'client' %>
+      <%= turbo_frame_tag :edit_appointment_form, src: edit_appointment_path(appointment.id) do %>
+      <% end %>
+    <% end %>
+  </div>
+  <div class='flex flex-row gap-4 items-center'>
+  <% if current_user == appointment.client %>
+      <%= render_avatar src: appointment.freelancer.avatar_url, alt: appointment.freelancer.first_name %>
+      <%= link_to appointment.freelancer.full_name, user_path(appointment.freelancer), data: { turbo: false } %>
+  <% else %>
+      <%= render_avatar src: appointment.client.avatar_url, alt: appointment.client.first_name %>
+      <%= link_to appointment.client.full_name, user_path(appointment.client), data: { turbo: false } %>
   <% end %>
-  <h2 class="text-lg text-gray-600"><%= appointment.service.title %></h2>
-  <% if current_user&.role&.name == 'client' %>
-    <%= render partial: 'form_edit', locals: { appointment: appointment } %>
-  <% end %>
+  </div>
+  <div class="text-xl mt-4">
+    <%= number_to_currency(appointment.fee, unit: '₱') %>
+  </div>
 </div>
 
-<hr class="my-4">
+<div class="w-full flex flex-col gap-2">
+  <div class='flex flex-row gap-2'>
+    <span class='font-bold'>Start:</span>
+    <span><%= appointment.start.strftime('%B %d, %Y %I:%M %p') %></span>
+  </div>
+  <div class='flex flex-row gap-2'>
+    <span class='font-bold'>End:</span>
+    <span><%= appointment.end.strftime('%B %d, %Y %I:%M %p') %></span>
+  </div>
+</div>
+
+
+<%= render_separator class: 'my-4' %>
 
 <div class="h-12 overflow-hidden">
   <p class="truncate"><%= appointment.description %></p>
 </div>
-
-<div class="w-full flex flex-col gap-2">
-  <div class="flex gap-1">
-    <span class="font-semibold">Date:</span><span class="ml-2"><%= appointment.start.strftime('%B %d, %Y %I:%M %p') %></span>
-    <span class="font-semibold">to</span><span class="ml-2"><%= appointment.end.strftime('%B %d, %Y %I:%M %p') %></span>
-  </div>
-  <div class="flex flex-col gap-1 mt-4">
-    <span class="font-semibold">Client:</span><span class="ml-2"><%= appointment.client.full_name.titleize %></span>
-    <span class="font-semibold">Total Price:</span><span class="ml-2"><%= number_to_currency(appointment.fee, unit: '₱') %></span>
-  </div>
-  <div class="flex flex-col gap-1 mt-4">
-    <span class="font-semibold">Freelancer:</span><span class="ml-2"><%= appointment.freelancer.full_name.titleize %></span>
-    <span class="font-semibold">Status:</span><span class="ml-2"><%= appointment.status.capitalize %></span>
-  </div>
-</div>
-
 
 <% if current_user&.role&.name == 'client' %>
   <span class='absolute top-5 right-5'>

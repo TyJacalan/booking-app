@@ -1,14 +1,11 @@
-<div class="flex justify-between gap-4 p-10">
-  <div class="flex flex-col gap-4 w-full sm:w-full lg:w-2/3">
+<%= turbo_frame_tag "services_results" do %>
+<div class="flex flex-col lg:flex-row justify-between gap-4 p-4 lg:p-10">
+  <div class="flex flex-col gap-4 w-full lg:w-2/3">
     <div class="flex items-end gap-4 p-4">
-      <% if user.avatar_url.present? %>
-        <%= image_tag user.avatar_url, size: '70x70', class: 'rounded-full' %>
-      <% else %>
-        <%= image_tag 'default_avatar.jpg', alt: 'Default Avatar', size: '70x70', class: 'rounded-full' %>
-      <% end %>
+      <%= render_avatar src: current_user.avatar_url, alt: current_user.first_name, size: '70x70', class: 'h-fit w-fit' %>
       <div>
-        <h3 class="text-4xl font-semibold px-4"><%= user.full_name.titleize %></h3>
-        <span class="p-4 text-gray-500">
+        <h3 class="text-2xl lg:text-4xl font-semibold px-2 lg:px-4"><%= user.full_name.titleize %></h3>
+        <span class="block px-2 lg:px-4 text-gray-500">
           <% if user.skills.is_a?(String) %>
             <%= user.skills %>
           <% elsif user.skills.is_a?(Array) %>
@@ -19,27 +16,28 @@
         </span>
       </div>
     </div>
+
     <%= render_card do %>
-      <div class="flex flex-col gap-2">
-        <span class="p-2"><%= user.biography %></span>
+      <div class="flex flex-col gap-2 p-4">
+        <span><%= user.biography %></span>
       </div>
     <% end %>
 
     <%= render_card title: 'Quick Stats' do %>
-      <div class="flex justify-evenly items-center gap-2 p-4">
-        <div class="flex flex-col min-w-[200px] text-center p-4 border rounded-lg">
-          <span class="font-semibold text-xl">Services</span>
-          <span class=""><%= @all_services.count %></span>
+      <div class="flex flex-wrap justify-evenly items-center gap-4 p-4">
+        <div class="flex flex-col min-w-[150px] text-center gap-2 p-4 border rounded-lg">
+          <span class="font-semibold text-lg lg:text-xl">Services</span>
+          <span><%= @all_services.count %></span>
         </div>
-        <div class="flex flex-col min-w-[200px] text-center p-4 border rounded-lg">
-          <span class="font-semibold text-xl">Reviews</span>
-          <span class=""><%= @all_reviews.count %></span>
+        <div class="flex flex-col min-w-[150px] text-center gap-2 p-4 border rounded-lg">
+          <span class="font-semibold text-lg lg:text-xl">Reviews</span>
+          <span><%= @all_reviews.count %></span>
         </div>
       </div>
     <% end %>
 
     <%= render_card title: 'Services' do %>
-      <div class="flex flex-col gap-2 p-4 mt-4">
+      <div class="flex flex-col gap-4 p-4">
         <% services.each do |service| %>
           <div class="flex flex-col gap-2 p-2">
             <div class="flex justify-between items-center">
@@ -51,22 +49,23 @@
             </div>
           </div>
         <% end %>
-        <div class="flex justify-center items-center p-4 mt-4">
-          <%= paginate reviews %>
+        <div class="flex justify-center items-center p-4">
+          <%= paginate services %>
+        </div>
       </div>
-      <% end %>
-      </div>
+    <% end %>
   </div>
 
-  <div class="flex flex-col gap-4 w-full sm:w-full lg:w-1/3">
+  <div class="flex flex-col gap-4 w-full lg:w-1/3">
     <%= render_card title: "Profile" do %>
-      <div class="flex flex-col gap-2 p-4 mt-4">
+      <div class="flex flex-col gap-2 p-4">
         <span class="font-semibold">Birthdate: </span><span class="text-gray-500 p-2"><%= user.birthdate.strftime('%B %d, %Y') %></span>
         <span class="font-semibold">Email: </span><span class="text-gray-500 p-2"><%= user.email %></span>
         <span class="font-semibold">Mobile: </span><span class="text-gray-500 p-2"><%= user.mobile %></span>
         <span class="font-semibold">Location: </span><span class="text-gray-500 p-2"><%= user.address %></span>
       </div>
     <% end %>
+
     <%= render_card title: 'Reviews' do %>
       <% reviews.each do |review| %>
         <div class="flex flex-col gap-2 p-4 border-b-gray-500 mt-4">
@@ -78,13 +77,26 @@
             <span class="text-yellow-500">
               <%= "★" * review.overall_rating %><%= "☆" * (5 - review.overall_rating) %>
             </span>
+      <div class="flex flex-col gap-2 p-4">
+        <% reviews.each do |review| %>
+          <div class="flex flex-col gap-2 p-4 border-b border-gray-200">
+            <div class="flex items-center gap-2">
+              <span class="font-semibold"><%= review.client.full_name %></span>
+              <span class="text-xs text-gray-500"><%= review.created_at.strftime("%B %d, %Y at %I:%M %p") %></span>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="text-yellow-500">
+                <%= "★" * review.rating %><%= "☆" * (5 - review.rating) %>
+              </span>
+            </div>
+            <p><%= review.subject %></p>
           </div>
-          <%= review.subject %>
+        <% end %>
+        <div class="flex justify-center items-center p-4">
+          <%= paginate reviews %>
         </div>
-      <% end %>
-      <div class="flex justify-center items-center p-4 mt-4">
-        <%= paginate reviews %>
       </div>
     <% end %>
   </div>
 </div>
+<% end %>

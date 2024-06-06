@@ -16,7 +16,7 @@ module Paymongo
           endpoint: "payment_methods/#{id}"
         )
       end
-      
+
       def update_payment_method(id)
         body = { data: { attributes: params } }
         request(

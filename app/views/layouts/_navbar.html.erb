@@ -2,25 +2,34 @@
   <nav class='md:w-full hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:justify-between md:gap-4 md:text-sm lg:gap-6'>
     <span class='w-32'><%= link_to 'Booking App', root_path, class: 'hover:cursor-pointer' %></span>
     <div class='w-full flex flex-row justify-center gap-4 text-sm text-muted-foreground'>
-      <%# Add filters triggers here %>
+      <% if params[:controller] == 'users' && user_signed_in? %>
+        <%= link_to 'Profile', user_path, class: 'hover:underline' %>
+        <%= link_to 'Services', services_user_path, class: 'hover:underline' if @user&.role&.name == 'freelancer' %>
+        <%= link_to 'Reviews', reviews_user_path %>
+        <% if @user == current_user %>
+          <%= link_to 'Appointments', appointments_path, class: 'hover:underline' %>
+          <%= link_to 'Calendar', calendars_path %>
+        <% end %>
+      <% end %>
     </div>
   </nav>
 
   <div class="w-full">
     <% if user_signed_in? %>
       <div class="flex w-full items-center justify-end gap-4  md:gap-2 lg:gap-4">
-        <%# Add Service %>
-        <div class="flex justify-center items-center">
-          <div class="rounded-lg hover:bg-gray-100 p-2 transition duration-300 ease-in-out">
-            <%= link_to policy(Service).new? ? new_service_path : new_freelancer_path, class: "font-semibold" do %>
-              <% if current_user&.role&.name == 'freelancer' %>
-                Offer your services
-              <% else %>
-                Become a freelancer  
-              <% end %>
-            <% end %>
-          </div>
-        </div>
+        <% if current_user&.registered_freelancer? && current_user&.role&.name == 'freelancer' %>
+          <%= render_button 'Offer your services',
+            as: :link,
+            variant: :outline,
+            href: new_service_path %>
+        <% end %>
+
+        <% unless current_user&.registered_freelancer? %>
+          <%= render_button 'Become a freelancer',
+            as: :link,
+            variant: :outline,
+            href: new_freelancer_path %>
+        <% end %>
 
         <%# mode toggle %>
         <%= render_dropdown_menu do %>
@@ -57,7 +66,7 @@
         <%= render_dropdown_menu do %>
           <%= dropdown_menu_trigger do %>
             <div class='p-2'>
-              <%= render_avatar src: current_user.avatar_url %>
+              <%= render_avatar src: current_user.avatar_url, alt: current_user.first_name %>
             </div>
           <% end %>
 
@@ -69,24 +78,30 @@
             <% end %>
             <% if current_user&.role&.name == 'freelancer' %>
               <%= dropdown_menu_item do %>
-                <%= link_to 'My Services', user_services_path(current_user) %>
+                <%= link_to 'My Services', services_user_path(current_user) %>
               <% end %>
+              <%= dropdown_menu_item do %>
+                <%= link_to 'My Calendar', calendars_path %>
+              <% end %>
+            <% end %>
+            <%= dropdown_menu_item do %>
+              <%= link_to 'My Notifications', notifications_path %>
             <% end %>
             <%= dropdown_menu_item do %>
               <%= link_to 'My Appointments', appointments_path %>
             <% end %>
-            <% if current_user&.role&.name == 'client' %>
+            <%= render_separator class: 'my-1' %>
+            <% if current_user&.role&.name == 'client' && current_user.registered_freelancer? %>
               <%= dropdown_menu_item do %>
-                <%= button_to 'Switch to freelancing', user_role_path(current_user.id, current_user.role.id), method: :patch, class: 'text-muted-foreground' %>
+                <%= button_to 'Switch to freelancing', user_role_path(current_user.id, current_user.role.id), method: :patch %>
+              <% end %>
+            <% elsif current_user&.role&.name == 'freelancer' %>
+              <%= dropdown_menu_item do %>
+                <%= button_to 'Switch to client', user_role_path(current_user.id, current_user.role.id), method: :patch %>
               <% end %>
             <% end %>
-            <% if current_user&.role&.name == 'freelancer' %>
-              <%= dropdown_menu_item do %>
-                <%= button_to 'Switch to client', user_role_path(current_user.id, current_user.role.id), method: :patch, class: 'text-muted-foreground' %>
-              <% end %>
-           <% end %>
             <%= dropdown_menu_item do %>
-              <%= button_to "Logout", destroy_user_session_path, method: :delete, class: 'text-muted-foreground' %>
+              <%= button_to "Logout", destroy_user_session_path, method: :delete %>
             <% end %>
           <% end %>
         <% end %>
