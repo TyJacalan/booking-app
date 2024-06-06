@@ -1,4 +1,4 @@
-<% options = [{ label: 'Accept', value: 'accepted' }, { label: 'Reject', value: 'rejected' }] %>
+<% options = [{label: 'Pending', value: 'pending'}, { label: 'Accept', value: 'accepted' }, { label: 'Reject', value: 'rejected' }] %>
 
 <%= render_form_for(appointment, url: appointment_path(appointment), 
              method: :patch, 
@@ -7,11 +7,10 @@
              html: { id: "status_form_#{appointment.id}" }) do |f| %>
              <%= f.select_field :status,
                selected: appointment.status,
-               disabled: 0,
+               disabled: 'pending',
                id: "status_form_#{appointment.id}",
                class: 'w-full',
                data: { action: 'change->auto-submit#submit' } do |select| %>
-               <%= select.option label: 'Pending', value: 0 %>
     <% options.each do |option| %>
       <%= select.option label: option[:label], value: option[:value] %>
     <% end %>

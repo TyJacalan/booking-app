@@ -1,30 +1,39 @@
 class ServicesController < ApplicationController
-  before_action :set_service, only: %i[show]
-  before_action :set_categories, only: %i[new show]
-  before_action :set_session_params, only: %i[create]
-  before_action :set_session_form, only: [:new]
+  before_action :set_service, only: %i[show edit update destroy]
+  before_action :set_categories, only: %i[new edit update show]
+  before_action :set_session_params, only: %i[create update]
+  before_action :set_session_form, only: %i[new edit]
   after_action :verify_authorized, except: %i[index new show]
 
   def index
+    # ULTIMATE SUPREME SEARCH LOGIC QUERY
     @q = Service.ransack(params[:q])
+
     if params[:q].present? && params[:q][:combined_search].present?
       search_query = params[:q][:combined_search]
-      @services = Service.joins(:user).where("concat_ws(' ', users.full_name, services.title, users.city) ILIKE ?",
-                                             "%#{search_query}%")
+      terms = search_query.split
+
+      service_ids = Service.joins(:user, :categories).where(
+        terms.map do
+          "concat_ws(' ', users.full_name, services.title, categories.title, users.city) ILIKE ?"
+        end.join(' AND '), *terms.map { |term| "%#{term}%" }
+      ).pluck(:id).uniq
+
+      @services = Service.where(id: service_ids).includes(:user, :categories)
     else
-      @services = @q.result.includes(:user)
+      @services = @q.result.includes(:user, :categories)
     end
 
     authorize @services
-  end
 
-  def new
-    @service = Service.new
+    respond_to do |format|
+      format.html
+      format.turbo_stream
+    end
   end
 
   def create
-    @service = Service.new(service_params)
-    @service.user = current_user
+    @service = current_user.services.build(service_params)
     authorize @service
 
     if @service.save
@@ -36,14 +45,34 @@ class ServicesController < ApplicationController
   end
 
   def show
-    @service = set_service
     authorize @service
+  end
+
+  def edit
+    assign_service_to_sessions
+    authorize @service
+  end
+
+  def update
+    authorize @service
+
+    if @service.update(service_params)
+      redirect_to @service, notice: 'Service was successfully updated.'
+    else
+      render :edit
+    end
+  end
+
+  def destroy
+    authorize @service
+    @service.destroy
+    redirect_to services_path, notice: 'Service was successfully deleted.'
   end
 
   private
 
   def set_service
-    @set_service ||= Service.find(params[:id])
+    @service = Service.find(params[:id])
   end
 
   def service_params
@@ -55,13 +84,11 @@ class ServicesController < ApplicationController
   end
 
   def set_session_params
-    category_ids = session[:selected_categories].map { |category| category['id'] } || []
-
     session_params = {
       title: session[:title],
       description: session[:description],
       price: session[:price],
-      category_ids:
+      category_ids: session[:selected_categories].map { |category| category['id'] } || []
     }
     params[:service] ||= {}
     params[:service].merge!(session_params)
@@ -76,5 +103,14 @@ class ServicesController < ApplicationController
 
   def set_categories
     @categories = Category.all
+  end
+
+  def assign_service_to_sessions
+    session[:service_id] = @service.id
+    session[:title] = @service.title
+    session[:description] = @service.description
+    session[:price] = @service.price
+    session[:selected_categories] = @service.categories
+    session[:action] = 'edit'
   end
 end

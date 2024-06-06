@@ -1,0 +1,3 @@
+<%= turbo_stream.update 'toasts', partial: 'layouts/toasts' %>
+
+<%= turbo_stream.remove "blocked_badge_#{@blocked_date.date}" %>
