@@ -77,7 +77,10 @@ class User < ApplicationRecord
   def set_address
     return unless city.present? && country.present?
 
-    self.address = "#{city}, #{country}"
+    city_without_prefix = city.gsub(/^city of /i, '') # Remove 'city of' prefix (case-insensitive)
+    city_without_suffix = city_without_prefix.gsub(/\s*\([^)]+\)$/, '').strip.downcase
+
+    self.address = "#{city_without_suffix}, #{country}"
     errors.add(:city, 'must correspond to a real city') unless Geocoder.search(city).first
   end
 
