@@ -1,4 +1,7 @@
-<%= turbo_frame_tag "services_results", class: "flex flex-wrap justify-evenly items-start gap-4" do %>
+<div class="w-full flex flex-col items-center gap-2">
   <%= render 'search_form' %>
-  <%= render 'services' %>
-<% end %>
+  <%= render 'categories' %>
+</div>
+
+<%= render 'services' %>
+
