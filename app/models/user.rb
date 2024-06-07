@@ -79,8 +79,9 @@ class User < ApplicationRecord
 
     city_without_prefix = city.gsub(/^city of /i, '') # Remove 'city of' prefix (case-insensitive)
     city_without_suffix = city_without_prefix.gsub(/\s*\([^)]+\)$/, '').strip.downcase
+    city = city_without_suffix
 
-    self.address = "#{city_without_suffix}, #{country}"
+    self.address = "#{city}, #{country}"
     errors.add(:city, 'must correspond to a real city') unless Geocoder.search(city).first
   end
 
