@@ -1,6 +1,14 @@
 <header class='sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background px-4 mx:px-6'>
   <nav class='md:w-full hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:justify-between md:gap-4 md:text-sm lg:gap-6'>
-    <span class='w-32'><%= link_to 'Booking App', root_path, class: 'hover:cursor-pointer' %></span>
+    <span class='w-32'>
+      <%= link_to root_path, class: 'hover:cursor-pointer' do %>
+        <div class="flex items-center gap-2 p-2 sm:p-4">
+          <%= image_tag "logo-base-256x256.png", class: 'w-12 h-12 sm:w-16 sm:h-16' %>
+          <span class="text-primary font-bold text-lg sm:text-md">SkillSetGo</span>
+        </div>
+      <% end %>
+
+    </span>
     <div class='w-full flex flex-row justify-center gap-4 text-sm text-muted-foreground'>
       <% if params[:controller] == 'users' && user_signed_in? %>
         <%= link_to 'Profile', user_path, class: 'hover:underline' %>
