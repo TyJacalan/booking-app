@@ -4,3 +4,7 @@
 @tailwind utilities;
 
 @import "font-awesome";
+
+::-webkit-scrollbar {
+    display: none;
+ }
