@@ -25,11 +25,6 @@ class ServicesController < ApplicationController
     end
 
     @services = @services.page(params[:page]).per(12)
-
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
   end
 
   def create
