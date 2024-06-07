@@ -70,7 +70,7 @@ class User < ApplicationRecord
     errors.add(:password, 'must contain at least one letter') unless password.match?(/[a-zA-Z]/)
     errors.add(:password, 'must contain at least one number') unless password.match?(/\d/)
     return if password.match?(/[!@#$%^&*]/)
-
+    
     errors.add(:password, 'must contain at least one special character')
   end
 
@@ -80,6 +80,8 @@ class User < ApplicationRecord
     city_without_prefix = city.gsub(/^city of /i, '') # Remove 'city of' prefix (case-insensitive)
     city_without_suffix = city_without_prefix.gsub(/\s*\([^)]+\)$/, '').strip.downcase
     city = city_without_suffix
+
+    Rails.logger.info "city: #{city}, country: #{country}"
 
     self.address = "#{city}, #{country}"
     errors.add(:city, 'must correspond to a real city') unless Geocoder.search(city).first
