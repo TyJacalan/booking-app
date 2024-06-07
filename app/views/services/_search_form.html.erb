@@ -1,5 +1,5 @@
 <div class="flex justify-center">
-  <form class="flex w-2/3 h-full mt-14 overflow-x-auto" action="<%= services_path %>" method="get">
+  <form class="flex w-2/3 h-full mt-12 overflow-x-auto" action="<%= services_path %>" method="get">
       <%= search_form_for @q, url: services_path, method: :get do |f| %>
         <div class="form-group w-full flex flex-row justify-center items-center shadow-l">
           <%= f.select :categories_title_cont, options_for_select(Category.pluck(:title, :title), params.dig(:q, :categories_title_cont)), { include_blank: 'Category'}, class: "text-gray-500 p-5 pl-12 border border-gray-300 border-r-transparent rounded-l-full bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500 hover:bg-gray-100 dark:text-slate-50 dark:bg-black select-placeholder-gray-300 dark:select.placeholder-gray-100" %>          
@@ -9,7 +9,7 @@
 
           <span class="relative right-14 bottom-4">
             <% if params[:q].present? %>
-              <%= link_to 'x', root_path, class: "text-primary text-xl absolute right-2 dark:text-white" %>
+              <%= link_to 'x', request.path, class: "text-primary text-xl absolute right-2 dark:text-white" %>
             <% end %>
           </span>
 
