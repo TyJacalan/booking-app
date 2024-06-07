@@ -1,18 +1,14 @@
-<% options = [{label: 'Pending', value: 'pending'}, { label: 'Accept', value: 'accepted' }, { label: 'Reject', value: 'rejected' }] %>
-
-<%= render_form_for(appointment, url: appointment_path(appointment), 
-             method: :patch, 
-             data: { controller: 'auto-submit' }, 
-             class: 'w-28',
-             html: { id: "status_form_#{appointment.id}" }) do |f| %>
-             <%= f.select_field :status,
-               selected: appointment.status,
-               disabled: 'pending',
-               id: "status_form_#{appointment.id}",
-               class: 'w-full',
-               data: { action: 'change->auto-submit#submit' } do |select| %>
-    <% options.each do |option| %>
-      <%= select.option label: option[:label], value: option[:value] %>
+<%= render_form_for(appointment, url: appointment_path(appointment), method: :patch, data: { controller: 'auto-submit' }, class: 'w-28', html: { id: "status_form_#{appointment.id}" }) do |f| %>
+  <% if appointment.end <= Date.today && appointment.status == 'accepted' %>
+    <%= f.select_field :status, selected: appointment.status, disabled: 'accepted', id: "status_form_#{appointment.id}", class: 'w-full', data: { action: 'change->auto-submit#submit' } do |select| %>
+        <%= select.option label: 'Accepted', value: :accepted %>
+        <%= select.option label: 'Completed', value: :completed %>
+    <% end %>
+  <% else %>
+    <%= f.select_field :status, selected: appointment.status, disabled: 'pending', id: "status_form_#{appointment.id}", class: 'w-full', data: { action: 'change->auto-submit#submit' } do |select| %>
+      <%= select.option label: 'Pending', value: :pending %>
+      <%= select.option label: 'Accept', value: :accepted %>
+      <%= select.option label: 'Reject', value: :rejected %>
     <% end %>
   <% end %>
 <% end %>
