@@ -70,7 +70,7 @@ class User < ApplicationRecord
     errors.add(:password, 'must contain at least one letter') unless password.match?(/[a-zA-Z]/)
     errors.add(:password, 'must contain at least one number') unless password.match?(/\d/)
     return if password.match?(/[!@#$%^&*]/)
-    
+
     errors.add(:password, 'must contain at least one special character')
   end
 
@@ -84,7 +84,8 @@ class User < ApplicationRecord
     Rails.logger.info "city: #{city}, country: #{country}"
 
     self.address = "#{city}, #{country}"
-    errors.add(:city, 'must correspond to a real city') unless Geocoder.search(city).first
+    Rails.logger.info "address: #{self.address}"
+    #errors.add(:city, 'must correspond to a real city') unless Geocoder.search(city).first
   end
 
   def set_fullname
