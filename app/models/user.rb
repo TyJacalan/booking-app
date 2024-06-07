@@ -1,13 +1,15 @@
 class User < ApplicationRecord
-  # Associations for client user
-  has_many :client_reviews, class_name: 'Review', foreign_key: 'client_id', dependent: :destroy 
-  has_many :client_comments, class_name: 'Comment', foreign_key: 'client_id', dependent: :destroy 
-  # Associations for freelancer user
+  has_many :client_reviews, class_name: 'Review', foreign_key: 'client_id', dependent: :destroy
+  has_many :client_comments, class_name: 'Comment', foreign_key: 'client_id', dependent: :destroy
   has_many :freelancer_reviews, class_name: 'Review', foreign_key: 'freelancer_id', dependent: :destroy
   has_many :client_comments, class_name: 'Comment', foreign_key: 'freelancer_id', dependent: :destroy 
-  has_many :services, dependent: :destroy
-
+  has_many :client_appointments, class_name: 'Appointment', foreign_key: 'client_id', dependent: :destroy
+  has_many :freelancer_appointments, class_name: 'Appointment', foreign_key: 'freelancer_id', dependent: :destroy
+  has_many :blocked_dates, dependent: :destroy
   has_many :notifications, dependent: :destroy
+  has_many :reviews, class_name: 'Review', foreign_key: 'client_id', dependent: :destroy
+  has_many :reviews, class_name: 'Review', foreign_key: 'freelancer_id', dependent: :destroy
+  has_many :services, dependent: :destroy
 
   belongs_to :role
 
@@ -33,10 +35,7 @@ class User < ApplicationRecord
   validates :first_name, :last_name, presence: true, length: { minimum: 2, maximum: 30 }
   validates :email, presence: true, uniqueness: true, format: { with: URI::MailTo::EMAIL_REGEXP }
   validates :biography, presence: true, length: { minimum: 10, maximum: 500 }, if: :freelancer_registering?
-  validates :skills, presence: true, if: :freelancer_registering?
-  validates :city, presence: true, if: :freelancer_registering?
-  validates :country, presence: true, if: :freelancer_registering?
-  validates :role_id, presence: true
+  validates :birthdate, :skills, :city, :mobile, presence: true, if: :freelancer_registering?
   validate :password_complexity
 
   after_validation :geocode, if: -> { address.present? && address_changed? }
@@ -48,6 +47,14 @@ class User < ApplicationRecord
       user.full_name = auth.info.name
       user.avatar_url = auth.info.image
     end
+  end
+
+  def freelancer?
+    role&.name == 'freelancer'
+  end
+
+  def registered_freelancer?
+    [biography, birthdate, skills, mobile, address].all?(&:present?)
   end
 
   private
@@ -74,6 +81,11 @@ class User < ApplicationRecord
   def set_address
     return unless city.present? && country.present?
 
+    city_without_prefix = city.gsub(/^city of /i, '') # Remove 'city of' prefix (case-insensitive)
+    city_without_suffix = city_without_prefix.gsub(/\s*\([^)]+\)$/, '').strip.downcase
+    city = city_without_suffix
+
+    self.city = city
     self.address = "#{city}, #{country}"
     errors.add(:city, 'must correspond to a real city') unless Geocoder.search(city).first
   end

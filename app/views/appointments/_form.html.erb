@@ -1,13 +1,13 @@
 <div class='flex flex-col gap-4' data-controller='appointment'>
   <div class='mb-4'>
-    <span class='text-2xl font-bold'><%= number_to_currency(price, unit: '₱') %></span>
+    <span class='text-2xl font-bold'><%= number_to_currency(@service.price, unit: '₱') %></span>
     <span class='text-xs text-muted-foreground italic'>/ hour</span>
   </div>
 
   <%= render_form_for appointment, class: 'h-full w-full max-w-md mx-auto flex flex-col gap-4' do |f| %>
-    <%= f.hidden_field :service_id, value: service.id %>
+    <%= f.hidden_field :service_id, value: @service.id %>
     <%= f.hidden_field :client_id, value: current_user&.id %>
-    <%= f.hidden_field :freelancer_id, value: service.user_id %>
+    <%= f.hidden_field :freelancer_id, value: @service.user.id, data: { appointment_target: 'freelancerId' } %>
     <%= f.hidden_field :start, data: { appointment_target: 'startDate' } %>
     <%= f.hidden_field :end, data: { appointment_target: 'endDate' } %>
 
@@ -41,16 +41,16 @@
   <div class='flex flex-col gap-4'>
     <div class='w-full flex flex-row justify-between'>
       <div class='underline'>
-        <span data-appointment-target='fee'><%= price %></span>
+        <span data-appointment-target='fee'><%= @service.price %></span>
         <span>x</span>
         <span data-appointment-target='duration'>1</span>
       </div>
-      <span data-appointment-target='price'><%= number_to_currency(price, unit: '₱') %></span>
+      <span data-appointment-target='price'><%= number_to_currency(@service.price, unit: '₱') %></span>
     </div>
     <div class='w-full flex flex-row justify-between'>
       <span class='underline'>Service fee charge</span>
       <span data-appointment-target='serviceFee'>
-        <%= number_to_currency(service_fee, unit: '₱' )%>
+        <%= number_to_currency(@service.service_fee, unit: '₱' )%>
       </span>
     </div>
 
@@ -58,7 +58,7 @@
 
     <div class='w-full flex flex-row justify-between font-bold'>
       <span>Total fee before taxes</span>
-      <span data-appointment-target='totalFee'><%= number_to_currency(@total_fee, unit: '₱') %></span>
+      <span data-appointment-target='totalFee'><%= number_to_currency(@service.total_fee, unit: '₱') %></span>
     </div>
   </div>
 </div>

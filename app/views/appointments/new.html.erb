@@ -1,7 +1,5 @@
 <%= turbo_frame_tag :new_appointment do %>
   <%= render partial: 'form', 
     locals: { appointment: @appointment, 
-              price: @price,
-              service: @service,
-              service_fee: @service_fee } %>
+              service: @service } %>
 <% end %>

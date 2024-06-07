@@ -13,15 +13,15 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
 
   def text_field(method, options = {})
     error_class = @object&.errors&.[](method)&.any? ? 'error' : ''
-    name = object_name ? "#{object_name}[#{method}]" : method.to_s
-    id = object_name ? "#{object_name}_#{method}" : method.to_s
+    name = object_name && !options[:ransack] ? "#{object_name}[#{method}]" : method.to_s
+    id = object_name && !options[:ransack] ? "#{object_name}_#{method}" : method.to_s
     options[:class] = @template.tw("#{options[:class]} #{error_class}")
     value = @object&.send(method) || ''
 
     @template.render_input(
-      name: name,
-      id: id,
-      value: value,
+      name:,
+      id:,
+      value:,
       type: 'text', **options
     )
   end
@@ -34,9 +34,9 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
     value = @object&.send(method) || ''
 
     @template.render_input(
-      name: name,
-      id: id,
-      value: value,
+      name:,
+      id:,
+      value:,
       type: 'number', **options
     )
   end
@@ -49,10 +49,21 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
     value = @object&.send(method) || ''
 
     @template.render_input(
-      name: name,
-      id: id,
-      value: value,
+      name:,
+      id:,
+      value:,
       type: 'password', **options
+    )
+  end
+
+  def date_field(method, options = {})
+    error_class = @object.errors[method].any? ? 'error' : ''
+    options[:class] = @template.tw("#{options[:class]} #{error_class}")
+    @template.render_input(
+      name: "#{object_name}[#{method}]",
+      id: "#{object_name}_#{method}",
+      value: @object.send(method),
+      type: 'date', **options
     )
   end
 
@@ -64,9 +75,9 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
     value = @object&.send(method) || ''
 
     @template.render_input(
-      name: name,
-      id: id,
-      value: value,
+      name:,
+      id:,
+      value:,
       type: 'email', **options
     )
   end
@@ -79,9 +90,9 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
     value = @object&.send(method) || ''
 
     @template.render_textarea(
-      name: name,
-      id: id,
-      value: value,
+      name:,
+      id:,
+      value:,
       **options,
       &block
     )
@@ -89,13 +100,13 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
 
   def select_field(method, options = {}, &block)
     error_class = @object&.errors&.[](method)&.any? ? 'error' : ''
-    name = object_name ? "#{object_name}[#{method}]" : method.to_s
-    id = object_name ? "#{object_name}_#{method}" : method.to_s
+    name = object_name && !options[:ransack] ? "#{object_name}[#{method}]" : method.to_s
+    id = object_name && !options[:ransack] ? "#{object_name}_#{method}" : method.to_s
     options[:class] = @template.tw("#{options[:class]} #{error_class}")
 
     select_html = @template.render_select(
-      name: name,
-      id: id,
+      name:,
+      id:,
       selected: options[:selected],
       **options,
       &block
@@ -121,7 +132,7 @@ class Shadcn::FormBuilder < ActionView::Helpers::FormBuilder
   end
 
   def error_message(method, options = {})
-    return unless @object&.errors[method].any?
+    return unless @object&.errors&.[](method)&.any?
 
     method_name = method.to_s.capitalize.gsub('_', ' ')
     error_message = @object.errors[method].to_sentence

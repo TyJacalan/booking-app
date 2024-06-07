@@ -15,7 +15,10 @@ module Paymongo
         raise ClientError, 'Empty response from Api' if response.body.blank?
 
         error_data = JSON.parse(response.body)
-        raise ApiError.new(error_data['errors'].first['code'], error_data['errors'].first['detail']) if error_data.key?('errors')
+        if error_data.key?('errors')
+          raise ApiError.new(error_data['errors'].first['code'],
+                             error_data['errors'].first['detail'])
+        end
 
         raise ClientError, "Unknown API error: #{response.body}"
       end

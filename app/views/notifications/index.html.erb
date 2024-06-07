@@ -1,18 +1,43 @@
-<%= render_table do %>
-  <%= table_head do %>
-    <%= table_header '', class: 'w-2' %>
-    <%= table_header 'Notification' %>
-  <% end %>
-  <%= table_body do %>
-    <% @notifications.each do |notification| %>
-      <%= table_row do %>
-        <%= table_column do %>
-          <%= render_form_for notification, method: :patch do |f| %>
-            <%= f.checkbox :read, label: nil %>
-          <% end %>
-        <% end %>
-        <%= table_column notification.content %>
+<div class='h-full w-full p-12'>
+  <%= form_with url: batch_update_notification_path(:update), method: :patch do |f| %> 
+    <ul class='hit w-full flex flex-col text-sm' data-controller='checkbox-select-all'>
+      <li class='h-10 w-full flex flex-row items-center gap-4 px-4 py-2'>
+        <div class='w-12'>
+          <div class='h-full w-full flex items-center justify-center'>
+            <div class='h-fit w-full flex flex-row items-center gap-1 p-1 bg-muted border border-accent rounded-sm'>
+              <%= check_box_tag :select_all, data: { checkbox_select_all_target: 'checkboxAll' }, class: "peer h-4 w-4 shrink-0 rounded-sm border border-primary hover:cursor-pointer focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50" %>
+              <%= render_dropdown_menu do %>
+                <%= dropdown_menu_trigger do %>
+                  <%= render 'icons/chevron_down' %>
+                <% end %>
+                <%= dropdown_menu_content do %>
+                  <div class='h-fit w-36 flex flex-col gap-2 p-2 font-normal text-xs text-muted-foreground'>
+                    <%= button_tag :submit, value: :mark_read, class: 'flex flex-row items-center justify-between gap-2 hover:cursor-pointer hover:text-foreground' do %>
+                      <%= render 'icons/envelope_open' %>
+                      <span>Mark as read</span>
+                    <% end %>
+                    <%= button_tag :submit, value: :mark_unread, class: 'flex flex-row items-center justify-between gap-2 hover:cursor-pointer hover:text-foreground' do %>
+                      <%= render 'icons/envelope' %>
+                      <span>Mark as unread</span>
+                    <% end %>
+                  </div>
+                <% end %>
+              <% end %>
+            </div>
+          </div>
+        </div>
+        <div>
+          <span class='text-muted-foreground'>Notifications</span>
+        </div>
+      </li>
+      <% @notifications.each do |notification| %>
+        <div id=<%=dom_id(notification)%>>
+          <%= render partial: 'notification', locals: { notification: notification } %>
+        </div>
       <% end %>
-    <% end %>
+    </ul>
   <% end %>
-<% end %>
+  <div class='mt-4 w-full flex items-center justify-center'>
+    <%= paginate @notifications %>
+  </div>
+</div>

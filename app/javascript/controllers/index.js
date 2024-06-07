@@ -2,52 +2,58 @@
 // Run that command whenever you add a new controller or create them with
 // ./bin/rails generate stimulus controllerName
 
-import { application } from "./application"
+import { application } from "./application";
 
-import AppointmentController from "./appointment_controller"
-application.register("appointment", AppointmentController)
+import AppointmentController from "./appointment_controller";
+application.register("appointment", AppointmentController);
 
-import AutoSubmitController from "./auto_submit_controller"
-application.register("auto-submit", AutoSubmitController)
+import AutoSubmitController from "./auto_submit_controller";
+application.register("auto-submit", AutoSubmitController);
 
-import PasswordVisibilityController from "./password_visibility_controller"
-application.register("password-visibility", PasswordVisibilityController)
+import CheckboxSelectAllController from "./checkbox_select_all_controller";
+application.register("checkbox-select-all", CheckboxSelectAllController);
 
-import ReviewController from "./review_controller"
-application.register("review", ReviewController)
+import LocationController from "./location_controller";
+application.register("location", LocationController);
 
-import PaymentController from "./payment_controller"
-application.register("payment", PaymentController)
+import PasswordVisibilityController from "./password_visibility_controller";
+application.register("password-visibility", PasswordVisibilityController);
 
-import Ui__CheckboxController from "./ui/checkbox_controller"
-application.register("ui--checkbox", Ui__CheckboxController)
+import ReviewController from "./review_controller";
+application.register("review", ReviewController);
 
-import Ui__DialogController from "./ui/dialog_controller"
-application.register("ui--dialog", Ui__DialogController)
+import PaymentController from "./payment_controller";
+application.register("payment", PaymentController);
 
-import Ui__HoverCardController from "./ui/hover-card_controller"
-application.register("ui--hover-card", Ui__HoverCardController)
+import Ui__CheckboxController from "./ui/checkbox_controller";
+application.register("ui--checkbox", Ui__CheckboxController);
 
-import Ui__ModeController from "./ui/mode_controller"
-application.register("ui--mode", Ui__ModeController)
+import Ui__DialogController from "./ui/dialog_controller";
+application.register("ui--dialog", Ui__DialogController);
 
-import Ui__PopoverController from "./ui/popover_controller"
-application.register("ui--popover", Ui__PopoverController)
+import Ui__HoverCardController from "./ui/hover-card_controller";
+application.register("ui--hover-card", Ui__HoverCardController);
 
-import Ui__SheetController from "./ui/sheet_controller"
-application.register("ui--sheet", Ui__SheetController)
+import Ui__ModeController from "./ui/mode_controller";
+application.register("ui--mode", Ui__ModeController);
 
-import Ui__SwitchController from "./ui/switch_controller"
-application.register("ui--switch", Ui__SwitchController)
+import Ui__PopoverController from "./ui/popover_controller";
+application.register("ui--popover", Ui__PopoverController);
 
-import Ui__TabsController from "./ui/tabs_controller"
-application.register("ui--tabs", Ui__TabsController)
+import Ui__SheetController from "./ui/sheet_controller";
+application.register("ui--sheet", Ui__SheetController);
 
-import Ui__ToastController from "./ui/toast_controller"
-application.register("ui--toast", Ui__ToastController)
+import Ui__SwitchController from "./ui/switch_controller";
+application.register("ui--switch", Ui__SwitchController);
 
-import Ui__TooltipController from "./ui/tooltip_controller"
-application.register("ui--tooltip", Ui__TooltipController)
+import Ui__TabsController from "./ui/tabs_controller";
+application.register("ui--tabs", Ui__TabsController);
 
-import HelloController from "./hello_controller.js"
-application.register("hello", HelloController)
+import Ui__ToastController from "./ui/toast_controller";
+application.register("ui--toast", Ui__ToastController);
+
+import Ui__TooltipController from "./ui/tooltip_controller";
+application.register("ui--tooltip", Ui__TooltipController);
+
+import location_controller from "./location_controller";
+application.register("location", location_controller);

@@ -1,0 +1,15 @@
+<%= turbo_stream.update 'toasts', partial: 'layouts/toasts' %>
+
+<%= turbo_stream.update 'alert_trigger',
+  partial: 'alerts/trigger',
+  locals: { count_unread: @count_unread } %>
+
+<% @notifications.each do |notification| %>
+  <%= turbo_stream.update "alert_#{notification.id}",
+  partial: 'alerts/alert',
+  locals: { notification: notification } %>
+
+  <%= turbo_stream.update dom_id(notification),
+    partial: 'notifications/notification',
+    locals: { notification: notification } %>
+<% end %>

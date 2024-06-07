@@ -33,7 +33,7 @@
   </head>
   <body>
     <div class="container">
-      <h1>Hello <%= @user.first_name.capitalize %>! ,</h1>
+      <h1>Hello <%= @user.first_name.capitalize %>!</h1>
 
       <p>
         We are pleased to confirm your appointment with the following details:
@@ -44,7 +44,7 @@
         <p><strong>Start Time:</strong> <%= @appointment.start.strftime('%B %d, %Y %H:%M') %></p>
         <p><strong>End Time:</strong> <%= @appointment.end.strftime('%B %d, %Y %H:%M') %></p>
         <p><strong>Duration:</strong> <%= @appointment.duration %> hours</p>
-        <p><strong>Fee:</strong> $<%= @appointment.fee %></p>
+        <p><strong>Fee:</strong> ₱<%= @appointment.fee %></p>
       </div>
 
       <p>

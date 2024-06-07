@@ -1,7 +1,0 @@
-<%= turbo_stream.replace 'new_appointment', 
-  partial: 'appointments/form', 
-  locals: { appointment: Appointment.new,
-            price: @price,
-            service: @service,
-            service_fee: @service_fee } %>
-<%= turbo_stream.update 'toasts', partial: 'layouts/toasts' %>

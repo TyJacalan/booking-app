@@ -17,6 +17,14 @@ class Appointment < ApplicationRecord
 
   after_update :send_review_notification, if: :is_completed_changed_to_true?
 
+  def self.ransackable_attributes(_auth_object = nil)
+    %w[client_id freelancer_id service_id id status]
+  end
+
+  def self.ransackable_associations(_auth_object = nil)
+    %w[client freelancer service]
+  end
+
   def total_hours
     ((self.end - start) / 3600).to_i
   end

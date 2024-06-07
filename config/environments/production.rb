@@ -74,13 +74,13 @@ Rails.application.configure do
   config.action_mailer.perform_caching = false
 
   # Send emails via google smtp
-  config.action_mailer.default_url_options = { host: Rails.application.credentials.dig(:host), protocol: 'https' }
+  config.action_mailer.default_url_options = { host: Rails.application.credentials.dig(:HOST_URL), protocol: 'https' }
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
     address: 'smtp.gmail.com',
     port: 587,
-    user_name: Rails.application.credentials.dig(:google_smtp, :email),
-    password: Rails.application.credentials.dig(:google_smtp, :password),
+    user_name: Rails.application.credentials.GMAIL_ADDRESS,
+    password: Rails.application.credentials.GMAIL_PASSWORD,
     authentication: 'plain',
     enable_starttls_auto: true
   }
