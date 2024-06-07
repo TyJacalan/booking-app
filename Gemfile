@@ -39,3 +39,6 @@ end
 group :development do
   gem 'web-console'
 end
+
+# Use Redis for Action Cable
+gem "redis", "~> 4.0"

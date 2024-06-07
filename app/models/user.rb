@@ -1,4 +1,8 @@
 class User < ApplicationRecord
+  has_many :client_reviews, class_name: 'Review', foreign_key: 'client_id', dependent: :destroy
+  has_many :client_comments, class_name: 'Comment', foreign_key: 'client_id', dependent: :destroy
+  has_many :freelancer_reviews, class_name: 'Review', foreign_key: 'freelancer_id', dependent: :destroy
+  has_many :client_comments, class_name: 'Comment', foreign_key: 'freelancer_id', dependent: :destroy 
   has_many :client_appointments, class_name: 'Appointment', foreign_key: 'client_id', dependent: :destroy
   has_many :freelancer_appointments, class_name: 'Appointment', foreign_key: 'freelancer_id', dependent: :destroy
   has_many :blocked_dates, dependent: :destroy

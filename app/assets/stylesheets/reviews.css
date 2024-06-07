@@ -1,0 +1,102 @@
+#service_rating_container #overall_rating_container {
+    display: flex;
+    gap: 2px;
+    font-weight: 700;
+    font-size: 1.5rem;
+}
+
+#service_rating_container #indiv_rating_container{
+    width: 100%;
+    display: flex;
+    font-weight: 600;
+}
+
+#service_rating_container p {
+    font-size: 1.125rem;
+}
+
+#service_rating_container #indiv_rating_container div {
+    padding: 16px;
+    border-right: 1px solid black;
+    width: 25%;
+}
+
+#service_rating_container #indiv_rating_container div:first-child {
+    margin-left: -16px;
+}
+
+#service_rating_container #indiv_rating_container div:last-child {
+    border-right: 0 solid transparent;
+}
+
+#service_rating_container #indiv_rating_container p {
+    margin-bottom: 16px;
+}
+
+#service_rating_container #indiv_rating_container svg {
+    width: 3rem;
+    height: 3rem;
+}
+
+#service_rating_modal_container #overall_rating_container {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 32px;
+}
+
+#service_rating_modal_container #overall_rating_container span:nth-child(3n),
+#service_rating_modal_container #overall_rating_container span:nth-child(4n){
+    display: none;
+}
+
+#service_rating_modal_container #indiv_rating_container div {
+    padding: 16px 0;
+    border-bottom: 1px solid black;
+    width: 100%;
+    display: flex;
+    justify-content: stretch;
+    align-items: center;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+#service_rating_modal_container #indiv_rating_container svg {
+    order: 1;
+    width: 2rem;
+    height: 2rem;
+}
+
+#service_rating_modal_container #indiv_rating_container p {
+    margin-left: auto;
+    order: 3;
+}
+
+#service_rating_modal_container #indiv_rating_container h3 {
+    order: 2;
+    margin-left: 8px;
+}
+
+[data-ui--dialog-target="dialog"] {
+    max-width: 1000px;
+}
+
+#service_review_modal_container #search_review_container span {
+    font-size: 2.5rem;
+    font-weight: 700;
+}
+
+#service_reviews_container #search_review_container {
+    display: none;
+}
+
+#service_reviews_modal_container #search_review_container {
+    display: block;
+}
+
+#service_reviews_container turbo-frame.service-review-container turbo-frame {
+    width: 50%;
+}
+
+#service_reviews_modal_container #reviews_container turbo-frame  {
+    width: 100%;
+}
