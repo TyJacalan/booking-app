@@ -1,17 +1,33 @@
 # frozen_string_literal: true
 
-50.times do
-  freelancer = User.joins(:role).where(roles: { name: 'freelancer' }).joins(:services).sample
-  next unless freelancer
+clients = User.joins(:role).where(roles: { name: 'client' })
 
-  service = freelancer.services.sample
-  client_id = User.joins(:role).where(roles: { name: 'client' }).sample.id
+100.times do |i|
+  client = clients.sample
+  next unless client
+
+  appointment = client.client_appointments.sample
+  next unless appointment
+
+  unless appointment.is_completed?
+    appointment.update(is_completed: true)
+  end
+
+  service = appointment.service
+  freelancer = appointment.freelancer
+  next unless service && freelancer
 
   Review.create!(
-    rating: Faker::Number.between(from: 1, to: 5),
+    overall_rating: Faker::Number.between(from: 1, to: 5),
+    professionalism: Faker::Number.between(from: 1, to: 5),
+    punctuality: Faker::Number.between(from: 1, to: 5),
+    quality: Faker::Number.between(from: 1, to: 5),
+    communication: Faker::Number.between(from: 1, to: 5),
+    value: Faker::Number.between(from: 1, to: 5),
     subject: Faker::Lorem.sentence(word_count: 3),
-    client_id:,
+    client_id: client.id,
     freelancer_id: freelancer.id,
+    appointment_id: appointment.id,
     service_id: service.id
   )
 end

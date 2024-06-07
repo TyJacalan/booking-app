@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: %i[show reviews services]
-  before_action :load_resources, only: %i[show]
+  before_action :set_user
+  before_action :load_resources
 
   def index; end
 
@@ -12,15 +12,22 @@ class UsersController < ApplicationController
   end
 
   def services
-    @services = @user.services
     render 'services/_services'
   end
 
   private
 
   def set_user
-    @user = User.find(params[:id] || params[:user_id])
+    @user = if params[:id].present?
+              User.find(params[:id])
+            elsif params[:user_id].present?
+              User.find(params[:user_id])
+            else
+              current_user
+            end
     authorize @user, :show?
+  rescue ActiveRecord::RecordNotFound
+    redirect_to root_path, alert: 'User not found'
   end
 
   def load_resources

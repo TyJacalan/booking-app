@@ -15,7 +15,7 @@ class Users::RolesController < ApplicationController
   private
 
   def toggle_role(user)
-    if user.role.name == 'freelancer'
+    if user.freelancer?
       Role.find_by(name: 'client')
     else
       Role.find_by(name: 'freelancer')

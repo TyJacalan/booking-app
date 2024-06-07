@@ -1,9 +1,14 @@
 class User < ApplicationRecord
-  has_many :appointments, dependent: :destroy
+  has_many :client_reviews, class_name: 'Review', foreign_key: 'client_id', dependent: :destroy
+  has_many :client_comments, class_name: 'Comment', foreign_key: 'client_id', dependent: :destroy
+  has_many :freelancer_reviews, class_name: 'Review', foreign_key: 'freelancer_id', dependent: :destroy
+  has_many :client_comments, class_name: 'Comment', foreign_key: 'freelancer_id', dependent: :destroy 
+  has_many :client_appointments, class_name: 'Appointment', foreign_key: 'client_id', dependent: :destroy
+  has_many :freelancer_appointments, class_name: 'Appointment', foreign_key: 'freelancer_id', dependent: :destroy
   has_many :blocked_dates, dependent: :destroy
-  has_many :categories, dependent: :destroy
   has_many :notifications, dependent: :destroy
-  has_many :reviews, dependent: :destroy
+  has_many :reviews, class_name: 'Review', foreign_key: 'client_id', dependent: :destroy
+  has_many :reviews, class_name: 'Review', foreign_key: 'freelancer_id', dependent: :destroy
   has_many :services, dependent: :destroy
 
   belongs_to :role
@@ -44,6 +49,14 @@ class User < ApplicationRecord
     end
   end
 
+  def freelancer?
+    role&.name == 'freelancer'
+  end
+
+  def registered_freelancer?
+    [biography, birthdate, skills, mobile, address].all?(&:present?)
+  end
+
   private
 
   def set_default_role
@@ -68,6 +81,11 @@ class User < ApplicationRecord
   def set_address
     return unless city.present? && country.present?
 
+    city_without_prefix = city.gsub(/^city of /i, '') # Remove 'city of' prefix (case-insensitive)
+    city_without_suffix = city_without_prefix.gsub(/\s*\([^)]+\)$/, '').strip.downcase
+    city = city_without_suffix
+
+    self.city = city
     self.address = "#{city}, #{country}"
     errors.add(:city, 'must correspond to a real city') unless Geocoder.search(city).first
   end

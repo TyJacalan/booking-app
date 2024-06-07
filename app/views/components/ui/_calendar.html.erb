@@ -1,31 +1,51 @@
-<div class='w-full flex flex-col gap-2'>
+<div class='h-full w-full flex flex-col gap-2'>
   <div class='w-full flex flex-row items-center gap-4'>
-    <h1 class='text-3xl font-bold'><%= @date.strftime("%B") %></h1>
+    <h1 class='text-3xl font-bold'><%= @date.strftime("%B %Y") %></h1>
     <%= yield :calendar_controls if content_for?(:calendar_controls) %>
   </div>
-  <%= render_table class: 'h-full w-full' do %>
-    <%= table_head do %>
-      <% %w[Sun Mon Tue Wed Thu Fri Sat].each do |day| %>
-        <%= table_header day %>
-      <% end %>
+
+  <div class='h-fit w-full grid grid-cols-7'>
+    <% %w[Sun Mon Tue Wed Thu Fri Sat].each do |day| %>
+      <div class='text-center text-muted-foreground'><%= day %></div>
     <% end %>
-    <%= table_body do %>
-      <% weeks.each do |week| %>
-        <%= table_row class: 'border-b hover-none' do %>
-          <% week.each do |day| %>
-            <%= table_column class: 'h-36 w-36 min-w-[150px] w-2 p-0 overflow-none' do %>
-              <div class="<%= day_classes(day) %>">
-                <div class='flex-1 flex flex-col gap-1'>
-                  <%= render_event(day) %>
-                </div>
-                <div class='w-full flex items-start text-xs text-muted-foreground'>
-                  <%= day.day %>
-                </div>
+  </div>
+
+  <div class='h-full w-full grid grid-cols-7 grid-flow-row gap-2'>
+    <% weeks.each do |week| %>
+      <% week.each do |day| %>
+        <% reserved_date = reserved?(day) %>
+        <% if reserved_date %>
+          <%= render_form_for @blocked_date,
+            url: calendar_path(reserved_date),
+            method: :delete,
+            class: 'h-44 w-full text-xs' do |f| %>
+            <%= render_button class: day_classes(day), id: "day_content_#{day}" do %>
+              <%= render partial: 'components/ui/shared/blocked_badge', locals: { date: day } %>
+              <div class='flex-1 w-full flex flex-col gap-1 overflow-hidden'>
+                <%= render_event(day) %>
+              </div>
+              <div class='h-fit w-full text-left text-muted-foreground'>
+                <%= day.day %>
+              </div>
+            <% end %>
+          <% end %>
+        <% else %>
+          <%= render_form_for @blocked_date,
+            url: calendars_path,
+            method: :post,
+            class: 'h-44 w-full text-xs' do |f| %>
+            <%= f.hidden_field :date, value: day %>
+            <%= render_button class: day_classes(day), id: "day_content_#{day}" do %>
+              <div class='flex-1 w-full flex flex-col gap-1 overflow-hidden'>
+                <%= render_event(day) %>
+              </div>
+              <div class='h-fit w-full text-left text-muted-foreground'>
+                <%= day.day %>
               </div>
             <% end %>
           <% end %>
         <% end %>
       <% end %>
     <% end %>
-  <% end %>
+  </div>
 </div>

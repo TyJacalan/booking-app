@@ -1,7 +1,7 @@
 <div class="flex flex-col lg:flex-row justify-between gap-4 p-4 lg:p-10">
   <div class="flex flex-col gap-4 w-full lg:w-2/3">
     <div class="flex items-end gap-4 p-4">
-      <%= render_avatar src: current_user.avatar_url, alt: current_user.first_name, size: '70x70', class: 'h-fit w-fit' %>
+      <%= render_avatar src: user.avatar_url, alt: user.first_name, size: '70x70', class: 'h-fit w-fit' %>
       <div>
         <h3 class="text-2xl lg:text-4xl font-semibold px-2 lg:px-4"><%= user.full_name.titleize %></h3>
         <span class="block px-2 lg:px-4 text-gray-500">
@@ -75,7 +75,7 @@
             </div>
             <div class="flex items-center gap-2">
               <span class="text-yellow-500">
-                <%= "★" * review.rating %><%= "☆" * (5 - review.rating) %>
+                <%= "★" * review.overall_rating %><%= "☆" * (5 - review.overall_rating) %>
               </span>
             </div>
             <p><%= review.subject %></p>

@@ -66,7 +66,7 @@
         <span class="font-semibold">Birthdate: </span><span class="text-gray-500 p-2"><%= current_user.birthdate.strftime('%B %d, %Y') %></span>
         <span class="font-semibold">Email: </span><span class="text-gray-500 p-2"><%= current_user.email %></span>
         <span class="font-semibold">Mobile: </span><span class="text-gray-500 p-2"><%= current_user.mobile %></span>
-        <span class="font-semibold">Location: </span><span class="text-gray-500 p-2"><%= current_user.address %></span>
+        <span class="font-semibold">Location: </span><span class="text-gray-500 p-2"><%= current_user.address.titleize %></span>
         <%= link_to "Update Profile", edit_freelancer_path, class: "bg-primary text-primary-foreground text-center border rounded-lg px-4 py-2 mt-4" %>
         <%= link_to "Update Account", edit_user_registration_path, class: "bg-primary text-primary-foreground text-center border rounded-lg px-4 py-2" %>
       </div>
@@ -82,7 +82,7 @@
             </div>
             <div class="flex items-center gap-2">
               <span class="text-yellow-500">
-                <%= "★" * review.rating %><%= "☆" * (5 - review.rating) %>
+                <%= "★" * review.overall_rating %><%= "☆" * (5 - review.overall_rating) %>
               </span>
             </div>
             <p><%= review.subject %></p>

@@ -1,22 +1,34 @@
 class ServicesController < ApplicationController
+  before_action :authorize_service
   before_action :set_service, only: %i[show edit update destroy]
-  before_action :set_categories, only: %i[new show]
-  before_action :set_session_params, only: %i[create]
-  before_action :set_session_form, only: %i[new]
+  before_action :set_categories, only: %i[new edit update show]
+  before_action :set_session_params, only: %i[create update]
+  before_action :set_session_form, only: %i[new edit]
   after_action :verify_authorized, except: %i[index new show]
 
   def index
-    # ULTIMATE SUPREME SEARCH LOGIC QUERY
     @q = Service.ransack(params[:q])
 
-    if params[:q].present? && params[:q][:combined_search].present?
-      search_query = params[:q][:combined_search]
-      terms = search_query.split
+    if params[:q].present?
+      search_params = params[:q].select { |_key, value| value.present? }
+      terms = search_params.values
+
+      conditions = []
+      search_params.each_key do |key, _value|
+        case key
+        when 'user_full_name_cont'
+          conditions << 'users.full_name ILIKE ?'
+        when 'title_cont'
+          conditions << 'services.title ILIKE ?'
+        when 'categories_title_cont'
+          conditions << 'categories.title ILIKE ?'
+        when 'user_city_cont'
+          conditions << 'users.city ILIKE ?'
+        end
+      end
 
       service_ids = Service.joins(:user, :categories).where(
-        terms.map do
-          "concat_ws(' ', users.full_name, services.title, categories.title, users.city) ILIKE ?"
-        end.join(' AND '), *terms.map { |term| "%#{term}%" }
+        conditions.join(' AND '), *terms.map { |term| "%#{term}%" }
       ).pluck(:id).uniq
 
       @services = Service.where(id: service_ids).includes(:user, :categories)
@@ -24,18 +36,11 @@ class ServicesController < ApplicationController
       @services = @q.result.includes(:user, :categories)
     end
 
-    authorize @services
-
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
+    @services = @services.page(params[:page]).per(12)
   end
 
   def create
     @service = current_user.services.build(service_params)
-    authorize @service
-
     if @service.save
       clear_session_params
       redirect_to @service, notice: 'Service was successfully created.'
@@ -44,18 +49,13 @@ class ServicesController < ApplicationController
     end
   end
 
-  def show
-    @service = set_service
-    authorize @service
-  end
+  def show; end
 
   def edit
-    authorize @service
+    assign_service_to_sessions
   end
 
   def update
-    authorize @service
-
     if @service.update(service_params)
       redirect_to @service, notice: 'Service was successfully updated.'
     else
@@ -64,7 +64,6 @@ class ServicesController < ApplicationController
   end
 
   def destroy
-    authorize @service
     @service.destroy
     redirect_to services_path, notice: 'Service was successfully deleted.'
   end
@@ -84,13 +83,11 @@ class ServicesController < ApplicationController
   end
 
   def set_session_params
-    category_ids = session[:selected_categories].map { |category| category['id'] } || []
-
     session_params = {
       title: session[:title],
       description: session[:description],
       price: session[:price],
-      category_ids:
+      category_ids: session[:selected_categories].map { |category| category['id'] } || []
     }
     params[:service] ||= {}
     params[:service].merge!(session_params)
@@ -107,9 +104,16 @@ class ServicesController < ApplicationController
     @categories = Category.all
   end
 
-  def search_combined(query)
-    Service.joins(:user).where(
-      "concat_ws(' ', users.full_name, services.title, users.city) ILIKE ?", "%#{query}%"
-    )
+  def assign_service_to_sessions
+    session[:service_id] = @service.id
+    session[:title] = @service.title
+    session[:description] = @service.description
+    session[:price] = @service.price
+    session[:selected_categories] = @service.categories
+    session[:action] = 'edit'
+  end
+
+  def authorize_service
+    authorize Service
   end
 end

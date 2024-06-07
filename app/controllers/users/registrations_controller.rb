@@ -3,9 +3,9 @@
 class Users::RegistrationsController < Devise::RegistrationsController
   before_action :configure_sign_up_params, only: %i[create create_freelancer]
   before_action :configure_account_update_params, only: [:update_freelancer]
+  before_action :set_categories
 
   def new_freelancer
-    @categories = Category.all
     build_resource({})
     respond_with resource
   end
@@ -27,27 +27,12 @@ class Users::RegistrationsController < Devise::RegistrationsController
     redirect_to root_path
   end
 
-  # GET /resource/sign_up
-  # def new
-  #   super
-  # end
-
   # POST /resource
   def create
     super do |resource|
-      UserRegistrationService.call(resource)
+      Users::UserRegistrationService.call(resource)
     end
   end
-
-  # GET /resource/edit
-  # def edit
-  #   super
-  # end
-
-  # PUT /resource
-  # def update
-  #   super
-  # end
 
   def edit_freelancer
     self.resource = current_user
@@ -55,22 +40,19 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def update_freelancer
-    user = current_user
-    if user.update(account_update_params)
-      redirect_to user_path(@freelancer), notice: 'Profile was successfully updated'
+    self.resource = current_user
+    resource.assign_attributes(account_update_params)
+
+    if resource.save
+      redirect_to user_path(resource), notice: 'Profile was successfully updated'
     else
+      flash[:alert] = resource.errors.full_messages.join(', ')
       render :edit_freelancer
     end
+  rescue ActiveRecord::RecordInvalid => e
+    flash[:alert] = e.message
+    redirect_to root_path
   end
-
-  # GET /resource/cancel
-  # Forces the session data which is usually expired after sign
-  # in to be expired now. This is useful if the user wants to
-  # cancel oauth signing in/up in the middle of the process,
-  # removing all OAuth session data.
-  # def cancel
-  #   super
-  # end
 
   protected
 
@@ -101,13 +83,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
     )
   end
 
-  # The path used after sign up.
-  # def after_sign_up_path_for(resource)
-  #   super(resource)
-  # end
-
-  # The path used after sign up for inactive accounts.
-  # def after_inactive_sign_up_path_for(resource)
-  #   super(resource)
-  # end
+  def set_categories
+    @categories = Category.all
+  end
 end

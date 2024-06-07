@@ -50,6 +50,18 @@ Rails.application.configure do
 
   config.action_mailer.perform_caching = false
 
+  # Uncomment this to test the smtp mailer
+  # config.action_mailer.default_url_options = { host: Rails.application.credentials.dig(:HOST_URL), protocol: 'https' }
+  # config.action_mailer.delivery_method = :smtp
+  # config.action_mailer.smtp_settings = {
+  #   address: 'smtp.gmail.com',
+  #   port: 587,
+  #   user_name: Rails.application.credentials.GMAIL_ADDRESS,
+  #   password: Rails.application.credentials.GMAIL_PASSWORD,
+  #   authentication: 'plain',
+  #   enable_starttls_auto: true
+  # }
+
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000, protocol: 'http' }
   config.action_mailer.delivery_method = :letter_opener
 

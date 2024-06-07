@@ -5,6 +5,7 @@ class AppointmentsController < ApplicationController
 
   def index
     @appointments = fetch_appointments
+    @statuses = Appointment.statuses.to_a
   end
 
   def new
@@ -51,6 +52,10 @@ class AppointmentsController < ApplicationController
   def fetch_appointments
     appointments = Appointments::FetchAppointments.call(current_user)
     authorize appointments
+
+    @q = Appointment.ransack(params[:q])
+    appointments = @q.result(distinct: true).where(id: appointments.pluck(:id))
+
     @appointments = Kaminari.paginate_array(appointments).page(params[:page]).per(5)
   end
 
