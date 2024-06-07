@@ -40,12 +40,18 @@ class Users::RegistrationsController < Devise::RegistrationsController
   end
 
   def update_freelancer
-    user = current_user
-    if user.update(account_update_params)
-      redirect_to user_path(user), notice: 'Profile was successfully updated'
+    self.resource = current_user
+    resource.assign_attributes(account_update_params)
+
+    if resource.save
+      redirect_to user_path(resource), notice: 'Profile was successfully updated'
     else
+      flash[:alert] = resource.errors.full_messages.join(', ')
       render :edit_freelancer
     end
+  rescue ActiveRecord::RecordInvalid => e
+    flash[:alert] = e.message
+    redirect_to root_path
   end
 
   protected
