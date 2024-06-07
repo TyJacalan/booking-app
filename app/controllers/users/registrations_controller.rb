@@ -30,7 +30,7 @@ class Users::RegistrationsController < Devise::RegistrationsController
   # POST /resource
   def create
     super do |resource|
-      UserRegistrationService.call(resource)
+      Users::UserRegistrationService.call(resource)
     end
   end
 

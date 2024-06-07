@@ -7,7 +7,6 @@ class ServicesController < ApplicationController
   after_action :verify_authorized, except: %i[index new show]
 
   def index
-    # ULTIMATE SUPREME SEARCH LOGIC QUERY
     @q = Service.ransack(params[:q])
 
     if params[:q].present? && params[:q][:combined_search].present?
