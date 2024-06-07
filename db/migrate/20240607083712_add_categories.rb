@@ -13,7 +13,7 @@ class AddCategories < ActiveRecord::Migration[7.1]
     ]
 
     categories.each do |category|
-      Category.create!(category)
+      Category.create_or_find_by!(category)
     end
   end
 
