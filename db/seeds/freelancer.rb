@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 email = 'freelancer@example.com'
+categories = Category.order('RANDOM()').limit(rand(1..3))
+skills = categories.map(&:title)
 attributes = {
   email:,
   first_name: 'freelancer',
@@ -8,7 +10,7 @@ attributes = {
   password: 'password123!',
   password_confirmation: 'password123!',
   biography: Faker::Lorem.paragraph(sentence_count: 2),
-  skills: Faker::Lorem.words(number: rand(1..5)),
+  skills:,
   birthdate: Faker::Date.birthday(min_age: 18, max_age: 65),
   city: 'Makati',
   country: 'Philippines',

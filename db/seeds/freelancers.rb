@@ -8,12 +8,14 @@ shared_attributes = {
 }
 
 10.times do
+  categories = Category.order('RANDOM()').limit(rand(1..3))
+  skills = categories.map(&:title)
   attributes = shared_attributes.merge!(
     email: Faker::Internet.unique.email,
     first_name: Faker::Name.first_name,
     last_name: Faker::Name.last_name,
     biography: Faker::Lorem.paragraph(sentence_count: 2),
-    skills: Faker::Lorem.words(number: rand(1..5)),
+    skills:,
     birthdate: Faker::Date.birthday(min_age: 18, max_age: 65),
     city: %w[Cebu Davao Mactan Makati Mandaluyong Taguig].sample,
     mobile: Faker::PhoneNumber.phone_number
