@@ -1,4 +1,4 @@
-<div class='h-full w-full flex flex-row gap-4 p-6 overflow-hidden'>
+<div class='h-full w-full flex flex-row gap-4 p-6 overflow-y-auto mb-10'>
   <%= render_calendar(date: @date, events: @appointments, reservations: @blocked_dates) do %>
     <%= render_controls do %>
       <div class='flex flex-row items-center gap-4 text-xs text-muted-foreground'>
