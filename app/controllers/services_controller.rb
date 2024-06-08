@@ -40,7 +40,6 @@ class ServicesController < ApplicationController
   def create
     @service = current_user.services.build(service_params)
     if @service.save
-      clear_session_params
       respond_to do |format|
         format.html { redirect_to @service, notice: 'Service was successfully created.' }
         format.json { render json: { redirect_path: service_path(@service) }, status: :created }
@@ -59,9 +58,7 @@ class ServicesController < ApplicationController
     @service = Service.new
   end
 
-  def edit
-    assign_service_to_sessions
-  end
+  def edit; end
 
   def update
     if @service.update(service_params)
@@ -98,21 +95,5 @@ class ServicesController < ApplicationController
 
   def set_categories
     @categories = Category.all
-  end
-
-  def assign_service_to_sessions
-    session[:service_id] = @service.id
-    session[:title] = @service.title
-    session[:description] = @service.description
-    session[:price] = @service.price
-    session[:selected_categories] = @service.categories
-    session[:action] = 'edit'
-  end
-
-  def clear_session_params
-    session.delete(:title)
-    session.delete(:description)
-    session.delete(:price)
-    session.delete(:selected_categories)
   end
 end
