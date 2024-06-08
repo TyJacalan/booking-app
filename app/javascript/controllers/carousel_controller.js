@@ -51,7 +51,7 @@ export default class extends Carousel {
 
       if (response.ok) {
         const data = await response.json();
-        // Redirect to the newly created service page
+        // Redirect to the newly created/updated service page
         window.location.href = data.redirect_path;
       } else {
         // Handle form submission error

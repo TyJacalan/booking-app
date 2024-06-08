@@ -65,9 +65,15 @@ class ServicesController < ApplicationController
 
   def update
     if @service.update(service_params)
-      redirect_to @service, notice: 'Service was successfully updated.'
+      respond_to do |format|
+        format.html { redirect_to @service, notice: 'Service was successfully updated.' }
+        format.json { render json: { redirect_path: service_path(@service) }, status: :ok }
+      end
     else
-      render :edit
+      respond_to do |format|
+        format.html { render :edit }
+        format.json { render json: @service.errors, status: :unprocessable_entity }
+      end
     end
   end
 
