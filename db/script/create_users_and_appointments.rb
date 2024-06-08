@@ -106,8 +106,8 @@ end
 puts "#{client.full_name} created."
 
 # Clear Services and Appointments
-Service.all.destroy
-Appointment.all.destroy
+Service.delete_all
+Appointment.delete_all
 
 # Create Service
 categories = Category.order('RANDOM()').limit(rand(1..3))
