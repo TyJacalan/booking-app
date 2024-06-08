@@ -19,6 +19,8 @@
     <div class='h-full w-full flex flex-col'>
       <%= yield %>
     </div>
-    <%= render 'layouts/footer' %>
+    <% unless controller.controller_name == 'services' && controller.action_name == 'new' %>
+      <%= render 'layouts/footer' %>
+    <% end %>
   </body>
 </html>
