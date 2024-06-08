@@ -2,8 +2,6 @@ class ServicesController < ApplicationController
   before_action :authorize_service
   before_action :set_service, only: %i[show edit update destroy]
   before_action :set_categories, only: %i[new edit update show]
-  before_action :set_session_params, only: %i[create update]
-  before_action :set_session_form, only: %i[new edit]
   after_action :verify_authorized, except: %i[index new show]
 
   def index
@@ -43,9 +41,15 @@ class ServicesController < ApplicationController
     @service = current_user.services.build(service_params)
     if @service.save
       clear_session_params
-      redirect_to @service, notice: 'Service was successfully created.'
+      respond_to do |format|
+        format.html { redirect_to @service, notice: 'Service was successfully created.' }
+        format.json { render json: { redirect_path: service_path(@service) }, status: :created }
+      end
     else
-      render :new
+      respond_to do |format|
+        format.html { render :new }
+        format.json { render json: @service.errors, status: :unprocessable_entity }
+      end
     end
   end
 
@@ -74,34 +78,16 @@ class ServicesController < ApplicationController
 
   private
 
+  def authorize_service
+    authorize Service
+  end
+
   def set_service
     @service = Service.find(params[:id])
   end
 
   def service_params
     params.require(:service).permit(:title, :description, :price, category_ids: [])
-  end
-
-  def set_session_form
-    session[:form] = 'categories'
-  end
-
-  def set_session_params
-    session_params = {
-      title: session[:title],
-      description: session[:description],
-      price: session[:price],
-      category_ids: session[:selected_categories].map { |category| category['id'] } || []
-    }
-    params[:service] ||= {}
-    params[:service].merge!(session_params)
-  end
-
-  def clear_session_params
-    session.delete(:title)
-    session.delete(:description)
-    session.delete(:price)
-    session.delete(:selected_categories)
   end
 
   def set_categories
@@ -117,7 +103,10 @@ class ServicesController < ApplicationController
     session[:action] = 'edit'
   end
 
-  def authorize_service
-    authorize Service
+  def clear_session_params
+    session.delete(:title)
+    session.delete(:description)
+    session.delete(:price)
+    session.delete(:selected_categories)
   end
 end
