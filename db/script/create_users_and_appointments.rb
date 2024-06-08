@@ -82,7 +82,7 @@ freelancer_attributes = {
   role: Role.find_by(name: 'freelancer')
 }
 
-freelancer = User.create_or_find_by!(email: freelancer_email) do |user|
+freelancer = User.find_or_create_by!(email: freelancer_email) do |user|
   user.assign_attributes(freelancer_attributes)
 end
 
@@ -99,11 +99,15 @@ client_attributes = {
   mobile: '09274837463'
 }
 
-client = User.create_or_find_by!(email: client_email) do |user|
+client = User.find_or_create_by!(email: client_email) do |user|
   user.assign_attributes(client_attributes)
 end
 
 puts "#{client.full_name} created."
+
+# Clear Services and Appointments
+Service.all.destroy
+Appointment.all.destroy
 
 # Create Service
 categories = Category.order('RANDOM()').limit(rand(1..3))
