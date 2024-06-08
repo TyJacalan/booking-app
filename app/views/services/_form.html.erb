@@ -1,5 +1,5 @@
 <div data-controller="carousel">
-  <%= form_with(model: @service, url: services_path, method: :post, data: { action: 'submit->carousel#submitForm' }, class: 'overflow-x-hidden') do |f| %>
+  <%= form_with(model: @service, url: services_path, method: :post, data: { turbo: false }, local: false, class: 'overflow-x-hidden') do |f| %>
     <div class="swiper-container">
       <div class="swiper-wrapper">
         <div class="swiper-slide"><%= render 'services/form/categories', f: f %></div>
@@ -30,5 +30,3 @@
     </div> 
   <% end %>
 </div>
-  
-  
