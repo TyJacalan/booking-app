@@ -109,7 +109,7 @@ puts "#{client.full_name} created."
 categories = Category.order('RANDOM()').limit(rand(1..3))
 service = Service.create!(
   title: categories.map(&:title).join(', '),
-  description: "I will do my best #{categories}",
+  description: "I will do my best #{categories.title}",
   price: 455,
   categories:,
   user_id: User.joins(:role).where(roles: { name: 'freelancer' }).sample.id
