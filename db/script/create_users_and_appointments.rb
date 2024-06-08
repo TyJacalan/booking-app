@@ -57,7 +57,7 @@ categories = [
 ]
 
 categories.each do |category|
-  Category.create_or_find_by!(category)
+  Category.find_or_create_by!(category)
 end
 
 puts "Created categories"
@@ -109,14 +109,17 @@ puts "#{client.full_name} created."
 Service.delete_all
 Appointment.delete_all
 
+puts "Services and Appointments cleared."
+
 # Create Service
 categories = Category.order('RANDOM()').limit(rand(1..3))
+
 service = Service.create!(
-  title: categories.map(&:title).join(', '),
-  description: "I will do my best #{categories.title}",
+  title: 'Test Service',
+  description: "I will do my best for this service",
   price: 455,
-  categories:,
-  user_id: User.joins(:role).where(roles: { name: 'freelancer' }).sample.id
+  categories: categories,
+  user_id: freelancer.id
 )
 
 puts "#{service.title} created."
