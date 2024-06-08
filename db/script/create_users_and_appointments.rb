@@ -42,6 +42,9 @@ end
 
 puts "Created roles"
 
+# Clear categories
+Category.delete_all
+
 # Create categories
 
 categories = [
@@ -57,7 +60,7 @@ categories = [
 ]
 
 categories.each do |category|
-  Category.find_or_create_by!(category)
+  Category.create!(category)
 end
 
 puts "Created categories"
@@ -128,7 +131,7 @@ puts "#{service.title} created."
 appointment= Appointment.create!(
   start: Date.new(2024, 05, 01),
   end: Date.new(2024, 05, 03),
-  status: 1, # set as accepted
+  status: 4, # set as completed
   duration: 2,
   description: 'This is a test appointment created for the demo.',
   client_id: client.id,
