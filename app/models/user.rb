@@ -49,6 +49,10 @@ class User < ApplicationRecord
     end
   end
 
+  def freelancer?
+    role.name == 'freelancer'
+  end
+
   def registered_freelancer?
     [biography, birthdate, skills, mobile, address].all?(&:present?)
   end
