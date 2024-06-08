@@ -6,7 +6,7 @@
     <% elsif role == 'freelancer' %>
       <%= render partial: 'form_edit_status', locals: { appointment: appointment } %>
     <% end %>
-    <h2 class="text-lg text-gray-600 truncate"><%= appointment.service.title %></h2>
+    <%= link_to appointment.service.title, service_path(appointment.service.id), class: 'text-lg text-gray-600' %>
     <% if current_user&.role&.name == 'client' %>
       <%= turbo_frame_tag :edit_appointment_form, src: edit_appointment_path(appointment.id) do %>
       <% end %>
