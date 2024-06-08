@@ -1,7 +1,7 @@
 class Service < ApplicationRecord
   belongs_to :user
   has_many :reviews
-  has_many :appointments
+  has_many :appointments, dependent: :destroy
   has_one :overall_service_rating
   has_and_belongs_to_many :categories
 

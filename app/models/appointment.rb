@@ -1,7 +1,7 @@
 class Appointment < ApplicationRecord
   belongs_to :client, class_name: 'User', foreign_key: 'client_id'
   belongs_to :freelancer, class_name: 'User', foreign_key: 'freelancer_id'
-  belongs_to :service
+  belongs_to :service, dependent: :destroy
 
   has_one :review, dependent: :destroy
   has_many :comments, through: :review
