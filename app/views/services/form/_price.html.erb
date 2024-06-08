@@ -4,7 +4,7 @@
     <%= render_card do %>
       <div class="p-6 pt-0">
         <%= f.label :price, required: true %>
-        <%= f.number_field :price, id: 'service_price', value: session[:price], placeholder: "0.00" %>
+        <%= f.number_field :price, id: 'service_price', value: @service.price, placeholder: "0.00" %>
       </div>
     <% end %>
   </div>

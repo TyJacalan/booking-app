@@ -3,11 +3,11 @@
     <div class="w-full flex flex-wrap justify-center items-start gap-4 mt-6 mb-6">
       <div class="w-full md:w-1/2 py-2">
         <%= f.label :title, required: true, class: "block text-lg font-medium text-gray-700" %>
-        <%= f.text_field :title, id: 'service_title', value: session[:title], class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+        <%= f.text_field :title, id: 'service_title', value: @service.title, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
       <div class="w-full md:w-1/2 py-2">
         <%= f.label :description, required: true, class: "block text-lg font-medium text-gray-700" %>
-        <%= f.text_area :description, id: 'service_description', value: session[:description], class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
+        <%= f.text_area :description, id: 'service_description', value: @service.description, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm" %>
       </div>
     </div>
 </div>
