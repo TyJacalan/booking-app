@@ -7,7 +7,6 @@ export default class extends Carousel {
 
   connect() {
     this.initializeSwiper()
-    this.updatePreview()
   }
 
   initializeSwiper() {
@@ -16,7 +15,11 @@ export default class extends Carousel {
 
   next(event) {
     event.preventDefault()
-    this.swiper.slideNext()
+    if (this.swiper.isEnd) {
+      this.submitForm(event);
+    } else {
+      this.swiper.slideNext()
+    }
   }
 
   previous(event) {
@@ -24,29 +27,43 @@ export default class extends Carousel {
     this.swiper.slidePrev()
   }
 
-  submitForm(event) {
-    // Check if the current slide is the last one
-    if (this.swiper.isEnd) {
-      // Trigger form submission
-      const form = this.element.querySelector('form');
-      form.submit();
-    } else {
-      // If not the last slide, proceed to the next slide
-      this.next(event);
+  async submitForm(event) {
+    const form = this.formTarget;
+
+    // Get CSRF token from meta tags
+    const csrfToken = document.head.querySelector("[name=csrf-token]").content;
+
+    // Include CSRF token in headers
+    const headers = new Headers();
+    headers.append("X-CSRF-Token", csrfToken);
+    headers.append("Accept", "application/json");
+
+    // Prepare form data
+    const formData = new FormData(form);
+
+    try {
+      // Submit form using Fetch API
+      const response = await fetch(form.action, {
+        method: form.method,
+        headers: headers,
+        body: formData
+      });
+
+      if (response.ok) {
+        const data = await response.json();
+        // Redirect to the newly created service page
+        window.location.href = data.redirect_path;
+      } else {
+        // Handle form submission error
+        const errorText = await response.text();
+        console.error("Form submission failed:", errorText);
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
     }
   }
 
-  updatePreview() {
-    const titleValue = this.formTarget.querySelector("#service_title").value
-    const descriptionValue = this.formTarget.querySelector("#service_description").value
-    const priceValue = this.formTarget.querySelector("#service_price").value
-
-    this.titleTarget.textContent = titleValue
-    this.descriptionTarget.textContent = descriptionValue
-    this.priceTarget.textContent = priceValue
-  }
-
   get formTarget() {
-    return this.element.closest("form")
+    return this.element.querySelector('form')
   }
 }
