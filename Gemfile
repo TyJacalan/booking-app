@@ -31,6 +31,7 @@ gem 'turbo-rails'
 gem 'tzinfo-data', platforms: %i[windows jruby]
 
 group :development, :test do
+  gem 'bullet', '~> 7.1'
   gem 'debug', platforms: %i[mri windows]
   gem 'faker'
   gem 'rspec-rails', '~> 6.1.0'
@@ -39,3 +40,6 @@ end
 group :development do
   gem 'web-console'
 end
+
+# Use Redis for Action Cable
+gem "redis", "~> 4.0"

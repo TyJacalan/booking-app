@@ -1,0 +1,7 @@
+<%= turbo_frame_tag dom_id(service, :review_modal) do %>
+    <% reviews.each do |review| %>
+        <%= render partial: 'reviews/review_modal', locals: { service: service, review: review, user: review.client } %>
+    <% end %>
+<% end %>
+
+

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="h-full transition-colors <%= cookies[:ui_theme] %>">
   <head>
-    <title>Booking App</title>
+    <title>SkillSetGo</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
@@ -9,8 +9,8 @@
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
 
-    <%# Date picker: https://flatpickr.js.org/ %>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <%= favicon_link_tag 'logo-base-32x32.png' %>
   </head>
 
   <body class="max-w-7xl min-w-[350px] mx-auto flex h-full w-full min-h-screen flex-col bg-background text-foreground">
@@ -19,5 +19,6 @@
     <div class='h-full w-full flex flex-col'>
       <%= yield %>
     </div>
+    <%= render 'layouts/footer' %>
   </body>
 </html>

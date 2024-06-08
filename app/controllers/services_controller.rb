@@ -9,14 +9,26 @@ class ServicesController < ApplicationController
   def index
     @q = Service.ransack(params[:q])
 
-    if params[:q].present? && params[:q][:combined_search].present?
-      search_query = params[:q][:combined_search]
-      terms = search_query.split
+    if params[:q].present?
+      search_params = params[:q].select { |_key, value| value.present? }
+      terms = search_params.values
+
+      conditions = []
+      search_params.each_key do |key, _value|
+        case key
+        when 'user_full_name_cont'
+          conditions << 'users.full_name ILIKE ?'
+        when 'title_cont'
+          conditions << 'services.title ILIKE ?'
+        when 'categories_title_cont'
+          conditions << 'categories.title ILIKE ?'
+        when 'user_city_cont'
+          conditions << 'users.city ILIKE ?'
+        end
+      end
 
       service_ids = Service.joins(:user, :categories).where(
-        terms.map do
-          "concat_ws(' ', users.full_name, services.title, categories.title, users.city) ILIKE ?"
-        end.join(' AND '), *terms.map { |term| "%#{term}%" }
+        conditions.join(' AND '), *terms.map { |term| "%#{term}%" }
       ).pluck(:id).uniq
 
       @services = Service.where(id: service_ids).includes(:user, :categories)
@@ -25,11 +37,6 @@ class ServicesController < ApplicationController
     end
 
     @services = @services.page(params[:page]).per(12)
-
-    respond_to do |format|
-      format.html
-      format.turbo_stream
-    end
   end
 
   def create

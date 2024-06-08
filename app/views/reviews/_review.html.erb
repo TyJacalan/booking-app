@@ -1,0 +1,49 @@
+<%= turbo_frame_tag dom_id(review, :service), class: "w-1/2 mt-8" do %>
+    <div class="w-full mr-16">
+      <div class="w-full flex gap-2 items-center">
+        <div class="w-[40px] h-[40px] rounded-full bg-black">
+          <!-- image_tag(user.avatar_url, alt: "#{user.id}_avatar") -->
+        </div>
+        <div>
+          <p class="text-base font-semibold"><%= user.full_name %></p>
+          <p class="text-sm"><%= "#{user.city}, #{user.country}" %></p>
+        </div>
+      </div>
+      <div class="w-full mt-1 flex items-center">
+        <div class="flex items-center">
+          <% (1..5).each do |i| %>
+            <span class="<%= i <= review.overall_rating ? 'text-black' : 'text-gray-300' %>">&#9733;</span>
+          <% end %>
+          <span class="mx-2">&#183;</span>
+        </div>
+        <div class="font-normal text-sm">
+          <% time_ago = Time.now - review.created_at %>
+          <% if time_ago < 1.month %>
+            <% weeks_ago = (time_ago / 1.week).to_i %>
+            <%= case weeks_ago
+                when 0 then 'This week'
+                when 1 then '1 week ago'
+                when 2 then '2 weeks ago'
+                when 3 then '3 weeks ago'
+                when 4 then '4 weeks ago'
+                else "#{weeks_ago} weeks ago"
+                end %>
+          <% else %>
+            <%= review.created_at.strftime("%B %Y") %>
+          <% end %>
+        </div>
+      </div>
+      <div class="w-full mt-1 text-wrap">
+        <p><%= review.subject %></p>
+      </div>
+      <% if current_user %>
+        <div>
+          like button
+        </div>
+      <% end %>
+      <% if current_user && current_user.id === review.client_id %>
+        #link for edit and delete
+      <% end %>
+    </div>
+<% end %>
+  
