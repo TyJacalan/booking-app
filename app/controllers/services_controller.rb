@@ -51,6 +51,10 @@ class ServicesController < ApplicationController
 
   def show; end
 
+  def new
+    @service = Service.new
+  end
+
   def edit
     assign_service_to_sessions
   end
