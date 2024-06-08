@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Appointments
   class FetchAppointments
     def self.call(user)
