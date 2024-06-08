@@ -43,10 +43,12 @@ class Appointment < ApplicationRecord
   end
 
   def validate_update
-    return unless start < 1.days.from_now
+    if status != 'accepted'
+      return unless start < 1.days.from_now
 
-    errors.add(:base, 'Appointment cannot be edited within one (1) day of the start date')
-    throw(:abort)
+      errors.add(:base, 'Appointment cannot be edited within one (1) day of the start date')
+      throw(:abort)
+    end
   end
 
   def validate_deletion

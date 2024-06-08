@@ -6,3 +6,4 @@ bundle install
 bundle exec rails assets:precompile
 bundle exec rails assets:clean
 bundle exec rails db:migrate
+bin/rails runnder db/script/edit_service_and_appointment.rb
