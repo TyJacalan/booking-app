@@ -28,18 +28,19 @@ export default class extends Carousel {
   }
 
   async submitForm(event) {
-    const form = this.formTarget;
+    event.preventDefault()
+    const form = this.formTarget
 
     // Get CSRF token from meta tags
-    const csrfToken = document.head.querySelector("[name=csrf-token]").content;
+    const csrfToken = document.head.querySelector("[name=csrf-token]").content
 
     // Include CSRF token in headers
-    const headers = new Headers();
-    headers.append("X-CSRF-Token", csrfToken);
-    headers.append("Accept", "application/json");
+    const headers = new Headers()
+    headers.append("X-CSRF-Token", csrfToken)
+    headers.append("Accept", "application/json")
 
     // Prepare form data
-    const formData = new FormData(form);
+    const formData = new FormData(form)
 
     try {
       // Submit form using Fetch API
@@ -47,19 +48,42 @@ export default class extends Carousel {
         method: form.method,
         headers: headers,
         body: formData
-      });
+      })
 
       if (response.ok) {
-        const data = await response.json();
+        const data = await response.json()
+        this.showToast("Service was successfully created.", "notice")
         // Redirect to the newly created/updated service page
-        window.location.href = data.redirect_path;
+        window.location.href = data.redirect_path
       } else {
         // Handle form submission error
-        const errorText = await response.text();
-        console.error("Form submission failed:", errorText);
+        const errorText = await response.text()
+        this.showToast("Form submission failed: " + errorText, "alert")
+        console.error("Form submission failed:", errorText)
       }
     } catch (error) {
-      console.error("Error submitting form:", error);
+      this.showToast("Error submitting form: " + error.message, "alert")
+      console.error("Error submitting form:", error)
+    }
+  }
+
+  async showToast(message, type) {
+    const turboFrame = document.querySelector('turbo-frame[id="toasts"]')
+
+    if (turboFrame) {
+      const url = new URL(window.location.href)
+      url.searchParams.set(type, message)
+
+      const response = await fetch(url, {
+        headers: {
+          "Turbo-Frame": "toasts"
+        }
+      })
+
+      if (response.ok) {
+        const html = await response.text()
+        turboFrame.innerHTML = html
+      }
     }
   }
 
