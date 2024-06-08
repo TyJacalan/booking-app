@@ -19,8 +19,5 @@
     <div class='h-full w-full flex flex-col'>
       <%= yield %>
     </div>
-    <% unless controller.controller_name == 'services' && controller.action_name == 'new' || session[:form] == 'preview' %>
-      <%= render 'layouts/footer' %>
-    <% end %>
   </body>
 </html>
