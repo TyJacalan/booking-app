@@ -57,3 +57,6 @@ application.register("ui--tooltip", Ui__TooltipController);
 
 import location_controller from "./location_controller";
 application.register("location", location_controller);
+
+import carousel_controller from "./carousel_controller";
+application.register("carousel", carousel_controller)
