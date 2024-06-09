@@ -38,7 +38,7 @@ class UsersController < ApplicationController
   end
 
   def set_services
-    @all_services = @user.services.includes(:categories)
+    @all_services = @user.services
     @services = @all_services.page(params[:page]).per(5)
   end
 
