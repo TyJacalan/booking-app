@@ -55,6 +55,10 @@ class User < ApplicationRecord
     end
   end
 
+  def freelancer?
+    role.name == 'freelancer'
+  end
+
   def registered_freelancer?
     [biography, birthdate, skills, mobile, address].all?(&:present?)
   end
@@ -83,8 +87,12 @@ class User < ApplicationRecord
   def set_address
     return unless city.present? && country.present?
 
+    city_without_prefix = city.gsub(/^city of /i, '') # Remove 'city of' prefix (case-insensitive)
+    city_without_suffix = city_without_prefix.gsub(/\s*\([^)]+\)$/, '').strip.downcase
+    city = city_without_suffix
+
     self.address = "#{city}, #{country}"
-    errors.add(:city, 'must correspond to a real city') unless Geocoder.search(city).first
+    self.city = city
   end
 
   def set_fullname

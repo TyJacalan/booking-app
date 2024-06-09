@@ -10,8 +10,14 @@ application.register("appointment", AppointmentController)
 import AutoSubmitController from "./auto_submit_controller"
 application.register("auto-submit", AutoSubmitController)
 
+import CarouselController from "./carousel_controller"
+application.register("carousel", CarouselController)
+
 import CheckboxSelectAllController from "./checkbox_select_all_controller"
 application.register("checkbox-select-all", CheckboxSelectAllController)
+
+import HelloController from "./hello_controller"
+application.register("hello", HelloController)
 
 import LocationController from "./location_controller"
 application.register("location", LocationController)
@@ -24,6 +30,9 @@ application.register("review", ReviewController)
 
 import PaymentController from "./payment_controller"
 application.register("payment", PaymentController)
+
+import ReviewController from "./review_controller"
+application.register("review", ReviewController)
 
 import Ui__CheckboxController from "./ui/checkbox_controller"
 application.register("ui--checkbox", Ui__CheckboxController)

@@ -1,9 +1,11 @@
 class CategoriesController < ApplicationController
-  def select
-    @category = Category.find(params[:id])
-    session[:selected_categories] ||= []
-    session[:selected_categories] << @category unless session[:selected_categories].include?(@category)
-
-    authorize Service, :select_category?
+  def index
+    if params[:ids]
+      @categories = Category.where(id: params[:ids].split(','))
+      render json: @categories.to_json(only: %I[id title])
+    else
+      @categories = Category.all
+    end
+    authorize Category
   end
 end

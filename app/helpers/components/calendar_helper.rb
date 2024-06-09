@@ -21,7 +21,7 @@ module Components::CalendarHelper
       render_button(event.service.title,
                     as: :link,
                     href: "appointments/?q%5Bid_eq%5D=#{event.service_id}",
-                    class: 'h-fit w-full py-2 px-4 rounded-md bg-muted text-left truncate',
+                    class: 'h-fit w-full py-2 px-4 rounded-md bg-gray-100 text-left truncate',
                     variant: :outline)
     end.join.html_safe
   end
@@ -35,7 +35,7 @@ module Components::CalendarHelper
   end
 
   def day_classes(day)
-    classes = ['h-full w-full flex flex-col gap-1 border p-2 rounded-md overflow-hidden hover:bg-muted/50 hover:cursor-pointer']
+    classes = ['h-full w-full flex flex-col gap-1 border p-2 rounded-md overflow-hidden hover:bg-gray-200 hover:cursor-pointer']
     classes << 'bg-primary' if day == Date.today
     classes << 'bg-secondary' if day.month != @date.month
     classes.empty? ? nil : classes.join(' ')

@@ -1,0 +1,38 @@
+<div data-controller="carousel">
+  <%= form_with(model: @service, data: { turbo: false }, local: false, class: 'overflow-x-hidden') do |f| %>
+    <div class="swiper-container">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide"><%= render 'services/form/categories', f: f %></div>
+        <div class="swiper-slide"><%= render 'services/form/title', f: f %></div>
+        <div class="swiper-slide"><%= render 'services/form/price', f: f %></div>
+        <div class="swiper-slide"><%= render 'services/form/preview', f: f %></div>
+      </div>
+    </div>
+
+    <div class="fixed bottom-0 left-0 right-0 flex justify-between p-5 bg-background shadow-md border border-l-0 z-50">
+      <div class="w-auto">
+        <%= button_tag(type: 'button', class: 'shadcn-button shadcn-button-ghost', data: { action: 'click->carousel#previous' }) do %>
+          <div class="flex justify-center items-center gap-2 text-xl">
+            <i class="fa-solid fa-circle-chevron-left"></i>
+            <span class="ml-2">Previous</span>
+          </div>
+        <% end %>
+      </div>
+
+      <div class="w-auto">
+        <%= button_tag(type: 'button', id: 'nextButton', class: 'shadcn-button shadcn-button-ghost', data: { action: 'click->carousel#next' }) do %>
+          <div class="flex justify-center items-center gap-2 text-xl">
+            <span class="mr-2">Next</span>
+            <i class="fa-solid fa-circle-chevron-right"></i>
+          </div>
+        <% end %>
+        <%= render_button f.submit, class: 'hidden', id: 'publishButton', variant: :ghost, data: { controller: 'auto-submit', action: 'click->auto-submit#submit'} do %>
+          <div class="flex justify-center items-center gap-2 text-xl">
+            <span class="mr-2">Publish</span>
+            <i class="fa-solid fa-circle-chevron-right"></i>
+          </div>
+        <% end %>
+      </div>
+    </div> 
+  <% end %>
+</div>

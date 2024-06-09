@@ -1,59 +1,60 @@
-<h2 class="font-semibold text-2xl pb-8">Update your profile</h2>
 
-<%= render_form_for(resource, as: resource_name, url: update_freelancer_path(resource_name), method: :patch, class: "flex flex-col gap-2") do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+  <h2 class="font-semibold text-2xl pb-8">Update your profile</h2>
 
-  <div class="field">
-    <%= f.label :biography, required: true %>
-    <%= f.text_area :biography %>
-    <% if resource.errors[:biography].present? %>
-      <span class="error"><%= resource.errors[:biography].join(", ") %></span>
-    <% end %>
-  </div>
+  <%= render_form_for(resource, as: resource_name, url: update_freelancer_path(resource_name), method: :patch, class: "flex flex-col gap-2") do |f| %>
+    <%= render "devise/shared/error_messages", resource: resource %>
 
-  <div class="field">
-    <%= f.label :birthdate, required: true %>
-    <%= f.date_field :birthdate, autocomplete: 'bday', required: true %>
-    <% if resource.errors[:birthdate].present? %>
-      <span class="error"><%= resource.errors[:birthdate].join(", ") %></span>
-    <% end %>
-  </div>
-
-  <div class="field" data-controller="location">
-    <%= f.label :city, required: true %>
-    <%= f.text_field :city, required: true, data: { action: 'input->location#updateSearchParam', location_target: 'input' } %>
-    <% if resource.errors[:city].present? %>
-      <span class="error"><%= resource.errors[:city].join(", ") %></span>
-    <% end %>
-    <%= turbo_frame_tag :cities, src: locations_path(q: '__QUERY__'), class: 'mt-2', data: { location_target: 'frame', base_url: locations_path(q: '__QUERY__') } %>
-  </div>
-
-  <div class="field">
-    <%= f.label :mobile, required: true %>
-    <%= f.text_field :mobile, required: true %>
-    <% if resource.errors[:mobile].present? %>
-      <span class="error"><%= resource.errors[:mobile].join(", ") %></span>
-    <% end %>
-  </div>
-
-  <div class="field">
-    <%= f.label :skills %>
-    <div class="skills-checkboxes">
-      <% @categories.each do |category| %>
-        <div>
-          <% checked = resource.skills.include?(category.title) %>
-          <%= check_box_tag "user[skills][]", category.title, checked, class: "peer h-4 w-4 shrink-0 rounded-sm border border-primary hover:cursor-pointer focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50" %>
-          <%= label_tag "user_skills_#{category.title}", category.title %>
-        </div>
+    <div class="field">
+      <%= f.label :biography, required: true %>
+      <%= f.text_area :biography %>
+      <% if resource.errors[:biography].present? %>
+        <span class="error"><%= resource.errors[:biography].join(", ") %></span>
       <% end %>
     </div>
-    <% if resource.errors[:skills].present? %>
-      <span class="error"><%= resource.errors[:skills].join(", ") %></span>
-    <% end %>
-  </div>
 
-  <%= f.hidden_field :country, value: 'Philippines' %>
-  <div class="actions mt-4">
-    <%= f.submit "Update Profile" %>
-  </div>
-<% end %>
+    <div class="field">
+      <%= f.label :birthdate, required: true %>
+      <%= f.date_field :birthdate, autocomplete: 'bday', required: true %>
+      <% if resource.errors[:birthdate].present? %>
+        <span class="error"><%= resource.errors[:birthdate].join(", ") %></span>
+      <% end %>
+    </div>
+
+    <div class="field" data-controller="location">
+      <%= f.label :city, required: true %>
+      <%= f.text_field :city, required: true, data: { action: 'input->location#updateSearchParam', location_target: 'input' } %>
+      <% if resource.errors[:city].present? %>
+        <span class="error"><%= resource.errors[:city].join(", ") %></span>
+      <% end %>
+      <%= turbo_frame_tag :cities, src: locations_path(q: '__QUERY__'), class: 'mt-2', data: { location_target: 'frame', base_url: locations_path(q: '__QUERY__') } %>
+    </div>
+
+    <div class="field">
+      <%= f.label :mobile, required: true %>
+      <%= f.text_field :mobile, required: true %>
+      <% if resource.errors[:mobile].present? %>
+        <span class="error"><%= resource.errors[:mobile].join(", ") %></span>
+      <% end %>
+    </div>
+
+    <div class="field">
+      <%= f.label :skills %>
+      <div class="skills-checkboxes">
+        <% @categories.each do |category| %>
+          <div>
+            <% checked = resource.skills.include?(category.title) %>
+            <%= check_box_tag "user[skills][]", category.title, checked, class: "peer h-4 w-4 shrink-0 rounded-sm border border-primary hover:cursor-pointer focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50" %>
+            <%= label_tag "user_skills_#{category.title}", category.title %>
+          </div>
+        <% end %>
+      </div>
+      <% if resource.errors[:skills].present? %>
+        <span class="error"><%= resource.errors[:skills].join(", ") %></span>
+      <% end %>
+    </div>
+
+    <%= f.hidden_field :country, value: 'Philippines' %>
+    <div class="actions mt-4">
+      <%= f.submit "Update Profile" %>
+    </div>
+  <% end %>

@@ -12,6 +12,7 @@ class UsersController < ApplicationController
   end
 
   def services
+    @services = @user.services.includes(:categories).page(params[:page]).per(5)
     render 'services/_services'
   end
 
@@ -49,9 +50,9 @@ class UsersController < ApplicationController
 
   def fetch_reviews
     if freelancer?
-      Review.where(freelancer_id: @user.id)
+      Review.includes(:client).where(freelancer_id: @user.id)
     else
-      Review.where(client_id: @user.id)
+      Review.includes(:freelancer).where(client_id: @user.id)
     end
   end
 

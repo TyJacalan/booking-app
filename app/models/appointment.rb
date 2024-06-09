@@ -1,7 +1,10 @@
 class Appointment < ApplicationRecord
   belongs_to :client, class_name: 'User', foreign_key: 'client_id'
   belongs_to :freelancer, class_name: 'User', foreign_key: 'freelancer_id'
-  belongs_to :service
+  belongs_to :service, dependent: :destroy
+
+  has_one :review, dependent: :destroy
+  has_many :comments, through: :review
 
   has_one :review, dependent: :destroy
   has_many :comments, through: :review
@@ -14,7 +17,6 @@ class Appointment < ApplicationRecord
   before_destroy :validate_deletion
   before_save :set_price
   before_update :validate_update
-
 
   after_update :send_review_notification, if: :is_completed_changed_to_true?
 
@@ -44,6 +46,7 @@ class Appointment < ApplicationRecord
   end
 
   def validate_update
+    return if status == 'accepted'
     return unless start < 1.days.from_now
 
     errors.add(:base, 'Appointment cannot be edited within one (1) day of the start date')
