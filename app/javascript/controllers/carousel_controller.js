@@ -15,11 +15,22 @@ export default class extends Carousel {
 
   next(event) {
     event.preventDefault()
-    if (this.swiper.isEnd) {
-      this.submitForm(event);
+    const currentIndex = this.swiper.activeIndex;
+    const lastIndexBeforePreview = this.swiper.slides.length - 2; // The index before the last slide which is the preview
+
+    const nextButton = document.getElementById('nextButton');
+    const publishButton = document.getElementById('publishButton');
+
+    if (currentIndex === lastIndexBeforePreview) {
+      this.showPreview();
+      publishButton.classList.remove('hidden');
+      nextButton.classList.add('hidden');
     } else {
-      this.swiper.slideNext()
+      publishButton.classList.add('hidden');
+      nextButton.classList.remove('hidden');
     }
+
+    this.swiper.slideNext()
   }
 
   previous(event) {
@@ -27,67 +38,47 @@ export default class extends Carousel {
     this.swiper.slidePrev()
   }
 
-  async submitForm(event) {
-    event.preventDefault()
-    const form = this.formTarget
-
-    // Get CSRF token from meta tags
-    const csrfToken = document.head.querySelector("[name=csrf-token]").content
-
-    // Include CSRF token in headers
-    const headers = new Headers()
-    headers.append("X-CSRF-Token", csrfToken)
-    headers.append("Accept", "application/json")
-
-    // Prepare form data
-    const formData = new FormData(form)
-
-    try {
-      // Submit form using Fetch API
-      const response = await fetch(form.action, {
-        method: form.method,
-        headers: headers,
-        body: formData
-      })
-
-      if (response.ok) {
-        const data = await response.json()
-        this.showToast("Service was successfully created.", "notice")
-        // Redirect to the newly created/updated service page
-        window.location.href = data.redirect_path
-      } else {
-        // Handle form submission error
-        const errorText = await response.text()
-        this.showToast("Form submission failed: " + errorText, "alert")
-        console.error("Form submission failed:", errorText)
-      }
-    } catch (error) {
-      this.showToast("Error submitting form: " + error.message, "alert")
-      console.error("Error submitting form:", error)
-    }
-  }
-
-  async showToast(message, type) {
-    const turboFrame = document.querySelector('turbo-frame[id="toasts"]')
-
-    if (turboFrame) {
-      const url = new URL(window.location.href)
-      url.searchParams.set(type, message)
-
-      const response = await fetch(url, {
-        headers: {
-          "Turbo-Frame": "toasts"
-        }
-      })
-
-      if (response.ok) {
-        const html = await response.text()
-        turboFrame.innerHTML = html
-      }
-    }
-  }
-
   get formTarget() {
     return this.element.querySelector('form')
+  }
+
+  showPreview() {
+    const form = this.formTarget;
+    const preview = document.getElementById('preview');
+    const previewTitle = document.getElementById('previewTitle');
+    const previewDescription = document.getElementById('previewDescription');
+    const previewPrice = document.getElementById('previewPrice');
+    const previewCategories = document.getElementById('previewCategories');
+
+    // Populate preview section with form data
+    previewTitle.textContent = form.querySelector('#service_title').value;
+    previewDescription.textContent = form.querySelector('#service_description').value;
+    previewPrice.textContent = `₱${parseFloat(form.querySelector('#service_price').value).toFixed(2)}`;
+    
+    // Fetch and display category titles
+    const categoryIds = form.querySelector('#selected_categories').value.split(',');
+
+    this.fetchCategories(categoryIds).then(categories => {
+      previewCategories.innerHTML = '';
+      categories.forEach(category => {
+        const categoryElement = document.createElement('div');
+        categoryElement.textContent = category.title;
+        previewCategories.appendChild(categoryElement);
+      });
+    });
+
+    // Show the preview section
+    preview.classList.remove('hidden');
+  }
+
+  // Function to fetch category details based on IDs
+  async fetchCategories(categoryIds) {
+    const response = await fetch(`/categories?ids=${categoryIds.join(',')}`);
+    if (response.ok) {
+      return await response.json();
+    } else {
+      console.error('Failed to fetch categories');
+      return [];
+    }
   }
 }

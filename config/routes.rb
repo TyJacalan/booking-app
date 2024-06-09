@@ -23,6 +23,7 @@ Rails.application.routes.draw do
   resources :roles
   resources :reviews
   resources :locations, only: [:index]
+  resources :categories, only: [:index]
 
   resources :users do
     member do
@@ -34,24 +35,19 @@ Rails.application.routes.draw do
   end
 
   resources :services do
-    collection do
-      post :category, to: 'categories#select', as: :select_category_new
-      post :set_detail, to: 'service_details#set', as: :set_detail
-      get :new_form, to: 'service_details#show', as: :detail
-      get :previous, to: 'service_details#previous', as: :previous
-    end
     get 'reviews/recent_10', to: 'reviews_index#recent_10_reviews', as: 'recent_10_reviews'
     get 'reviews/recent', to: 'reviews_index#recent_reviews', as: 'recent_reviews'
     get 'reviews/most_rated', to: 'reviews_index#most_rated_reviews', as: 'most_rated_reviews'
     get 'reviews/least_rated', to: 'reviews_index#least_rated_reviews', as: 'least_rated_reviews'
     get 'overall_service_ratings', to: 'overall_service_ratings#show', as: 'overall_service_ratings'
     get 'overall_service_ratings/show_modal', to: 'overall_service_ratings#show_modal', as: 'overall_service_ratings_modal'
-    resources :appointments, except: [:show, :edit, :create, :update, :destroy, :index] do
-      resources :reviews, only: [:new, :show, :index, :create], shallow: true do
-        resources :comments, only: [:index, :create], shallow: true
+
+    resources :appointments, except: %i[show edit create update destroy index] do
+      resources :reviews, only: %i[new show index create], shallow: true do
+        resources :comments, only: %i[index create], shallow: true
       end
     end
-  end  
+  end
 
   get 'up' => 'rails/health#show', as: :rails_health_check
 
