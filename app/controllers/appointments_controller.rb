@@ -54,7 +54,7 @@ class AppointmentsController < ApplicationController
     authorize appointments
 
     @q = Appointment.ransack(params[:q])
-    appointments = @q.result(distinct: true).where(id: appointments.pluck(:id)).includes(:client, :service)
+    appointments = @q.result(distinct: true).where(id: appointments.pluck(:id)).includes(:client, :freelancer, :service)
 
     @appointments = Kaminari.paginate_array(appointments).page(params[:page]).per(5)
   end
