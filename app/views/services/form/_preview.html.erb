@@ -1,16 +1,13 @@
-<div id="preview" class="flex flex-col gap-2 p-5 h-screen">
+<div id="preview" class="flex flex-col gap-2 p-10 w-full h-screen">
   <h2 class="text-center font-semibold text-4xl p-4">Preview</h2>
     <%= render_card do %>
-      <div class="p-2">
-        <span class="font-semibold">Title:</span> 
+      <div class="p-2"> 
         <div id="previewTitle" class="font-semibold text-4xl p-4">
           <%= @service.title&.capitalize %>
-        </div>
-        <span class="font-semibold">Description:</span> 
+        </div> 
         <div id="previewDescription" class="p-4">
           <%= @service.description %>
-        </div>
-        <span class="font-semibold">Price:</span> 
+        </div> 
         <div id="previewPrice" class="p-4">
           <%= number_to_currency(@service.price, precision: 2, unit: '₱') %>
         </div>

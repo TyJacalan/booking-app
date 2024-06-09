@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ["hiddenField"];
 
   connect() {
-    console.log('connected')
+    // Split the hidden field value by commas and filter out empty strings
     this.selectedCategories = new Set(
       this.hiddenFieldTarget.value.split(",").filter(Boolean)
     );
@@ -14,21 +14,25 @@ export default class extends Controller {
     event.preventDefault();
     const categoryId = event.currentTarget.dataset.categoryId;
 
-    console.log(event.currentTarget.dataset)
+    // Check if the category ID is already in the hidden field value
+    const hiddenFieldValue = this.hiddenFieldTarget.value;
+    const categoryIdsArray = hiddenFieldValue.split(',').filter(Boolean); // Filter out empty strings
 
-    if (this.selectedCategories.has(categoryId)) {
-      this.selectedCategories.delete(categoryId);
+    const categoryIndex = categoryIdsArray.indexOf(categoryId);
+
+    if (categoryIndex !== -1) {
+      // Remove the category ID if it already exists
+      categoryIdsArray.splice(categoryIndex, 1);
     } else {
-      this.selectedCategories.add(categoryId);
+      // Add the category ID if it doesn't exist
+      categoryIdsArray.push(categoryId);
     }
 
-    // Update the hidden field value with the selected category IDs
-    this.hiddenFieldTarget.value = Array.from(this.selectedCategories).join(",");
+    // Update the hidden field value
+    this.hiddenFieldTarget.value = categoryIdsArray.join(',');
     
     // Toggle border classes for visual feedback
     event.currentTarget.classList.toggle("border-black");
     event.currentTarget.classList.toggle("border-transparent");
-
-    console.log(this.hiddenFieldTarget.value)
   }
 }

@@ -1,7 +1,7 @@
 class ServicesController < ApplicationController
   before_action :authorize_service
   before_action :set_service, only: %i[show edit update destroy]
-  before_action :set_categories, only: %i[new edit update show]
+  before_action :set_categories, only: %i[new edit create update show]
   after_action :verify_authorized, except: %i[index new show]
 
   def index
@@ -38,10 +38,13 @@ class ServicesController < ApplicationController
   end
 
   def create
-    @service = current_user.services.build(service_params)
+    modified_params = transform_category_ids(service_params)
+    @service = current_user.services.build(modified_params)
+
     if @service.save
       redirect_to @service, notice: 'Service was successfully created.'
     else
+      flash.now[:alert] = 'Failed to publish service. Make sure you provided all details.'
       render :new
     end
   end
@@ -55,9 +58,11 @@ class ServicesController < ApplicationController
   def edit; end
 
   def update
-    if @service.update(service_params)
+    modified_params = transform_category_ids(service_params)
+    if @service.update(modified_params)
       redirect_to @service, notice: 'Service was successfully updated.'
     else
+      flash.now[:alert] = 'Failed to update service. Make sure you provided all details.'
       render :edit
     end
   end
@@ -78,10 +83,17 @@ class ServicesController < ApplicationController
   end
 
   def service_params
-    params.require(:service).permit(:title, :description, :price, { category_ids: [] })
+    params.require(:service).permit(:title, :description, :price, category_ids: [])
   end
 
   def set_categories
     @categories = Category.all
+  end
+
+  def transform_category_ids(params)
+    if params[:category_ids]
+      params[:category_ids] = params[:category_ids].flat_map { |s| s.split(',') }.map(&:to_i)
+    end
+    params
   end
 end
