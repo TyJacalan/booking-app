@@ -1,0 +1,22 @@
+<div id="preview" class="flex flex-col gap-2 p-10 w-full h-screen">
+  <h2 class="text-center font-semibold text-4xl p-4">Preview</h2>
+    <%= render_card do %>
+      <div class="p-2"> 
+        <div id="previewTitle" class="font-semibold text-4xl p-4">
+          <%= @service.title&.capitalize %>
+        </div> 
+        <div id="previewDescription" class="p-4">
+          <%= @service.description %>
+        </div> 
+        <div id="previewPrice" class="p-4">
+          <%= number_to_currency(@service.price, precision: 2, unit: '₱') %>
+        </div>
+        <span class="font-semibold">Categories:</span> 
+        <div id="previewCategories" class="flex flex-col p-4 mr-4">
+          <% @service.categories&.each do |category| %>
+            <span><%= category.title %></span>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+</div>

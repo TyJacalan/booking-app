@@ -1,34 +1,36 @@
- <div class="flex justify-between items-center gap-2 p-10 mb-60 mt-15">
-  <div class="p-2">
+<div class="flex justify-between items-center gap-2 p-10 mb-60 mt-15">
+  <div class="p-2" data-controller="select-category">
     <h2 class="text-center font-semibold text-4xl p-4">Which of these best describe you?</h2>
+    <%= f.hidden_field :category_ids, id: "selected_categories", value: @service.categories.pluck(:id).map(&:to_s), multiple: true, data: { select_category_target: "hiddenField" } %>
     <div class="container mx-auto flex flex-wrap justify-center items-start gap-2 mt-6">
-      <% @categories.each do |category| %>
+      <% @categories&.each do |category| %>
         <div class="flex justify-center items-center w-full sm:w-full lg:w-1/2 xl:w-1/3 gap-2">
-          <%= button_to select_category_new_services_path(id: category.id), method: :post, form: { 'data-controller': 'auto-submit' } do %>
-            <%= render_card(
-              data: { action: 'click->auto-submit#submit click->auto-submit#toggleBorder' }, 
+          <div data-action="click->select-category#toggleCategory" data-category-id="<%= category.id %>" 
+            class="border 
+                  border-2
+                  hover:border-2 
+                  hover:border-black 
+                  rounded-lg
+                  <%= @service.categories&.any? { |c| c['id'] == category.id } ? 'border-black' : 'border-transparent' %>" >
+            <%= render_card id: category.id,
               class: "
                 category-card 
                 flex 
                 justify-center 
                 items-center 
-                border 
-                border-2 
-                hover:border-2 
-                hover:border-black 
                 hover:cursor-pointer 
                 transition 
                 duration-300 
                 ease-in-out
-                #{session[:selected_categories]&.any? { |c| c['id'] == category.id } ? 'border-black' : 'border-transparent'} ") do %>
+                " do %>
               <div class="flex flex-col justify-center items-center">
                 <span><i class="text-3xl p-2 <%= category.icon %>"></i></span>
                 <span class="font-semibold text-xl p-2"><%= category.title %></span>
               </div>
             <% end %>
-          <% end %>
+          </div>
         </div>
       <% end %>
     </div>
   </div>
-</div> 
+</div>

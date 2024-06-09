@@ -1,0 +1,11 @@
+<div class="p-2 mx-16 md:mx-24 mt-10 mb-10">
+  <h2 class="font-semibold text-4xl p-4">Set your price</h2>
+  <div class="container mx-auto flex flex-wrap justify-center items-start gap-2 mt-6">
+    <%= render_card do %>
+      <div class="p-6 pt-0">
+        <%= f.label :price, required: true %>
+        <%= f.number_field :price, id: 'service_price', value: @service.price, placeholder: "0.00", class: "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm transition-colors ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50" %>
+      </div>
+    <% end %>
+  </div>
+</div>
