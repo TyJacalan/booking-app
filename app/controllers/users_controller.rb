@@ -12,6 +12,7 @@ class UsersController < ApplicationController
   end
 
   def services
+    @services = @user.services.includes(:categories).page(params[:page]).per(5)
     render 'services/_services'
   end
 
