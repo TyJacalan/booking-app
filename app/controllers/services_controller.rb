@@ -40,15 +40,9 @@ class ServicesController < ApplicationController
   def create
     @service = current_user.services.build(service_params)
     if @service.save
-      respond_to do |format|
-        format.html { redirect_to @service, notice: 'Service was successfully created.' }
-        format.json { render json: { redirect_path: service_path(@service) }, status: :created }
-      end
+      redirect_to @service, notice: 'Service was successfully created.'
     else
-      respond_to do |format|
-        format.html { render :new }
-        format.json { render json: @service.errors, status: :unprocessable_entity }
-      end
+      render :new
     end
   end
 
@@ -62,15 +56,9 @@ class ServicesController < ApplicationController
 
   def update
     if @service.update(service_params)
-      respond_to do |format|
-        format.html { redirect_to @service, notice: 'Service was successfully updated.' }
-        format.json { render json: { redirect_path: service_path(@service) }, status: :ok }
-      end
+      redirect_to @service, notice: 'Service was successfully updated.'
     else
-      respond_to do |format|
-        format.html { render :edit }
-        format.json { render json: @service.errors, status: :unprocessable_entity }
-      end
+      render :edit
     end
   end
 
@@ -90,7 +78,7 @@ class ServicesController < ApplicationController
   end
 
   def service_params
-    params.require(:service).permit(:title, :description, :price, category_ids: [])
+    params.require(:service).permit(:title, :description, :price, { category_ids: [] })
   end
 
   def set_categories
