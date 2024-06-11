@@ -15,30 +15,7 @@
         method: :put,
         class: 'flex flex-col gap-4' do |f| %>
         <%= f.label :description %>
-        <%= f.text_area :description do %><%= appointment.description.gsub(/\s+/,'') %> <% end %>
-
-        <div class='flex flex-row gap-2'>
-          <div class='w-full flex flex-col gap-4'>
-            <%= f.label 'date_range', name: "appointment_date_range_#{appointment.id}" %>
-            <%= render_input name: 'date_range', 
-              id: "appointment_date_range_#{appointment.id}",
-              placeholder: appointment.start.strftime('%Y / %m / %d'), 
-              value: appointment.start,
-              autocomplete: false,
-              data: { appointment_target: 'dateInput' } %>
-          </div>
-
-          <div class='w-24 flex flex-col gap-4'>
-            <%= f.label :duration %>
-            <%= f.select_field :duration, 
-              selected: appointment.duration,
-              data: { appointment_target: 'durationInput' } do |select| %>
-              <% appointment.total_hours.times do |i| %>
-                <%= select.option label: i + 1, value: i + 1 %>
-              <% end %>
-            <% end %>
-          </div>
-        </div>
+        <%= f.text_area :description do %><%= appointment.description %> <% end %>
         <%= f.submit 'Update' %>
       <% end %>
     </div>
