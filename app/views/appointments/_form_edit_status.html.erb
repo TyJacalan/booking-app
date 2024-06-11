@@ -8,9 +8,9 @@
     <% end %>
   <% else %>
     <%= f.select_field :status, selected: appointment.status, disabled: 'pending', id: "status_form_#{appointment.id}", class: 'w-full', data: { action: 'change->auto-submit#submit' } do |select| %>
-      <%= select.option label: 'Pending', value: :pending %>
-      <%= select.option label: 'Accept', value: :accepted %>
-      <%= select.option label: 'Reject', value: :rejected %>
+      <%= select.option label: 'Pending', value: 'pending' %>
+      <%= select.option label: 'Accept', value: 'accepted' %>
+      <%= select.option label: 'Reject', value: 'rejected' %>
     <% end %>
   <% end %>
 <% end %>
