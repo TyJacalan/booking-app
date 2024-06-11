@@ -1,4 +1,5 @@
 RailsAdmin.config do |config|
+  config.main_app_name = ["SkillSetGo"]
   config.asset_source = :sprockets
 
   ### Popular gems integration
