@@ -4,7 +4,7 @@
       <%= link_to root_path, class: 'hover:cursor-pointer' do %>
         <div class="flex items-center gap-2 p-2 sm:p-4">
           <%= image_tag "logo-base-256x256.png", alt: "Logo", class: 'w-8 h-8 sm:w-10 sm:h-10' %>
-          <span class="text-primary font-bold text-lg sm:text-md">SkillSetGo</span>
+          <span class="text-primary font-bold text-lg sm:text-md drop-shadow-sm">SkillSetGo</span>
         </div>
       <% end %>
 
@@ -28,41 +28,16 @@
         <% if current_user&.registered_freelancer? && current_user&.role&.name == 'freelancer' %>
           <%= render_button 'Offer your services',
             as: :link,
-            variant: :outline,
             href: new_service_path %>
         <% end %>
 
         <% unless current_user&.registered_freelancer? %>
           <%= render_button 'Become a freelancer',
             as: :link,
-            variant: :outline,
             href: new_freelancer_path %>
         <% end %>
 
-        <%# mode toggle %>
-        <%= render_dropdown_menu do %>
-          <%= dropdown_menu_trigger do %>
-            <%= render_button variant: :ghost, id: :mode_trigger do %>
-              <% if cookies[:ui_theme] == 'light' %>
-                <%= render 'icons/sun' %>
-              <% else %>
-                <%= render 'icons/moon' %>
-              <% end %>
-            <% end %>
-          <% end %>
-          <%= dropdown_menu_content do %>
-            <div data-controller='ui--mode'>
-              <% ['Light', 'Dark', 'System'].each do |mode| %>
-                <%= dropdown_menu_item do %>
-                  <%= render_button mode, 
-                    variant: :ghost,
-                    data: { action: "click->ui--mode##{mode.downcase}" },
-                    class: 'p-0 h-fit w-full justify-start' %>
-                <% end %>
-              <% end%>
-            </div>
-          <% end %>
-        <% end %>
+        <%= render 'layouts/mode_toggle' %>
 
         <%# notifications %>
         <% if user_signed_in? %>
@@ -117,9 +92,12 @@
     <% else %>
       <div class="flex justify-end items-center gap-4 p-2 w-full">     
         <div class='hidden md:w-fit md:flex md:flex-row md:gap-6'>
-          <%= link_to "Become a freelancer", new_user_session_path, class: "font-semibold rounded-lg hover:bg-gray-100 p-2 transition duration-300 ease-in-out" %>
-          <%= link_to "Login", new_user_session_path, class: "rounded-lg hover:bg-gray-100 p-2 transition duration-300 ease-in-out" %>
-          <%= link_to "Signup", new_user_registration_path, class: "rounded-lg hover:bg-gray-100 p-2 transition duration-300 ease-in-out" %>
+          <%= link_to "Become a freelancer", new_user_session_path, class: "bg-primary font-semibold px-4 rounded-lg hover:bg-gray-100 p-2 transition duration-300 ease-in-out" %>
+          <%= render 'layouts/mode_toggle' %>
+          <div class="flex items-center">
+            <%= link_to "Login", new_user_session_path, class: "px-2 text-sm text-muted font-semibold rounded-lg hover:bg-gray-100 p-2 transition duration-300 ease-in-out" %>
+            <%= link_to "Signup", new_user_registration_path, class: "px-2 text-sm text-muted font-semibold rounded-lg hover:bg-gray-100 p-2 transition duration-300 ease-in-out" %>
+          </div>
         </div>
       </div>
     <% end %>
