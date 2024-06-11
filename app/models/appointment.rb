@@ -32,6 +32,10 @@ class Appointment < ApplicationRecord
     (fee * 100).to_i
   end
 
+  def is_completed?
+    status == 'completed'
+  end
+
   private
 
   def set_price

@@ -86,34 +86,55 @@ end
 puts "#{client.full_name} created."
 
 # Clear Services and Appointments
+OverallServiceRating.delete_all
+Review.delete_all
 Service.delete_all
 Appointment.delete_all
 
 puts "Services and Appointments cleared."
 
-# Create Service
-categories = Category.order('RANDOM()').limit(rand(1..3))
+10.times do
+  categories = Category.order('RANDOM()').limit(rand(1..3))
 
-service = Service.create!(
-  title: 'Test Service',
-  description: "I will do my best for this service",
-  price: 455,
-  categories: categories,
-  user_id: freelancer.id
-)
+  # Create Service
+  service = Service.create!(
+    title: categories.map(&:title).join(', '),
+    description: 'This is a detailed description of the service offered by the freelancer.',
+    price: rand(1000..10_000),
+    categories: categories,
+    user_id: freelancer.id
+  )
 
-puts "#{service.title} created."
+  puts "#{service.title} created."
 
-# Create Appointment
-appointment= Appointment.create!(
-  start: Date.new(2024, 05, 01),
-  end: Date.new(2024, 05, 03),
-  status: 4, # set as completed
-  duration: 2,
-  description: 'This is a test appointment created for the demo.',
-  client_id: client.id,
-  freelancer_id: freelancer.id,
-  service_id: service.id,
-)
+  # Create Appointment
+  appointment = Appointment.create!(
+    start: Date.new(2024, 05, 01),
+    end: Date.new(2024, 05, 03),
+    status: 4, # set as completed
+    duration: 2,
+    description: 'This is a test appointment created for the demo.',
+    client_id: client.id,
+    freelancer_id: freelancer.id,
+    service_id: service.id,
+  )
 
-puts "Appontment #{appointment.id} created!"
+  puts "Appointment #{appointment.id} created!"
+
+  # Create a review for the service
+  review = Review.create!(
+    overall_rating: rand(1..5),
+    professionalism: rand(1..5),
+    punctuality: rand(1..5),
+    quality: rand(1..5),
+    communication: rand(1..5),
+    value: rand(1..5),
+    subject: 'Service Review',
+    client_id: client.id,
+    freelancer_id: freelancer.id,
+    appointment_id: appointment.id,
+    service_id: service.id
+  )
+
+  puts "Review #{review.id} created!"
+end
