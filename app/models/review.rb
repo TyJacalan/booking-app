@@ -3,7 +3,7 @@ class Review < ApplicationRecord
 
   belongs_to :client, class_name: 'User', foreign_key: 'client_id'
   belongs_to :freelancer, class_name: 'User', foreign_key: 'freelancer_id'
-  belongs_to :service
+  belongs_to :service, counter_cache: true
   belongs_to :appointment
 
   validates :overall_rating, :professionalism, :punctuality, :quality, :communication, :value, :subject, presence: true
@@ -79,16 +79,16 @@ class Review < ApplicationRecord
 
   def broadcast_destroy
     broadcast_replace_to(
-      service, 
+      service,
       :review,
-      target: dom_id(self, :service), 
+      target: dom_id(self, :service),
       html: "<div class='hidden'></div>"
     )
-      
+
     broadcast_replace_to(
-      service, 
+      service,
       :review_modal,
-      target: dom_id(self, :service_modal), 
+      target: dom_id(self, :service_modal),
       html: "<div class='hidden'></div>"
     )
   end
