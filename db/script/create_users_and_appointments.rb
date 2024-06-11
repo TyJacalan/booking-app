@@ -120,21 +120,4 @@ puts "Services and Appointments cleared."
   )
 
   puts "Appointment #{appointment.id} created!"
-
-  # Create a review for the service
-  review = Review.create!(
-    overall_rating: rand(1..5),
-    professionalism: rand(1..5),
-    punctuality: rand(1..5),
-    quality: rand(1..5),
-    communication: rand(1..5),
-    value: rand(1..5),
-    subject: 'Service Review',
-    client_id: client.id,
-    freelancer_id: freelancer.id,
-    appointment_id: appointment.id,
-    service_id: service.id
-  )
-
-  puts "Review #{review.id} created!"
 end
