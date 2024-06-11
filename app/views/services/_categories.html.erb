@@ -1,10 +1,12 @@
-<div class="flex justify-evenly gap-2 shadow-xs w-full p-2 overflow-x-auto">
+<div class="flex flex-wrap justify-center gap-8 h-auto w-full overflow-auto py-6 shadow-sm bg-accent">
   <% Category.all.each do |category| %>
-    <%= link_to services_path(q: { combined_search: category.title }), data: { turbo_frame: "services_results" } do %>
-      <div class="flex flex-col justify-center items-center text-muted text-sm font-semibold group p-4 hover:text-accent-foreground rounded-md hover:cursor-pointer">
-        <span><i class="group-hover:text-primary text-muted text-xl p-2 <%= category.icon %>"></i></span>
-        <%= category.title %>
-      </div>
-    <% end %>
+    <div class="flex flex-col justify-center items-center p-2 transition-transform transform hover:scale-105">
+      <span class="block mb-2">
+        <i class="text-2xl p-2 <%= category.icon %>"></i>
+      </span>
+      <%= link_to category.title, services_path(q: { categories_title_cont: category.title }), 
+                  class: "text-gray-500 font-semibold text-sm hover:underline text-center", 
+                  data: { turbo_frame: "services_results" } %>
+    </div>
   <% end %>
 </div>

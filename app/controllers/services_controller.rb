@@ -34,7 +34,7 @@ class ServicesController < ApplicationController
       @services = @q.result.includes(:user, :categories, :overall_service_rating)
     end
 
-    @services = @services.page(params[:page]).per(12)
+    @services = @services.page(params[:page]).per(6)
   end
 
   def create
