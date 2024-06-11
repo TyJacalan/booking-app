@@ -21,11 +21,9 @@ gem 'puma', '>= 5.0'
 gem 'pundit', '~> 2.3'
 gem 'pundit-matchers', '~> 3.1'
 gem 'rails', '~> 7.1.3', '>= 7.1.3.2'
-gem 'rails_admin', '~> 3.0'
 gem 'ransack', '~> 4.1'
 gem 'redis', '~> 4.0'
 gem 'rubocop-rails', '~> 2.24', '>= 2.24.1'
-gem 'sassc-rails'
 gem 'shadcn-ui', '~> 0.0.12'
 gem 'sprockets-rails'
 gem 'stimulus-rails'
@@ -43,4 +41,3 @@ end
 group :development do
   gem 'web-console'
 end
-
