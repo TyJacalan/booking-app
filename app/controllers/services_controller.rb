@@ -35,6 +35,7 @@ class ServicesController < ApplicationController
     end
 
     @services = @services.page(params[:page]).per(6)
+    @featured = Service.joins(:overall_service_rating).includes(:user, :categories, :overall_service_rating).where(overall_service_ratings: { overall_rating: 5 })
   end
 
   def create
