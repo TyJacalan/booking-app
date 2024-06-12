@@ -4,7 +4,7 @@
       <li class='h-10 w-full flex flex-row items-center gap-4 px-4 py-2'>
         <div class='w-12'>
           <div class='h-full w-full flex items-center justify-center'>
-            <div class='h-fit w-full flex flex-row items-center gap-1 p-1 bg-muted border border-accent rounded-sm'>
+            <div class='h-fit w-full flex flex-row items-center gap-1 p-1 bg-accent border border-accent rounded-sm'>
               <%= check_box_tag :select_all, data: { checkbox_select_all_target: 'checkboxAll' }, class: "peer h-4 w-4 shrink-0 rounded-sm border border-primary hover:cursor-pointer focus-visible:outline-none focus-visible:ring-0 disabled:cursor-not-allowed disabled:opacity-50" %>
               <%= render_dropdown_menu do %>
                 <%= dropdown_menu_trigger do %>

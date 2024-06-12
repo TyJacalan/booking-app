@@ -29,12 +29,13 @@ class ServicesController < ApplicationController
         conditions.join(' AND '), *terms.map { |term| "%#{term}%" }
       ).pluck(:id).uniq
 
-      @services = Service.where(id: service_ids).includes(:user, :categories)
+      @services = Service.where(id: service_ids).includes(:user, :categories, :overall_service_rating)
     else
-      @services = @q.result.includes(:user, :categories)
+      @services = @q.result.includes(:user, :categories, :overall_service_rating)
     end
 
-    @services = @services.page(params[:page]).per(12)
+    @services = @services.page(params[:page]).per(6)
+    @featured = Service.joins(:overall_service_rating).includes(:user, :categories, :overall_service_rating).where(overall_service_ratings: { overall_rating: 5 })
   end
 
   def create

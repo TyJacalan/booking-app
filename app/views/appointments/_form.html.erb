@@ -34,8 +34,13 @@
       </div>
     </div>
 
-    <%= f.submit 'Create', data: { turbo_frame: '_top' } %>
-
+    <% if @service.user == current_user %>
+      <div class="flex m-6 justify-center text-xl font-bold">
+        Unable to Book Own Service
+      </div>
+    <% else %>
+      <%= f.submit 'Create', data: { turbo_frame: '_top' } %>
+    <% end %>
   <% end %>
 
   <div class='flex flex-col gap-4'>

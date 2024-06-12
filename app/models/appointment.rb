@@ -16,7 +16,6 @@ class Appointment < ApplicationRecord
 
   before_destroy :validate_deletion
   before_save :set_price
-  before_update :validate_update
 
   after_update :send_review_notification, if: :is_completed_changed_to_true?
 
@@ -36,6 +35,10 @@ class Appointment < ApplicationRecord
     (fee * 100).to_i
   end
 
+  def is_completed?
+    status == 'completed'
+  end
+
   private
 
   def set_price
@@ -43,14 +46,6 @@ class Appointment < ApplicationRecord
     price = service.price * duration
     service_fee = price * 0.025
     self.fee = price + service_fee
-  end
-
-  def validate_update
-    return if status == 'accepted'
-    return unless start < 1.days.from_now
-
-    errors.add(:base, 'Appointment cannot be edited within one (1) day of the start date')
-    throw(:abort)
   end
 
   def validate_deletion

@@ -1,15 +1,6 @@
-<div class="container flex flex-col justify-center">
-<%= render 'search_form' %>
-
-  <div class="flex justify-center gap-12 mb-8 mt-24 h-auto w-full overflow-auto">
-    <% Category.all.each do |category| %>
-      <div class="flex flex-col justify-center items-center">
-        <span><i class="text-3xl p-2 <%= category.icon %>"></i></span>
-        <%= link_to category.title, services_path(q: { categories_title_cont: category.title }), class: "filter-link hover:underline font-light", data: { turbo_frame: "services_results" } %>
-      </div>
-    <% end %>
-  </div>
-
-  
-<%= render 'services' %>
+<div class="flex flex-col justify-center">
+  <%= render 'search_form' %>
+  <%= render 'categories' %>
+  <%= render 'services' %>
+  <%= render 'feature_services' %>
 </div>

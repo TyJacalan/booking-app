@@ -1,0 +1,24 @@
+<%# mode toggle %>
+<%= render_dropdown_menu do %>
+  <%= dropdown_menu_trigger do %>
+    <%= render_button variant: :ghost, id: :mode_trigger do %>
+      <% if cookies[:ui_theme] == 'light' %>
+      <%= render 'icons/sun' %>
+      <% else %>
+      <%= render 'icons/moon' %>
+      <% end %>
+    <% end %>
+  <% end %>
+  <%= dropdown_menu_content do %>
+    <div data-controller='ui--mode'>
+      <% ['Light', 'Dark', 'System'].each do |mode| %>
+        <%= dropdown_menu_item do %>
+            <%= render_button mode, 
+            variant: :ghost,
+            data: { action: "click->ui--mode##{mode.downcase}" },
+            class: 'p-0 h-fit w-full justify-start' %>
+        <% end %>
+      <% end%>
+    </div>
+  <% end %>
+<% end %>

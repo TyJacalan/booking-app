@@ -1,11 +1,21 @@
-<div class="flex justify-center">
-  <form class="flex w-2/3 h-full mt-12 overflow-x-auto" action="<%= services_path %>" method="get">
+<div class="w-full min-h-[430px] bg-cover bg-center relative" style="background-image: url('<%= asset_path('Connect.svg') %>'); background-color: rgba(255, 255, 255, 0.9);">
+  <h1 class="text-xl font-semibold text-background px-5 pt-10">Connecting skill with opportunity</h1>
+  <h2 class="text-3xl font-semibold text-primary-foreground px-5">Find experts near you!</h2>
+  <div class="absolute inset-0 bg-white opacity-10"></div> <!-- Background Overlay -->
+  <div class="container mx-auto flex flex-col items-center justify-center gap-4 mt-20 relative z-10">
+    <%# large screen %>
+    <form class="hidden lg:flex w-2/3 h-full mt-12 overflow-x-auto" action="<%= services_path %>" method="get">
       <%= search_form_for @q, url: services_path, method: :get do |f| %>
-        <div class="form-group w-full flex flex-row justify-center items-center shadow-l">
-          <%= f.select :categories_title_cont, options_for_select(Category.pluck(:title, :title), params.dig(:q, :categories_title_cont)), { include_blank: 'Category'}, class: "text-gray-500 p-5 pl-12 border border-gray-300 border-r-transparent rounded-l-full bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500 hover:bg-gray-100 dark:text-slate-50 dark:bg-black select-placeholder-gray-300 dark:select.placeholder-gray-100" %>          
-          <%= f.search_field :title_cont, class: "block w-full h-16 p-8 pl-12 text-sm text-gray-900 border border-gray-300 border-x-transparent bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500 dark:text-slate-50 dark:bg-black placeholder-gray-300 hover:bg-gray-100 dark:placeholder-gray-100", placeholder: "What", value: params.dig(:q, :title_cont) %>
-          <%= f.search_field :user_city_cont, class: "block w-full h-16 p-8 pl-12 text-sm text-gray-900 border border-gray-300 border-x-transparent bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500 dark:text-slate-50 dark:bg-black placeholder-gray-300 hover:bg-gray-100 dark:placeholder-gray-100", placeholder: "Where", value: params.dig(:q, :user_city_cont) %>
-          <%= f.search_field :user_full_name_cont, class: "block w-full h-16 p-8 pl-12 text-sm text-gray-900 border border-gray-300 border-l-transparent rounded-r-full bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500 dark:text-slate-50 dark:bg-black hover:bg-gray-100 placeholder-gray-300 dark:placeholder-gray-100", placeholder: "Who", value: params.dig(:q, :user_full_name_cont) %>
+        <div class="form-group w-full flex justify-center items-center shadow-lg">
+          <%= f.select :categories_title_cont, options_for_select(Category.pluck(:title, :title), params.dig(:q, :categories_title_cont)), { include_blank: 'Category'}, class: "text-gray-500 p-5 pl-12 pr-8 border border-gray-300 border-r-transparent rounded-l-full bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500 hover:bg-gray-100 dark:text-slate-50 dark:bg-black select-placeholder-gray-300 dark:select.placeholder-gray-100 appearance-none" do %>
+            <option disabled selected hidden>Select Category</option>
+            <% Category.pluck(:title, :icon).each do |title, icon| %>
+              <option value="<%= title %>" class="hover:bg-primary"><%= title %> <i class="<%= icon %> ml-1"></i></option>
+            <% end %>
+          <% end %>
+          <%= f.search_field :title_cont, class: " w-full h-16 p-8 pl-12 text-sm text-gray-900 border border-gray-300 border-x-transparent bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500 dark:text-slate-50 dark:bg-black placeholder-gray-300 hover:bg-gray-100 dark:placeholder-gray-100", placeholder: "What", value: params.dig(:q, :title_cont) %>
+          <%= f.search_field :user_city_cont, class: " w-full h-16 p-8 pl-12 text-sm text-gray-900 border border-gray-300 border-x-transparent bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500 dark:text-slate-50 dark:bg-black placeholder-gray-300 hover:bg-gray-100 dark:placeholder-gray-100", placeholder: "Where", value: params.dig(:q, :user_city_cont) %>
+          <%= f.search_field :user_full_name_cont, class: "flex-grow block w-full h-16 p-8 pl-12 text-sm text-gray-900 border border-gray-300 border-l-transparent rounded-r-full bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500 dark:text-slate-50 dark:bg-black hover:bg-gray-100 placeholder-gray-300 dark:placeholder-gray-100", placeholder: "Who", value: params.dig(:q, :user_full_name_cont) %>
 
           <span class="relative right-14 bottom-4">
             <% if params[:q].present? %>
@@ -18,8 +28,32 @@
               <%= content_tag(:path, nil, stroke: "currentColor", "stroke-linecap": "round", "stroke-linejoin": "round", "stroke-width": "2", d: "m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z") %>
             <% end %>
           <% end %>
-
         </div>
       <% end %>
-  </form>
+    </form>
+    <%# small screen %>
+    <form class="flex lg:hidden w-full lg:w-2/3 h-full overflow-x-auto p-5" action="<%= services_path %>" method="get">
+      <%= search_form_for @q, url: services_path, method: :get do |f| %>
+        <div class="form-group w-full flex flex-col justify-center items-center ">
+          <%= f.select :categories_title_cont, options_for_select(Category.pluck(:title, :title), params.dig(:q, :categories_title_cont)), { include_blank: 'Category'}, class: "w-full rounded-lg text-gray-500 p-5 pl-12 pr-8 border border-gray-300 border-r-transparent rounded-tl-full rounded-tr-full bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500 hover:bg-gray-100 dark:text-slate-50 dark:bg-black select-placeholder-gray-300 dark:select.placeholder-gray-100 appearance-none" do %>
+            <option disabled selected hidden>Select Category</option>
+            <% Category.pluck(:title, :icon).each do |title, icon| %>
+              <option value="<%= title %>" class="hover:bg-primary"><%= title %> <i class="<%= icon %> ml-1"></i></option>
+            <% end %>
+          <% end %>
+          <%= f.search_field :title_cont, class: "w-full rounded-lg h-16 p-8 pl-12 mt-1 text-sm text-gray-900 border border-gray-300 border-x-transparent bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500 dark:text-slate-50 dark:bg-black placeholder-gray-300 hover:bg-gray-100 dark:placeholder-gray-100", placeholder: "What", value: params.dig(:q, :title_cont) %>
+          <%= f.search_field :user_city_cont, class: "w-full rounded-lg h-16 p-8 pl-12 mt-1 text-sm text-gray-900 border border-gray-300 border-x-transparent bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500 dark:text-slate-50 dark:bg-black placeholder-gray-300 hover:bg-gray-100 dark:placeholder-gray-100", placeholder: "Where", value: params.dig(:q, :user_city_cont) %>
+          <%= f.search_field :user_full_name_cont, class: "w-full rounded-lg h-16 p-8 pl-12 mt-1 text-sm text-gray-900 border border-gray-300 border-l-transparent rounded-bl-full rounded-br-full bg-gray-50 focus:ring-yellow-500 focus:border-yellow-500 dark:text-slate-50 dark:bg-black hover:bg-gray-100 placeholder-gray-300 dark:placeholder-gray-100", placeholder: "Who", value: params.dig(:q, :user_full_name_cont) %>
+
+          <span class="relative right-0 bottom-4">
+            <% if params[:q].present? %>
+              <%= link_to 'x', request.path, class: "text-primary text-xl absolute right-2 dark:text-white" %>
+            <% end %>
+          </span>
+          <%= button_tag 'Search', type: 'submit', class: "w-full text-white rounded-lg mt-4 bg-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium text-sm px-4 py-4 dark:bg-primary"%>
+        </div>
+      <% end %>
+    </form>
+
+  </div>
 </div>

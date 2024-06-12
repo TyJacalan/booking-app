@@ -1,0 +1,52 @@
+<div class="p-5 bg-primary">
+  <h2 class="text-3xl font-semibold text-primary-foreground p-2 text-center mb-5">Featured Services</h2>
+  <div class="flex justify-evenly items-stretch overflow-x-auto">
+    <% @services.take(3).each do |service| %>
+      <div class="w-full sm:w-full md:w-1/2 lg:w-1/3 p-5">
+        <%= render_card class: "flex flex-col justify-between shadow-lg group hover:bg-muted hover:text-primary-foreground h-full transition ease-in-out duration-300" do %>
+          <div class="flex flex-col gap-1">
+            <div class="flex justify-between items-center">
+                <% if service.user == current_user %>
+                <div class="flex items-center">
+                    <%= render_form_for service, url: service_path(service.id), method: :delete, class: 'p-2' do |f| %>
+                    <%= f.submit "Delete", data: { turbo: false, alert: 'Are you sure?' }, class: 'bg-primary group-hover:bg-destructive hover:bg-destructive hover:text-destructive-foreground group-hover:text-destructive-foreground py-2 px-4 rounded-lg hover:shadow-md' %>
+                    <% end %>
+                    <%= render_button 'Update',
+                    as: :link,
+                    variant: :outline,
+                    href: edit_service_path(service.id),
+                    data: { turbo: false } %>
+                </div>
+                <% end %>
+                <span class="self-end text-accent group-hover:text-primary-foreground">
+                <% icons_html = service.categories.map { |category| "<i class=\"#{category.icon}\"></i>" }.join('  ') %>
+                <%= raw icons_html %>
+                </span>
+            </div>
+            <h2><%= link_to service.title.titleize, service_path(service), data: { turbo: false }, class: "font-semibold text-xl hover:cursor-pointer group-hover:text-white" %></h2>
+            <div class="flex items-center gap-2">
+                <span class="text-yellow-500">
+                <% if service.overall_rating.present? && service.overall_rating >= 0 %>
+                    <%= "★" * [service.overall_rating, 5].min %><%= "☆" * [5 - service.overall_rating, 0].max %>
+                <% else %>
+                    No rating available
+                <% end %>
+                </span>
+            </div>
+
+            </div>
+            <div class="flex flex-col gap-2 mt-8">
+            <div class="flex gap-2 items-center">
+                <%= render_avatar src: service.user.avatar_url, alt: service.user.first_name, size: '60x60', class: "h-fit w-fit" %>
+                <div class="flex flex-col">
+                <span class="font-semibold text-lg"><%= number_to_currency(service.price, precision: 2, unit: "₱") %></span>
+                <span><%= link_to service.user&.full_name&.titleize, user_path(service.user), data: { turbo: false }, class: "text-sm hover:underline hover:cursor-pointer group-hover:text-white" %></span>
+                <span class="text-xs text-muted"><%= service.user.city.titleize %></span>
+                </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  </div>
+</div>
