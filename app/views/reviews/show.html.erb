@@ -1,0 +1,21 @@
+<div class="w-full flex justify-center h-[90vh] overflow-hidden">
+    <div class="w-[500px] h-full relative">
+        <%= render partial: 'reviews/review_modal', locals: { review: review, user: review.client }, class: "mt-[-16px]" %>
+
+        <% if current_user %>
+            <%= turbo_stream_from dom_id(review, :comments) %>
+        <% end %>
+
+        <div class="h-[45vh] overflow-y-auto">
+            <%= turbo_frame_tag dom_id(review, :comments_container), src: review_comments_path(review) do %>
+            <% end %>
+        </div>
+
+        <% if can_comment?(current_user, review) %>
+            <%= turbo_frame_tag dom_id(review, :new_comment), src: new_review_comment_path(review), class: "mt-6 absolute bottom-0 left-0 bg-white w-full" do %>
+            <% end %>
+        <% else %>
+            <div class="w-full text-center text-base font-semibold">You don't have permission to comment</div>
+        <% end %>
+    </div>
+</div>

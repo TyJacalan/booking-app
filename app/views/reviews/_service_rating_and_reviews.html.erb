@@ -1,10 +1,25 @@
 <div class="w-full">
   <div class="w-full border-t my-8"></div>
+  <% appointments = appointments_needing_review(current_user, service) %>
+  <% if appointments.any? %>
+    <ul>
+      <% appointments.each do |appointment| %>
+        <li class="mb-2 text-base font-semibold">
+          Appointment on <%= appointment.end.strftime("%B %d, %Y") %> 
+          <%= link_to 'Create Review', new_appointment_review_path(appointment), class: "bg-[#FACC15] text-black text-base font-medium p-2 rounded ml-4" %>
+        </li>
+      <% end %>
+    </ul>
+  <% else %>
+    <p>No reviews needed to review at the moment.</p>
+  <% end %>
+
+  <div class="w-full border-t my-8"></div>
 
   <div class="w-full" id="service_rating_container">
     <%= turbo_stream_from service, :overall_service_rating %>
     <%= turbo_frame_tag dom_id(service, :overall_service_rating), src: service_overall_service_ratings_path(service_id: service.id) do %>
-      <!-- Content for overall service rating -->
+      #Content for overall service rating
     <% end %>
   </div>
 
@@ -13,11 +28,11 @@
   <div class="w-full" id="service_reviews_container">
     <%= turbo_stream_from service, :review %>
     <%= turbo_frame_tag dom_id(service, :review), src: service_recent_10_reviews_path(service_id: service.id), class: "w-full flex flex-wrap" do %>
-      <!-- Content for review -->
+      #Content for review
     <% end %> 
     <div>
       <%= render_dialog do %>
-        <%= dialog_trigger do %>
+        <%= dialog_trigger dialog_class: "my-custom-dialog-class", trigger_class: "text-black bg-[#FACC15]" do %>
           <% if service.reviews.count.zero? %>
             <%= render_button("Show all #{service.reviews.count} review/s", variant: :outline, class: 'open-reviews-button border border-black rounded-md text-lg font-semibold px-6 py-2 my-4', disabled: true) %>
           <% else %>
@@ -35,10 +50,29 @@
           </div>
         
 
-            <div class="w-2/3 overflow-y-auto px-4" id="service_reviews_modal_container">
-              <div id="search_review_container" class="w-full">
-                <div class="w-full flex justify-between">
-                  <span class="text-xl font-bold"><%= service.reviews.count %> Review/s</span>
+            <div class="relative w-2/3 overflow-y-auto px-4" id="service_reviews_modal_container">
+              <div id="search_review_container" class="sticky top-0 left-0 w-full bg-white pb-4 border-b">
+                <div class="flex justify-between">
+                  <div class="">
+                    <span class="text-xl font-bold"><%= service.reviews.count %> Review/s</span>
+                  </div>
+                  <div class="text-sm flex gap-2">
+                    <div class="hover:text-[#FACC15]">
+                      <%= link_to service_recent_reviews_path(service), data: {  turbo_frame: dom_id(service, :review_modal) } do %>
+                        Recent Review
+                      <% end %>
+                    </div>
+                    <div class="hover:text-[#FACC15]">
+                      <%= link_to service_least_rated_reviews_path(service), data: {  turbo_frame: dom_id(service, :review_modal) } do %>
+                        Least Rated
+                      <% end %>
+                    </div>
+                    <div class="hover:text-[#FACC15]">
+                      <%= link_to service_most_rated_reviews_path(service), data: {  turbo_frame: dom_id(service, :review_modal) } do %>
+                        Most Rated
+                      <% end %>
+                    </div>
+                  </div>
                 </div>
 
                 <div id="search_bar_review" class="mt-4 w-full">
@@ -49,7 +83,7 @@
               <!-- src in here will depend on the value of the select above -->
               <%= turbo_stream_from service, :review_modal %>
               <%= turbo_frame_tag dom_id(service, :review_modal), src: service_recent_reviews_path(service_id: service.id), class: "w-full" do %>
-                <!-- Content for review -->
+                #Content for review
               <% end %>
             </div>
           </div>

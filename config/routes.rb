@@ -21,6 +21,7 @@ Rails.application.routes.draw do
   resources :notifications, only: %i[index update]
   resources :payments
   resources :roles
+
   resources :reviews
   resources :locations, only: [:index]
   resources :categories, only: [:index]
@@ -45,6 +46,29 @@ Rails.application.routes.draw do
     resources :appointments, except: %i[show edit create update destroy index] do
       resources :reviews, only: %i[new show index create], shallow: true do
         resources :comments, only: %i[index create], shallow: true
+      end
+    end
+    get 'reviews/recent_10', to: 'reviews_index#recent_10_reviews', as: 'recent_10_reviews'
+    get 'reviews/recent', to: 'reviews_index#recent_reviews', as: 'recent_reviews'
+    get 'reviews/most_rated', to: 'reviews_index#most_rated_reviews', as: 'most_rated_reviews'
+    get 'reviews/least_rated', to: 'reviews_index#least_rated_reviews', as: 'least_rated_reviews'
+    get 'overall_service_ratings', to: 'overall_service_ratings#show', as: 'overall_service_ratings'
+    get 'overall_service_ratings/show_modal', to: 'overall_service_ratings#show_modal', as: 'overall_service_ratings_modal'
+  end  
+
+  resources :appointments, except: [:show, :edit, :create, :update, :destroy, :index], shallow: true do
+    resources :reviews, shallow: true do
+      resource :likes, controller: 'reviews_likes', only: [:create, :destroy] do
+        collection do
+          get 'liked_status'
+        end
+      end
+      resources :comments, shallow: true do
+        resource :likes, controller: 'comments_likes', only: [:create, :destroy] do
+          collection do
+            get 'liked_status'
+          end
+        end
       end
     end
   end

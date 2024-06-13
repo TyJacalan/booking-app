@@ -1,18 +1,50 @@
 class ReviewPolicy < ApplicationPolicy
-  # NOTE: Up to Pundit v2.3.1, the inheritance was declared as
-  # `Scope < Scope` rather than `Scope < ApplicationPolicy::Scope`.
-  # In most cases the behavior will be identical, but if updating existing
-  # code, beware of possible changes to the ancestors:
-  # https://gist.github.com/Burgestrand/4b4bc22f31c8a95c425fc0e30d7ef1f5
+  class Scope < Scope
+    def resolve
+      scope.all
+    end
+  end
+
+  attr_reader :user, :record
+
+  def initialize(user, record)
+    @user = user
+    @record = record
+  end
 
   def index?
     true
   end
 
-  class Scope < ApplicationPolicy::Scope
-    # NOTE: Be explicit about which records you allow access to!
-    def resolve
-      scope.all
-    end
+  def recent_10_reviews?
+    true
+  end
+
+  def most_rated_reviews?
+    true
+  end
+
+  def least_rated_reviews?
+    true
+  end
+
+  def show?
+    true
+  end
+
+  def new?
+    @record.client_id == @user.id
+  end
+
+  def create?
+    @record.client_id == @user.id
+  end
+
+  def update?
+    @record.client_id == @user.id
+  end
+
+  def destroy?
+    @record.client_id == @user.id
   end
 end

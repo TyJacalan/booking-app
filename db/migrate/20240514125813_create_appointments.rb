@@ -5,7 +5,7 @@ class CreateAppointments < ActiveRecord::Migration[7.1]
       t.text :description, null: false
       t.references :client, null: false, foreign_key: { to_table: :users }
       t.references :freelancer, null: false, foreign_key: { to_table: :users }
-
+      
       t.timestamps
     end
   end

@@ -66,6 +66,16 @@
     <% end %>
 
     <%= render_card title: 'Reviews' do %>
+      <% reviews.each do |review| %>
+        <div class="flex flex-col gap-2 p-4 border-b-gray-500 mt-4">
+          <div class="flex items-center gap-2">
+            <span class="font-semibold"><%= review.client.full_name %></span>
+            <span class="text-xs text-gray-500"><%= review.created_at.strftime("%B %d, %Y at %I:%M %p") %></span>
+          </div>
+          <div class="flex items-center gap-2">
+            <span class="text-yellow-500">
+              <%= "★" * review.overall_rating %><%= "☆" * (5 - review.overall_rating) %>
+            </span>
       <div class="flex flex-col gap-2 p-4">
         <% reviews.each do |review| %>
           <div class="flex flex-col gap-2 p-4 border-b border-gray-200">

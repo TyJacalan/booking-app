@@ -6,6 +6,9 @@ class Appointment < ApplicationRecord
   has_one :review, dependent: :destroy
   has_many :comments, through: :review
 
+  has_one :review, dependent: :destroy
+  has_many :comments, through: :review
+
   validates :description, :start, :end, :duration, :service_id, :client_id, :freelancer_id, presence: true
   validates :is_completed, inclusion: { in: [false] }, on: :create
 

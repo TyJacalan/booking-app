@@ -3,39 +3,51 @@ class ReviewsController < ApplicationController
 
   before_action :set_review, only: [:show, :edit, :update, :destroy]
   before_action :set_appointment, only: [:new, :create]
-  after_action :verify_authorized, except: [:show]
+  after_action :verify_authorized, except: [:show, :new, :edit, :destroy, :update, :create]
 
   # GET /reviews/:id
   def show
     respond_to do |format|
-      format.html { render partial: 'reviews/review_with_comments', locals: { review: @review, comments: @review.comments, service: @review.service } }
+      format.html { render locals: { review: @review, comments: @review.comments, service: @review.service } }
     end
   end
 
   # GET /appointments/:appointment_id/reviews/new
   def new
-    @review = @appointment.reviews.new
+    @review = @appointment.build_review
+    authorize @appointment
+    respond_to do |format|
+      format.html { render locals: { review: @review, appointment: @appointment, service: @appointment.service } }
+    end
   end
 
   # GET /reviews/:id/edit
   def edit
+    authorize @review
+    respond_to do |format|
+      format.html { render locals: { review: @review, appointment: @review.appointment, service: @review.service} }
+    end
   end
 
   # POST /appointments/:appointment_id/reviews
   def create
+    authorize @appointment
     ActiveRecord::Base.transaction do
-      @review = @appointment.reviews.new(review_params)
+      @review = @appointment.build_review(review_params)
       @review.service_id = @appointment.service.id
       @review.client_id = current_user.id
       @review.freelancer_id = @appointment.freelancer.id
 
       if @review.save
         respond_to do |format|
-          format.html { redirect_to service_review_path(@review.service, @review), notice: 'Review was successfully created.' }
-          format.turbo_stream { broadcast_prepend_to(@review.service, :review_modal, target: "review_modal_service_#{@review.service.id}", partial: 'reviews/review', locals: { user: current_user, review: @review }) }
+          format.html { redirect_to review_path(@review), notice: 'Review was successfully created.' }
+          Notifications::CreateNotification.create_notification(@review.freelancer, "#{@review.client.full_name} created a review for service #{@review.service.title}")
+          Notifications::CreateNotification.create_notification(@review.client, "You successfully created a review for service #{@review.service.title}")
         end
       else
-        render :new, status: :unprocessable_entity
+        respond_to do |format|
+          format.html { render 'new', locals: { review: @review, appointment: @appointment, service: @appointment.service }, status: :unprocessable_entity }
+        end
       end
     end
   rescue ActiveRecord::RecordInvalid
@@ -44,10 +56,10 @@ class ReviewsController < ApplicationController
 
   # PATCH/PUT /reviews/:id
   def update
+    authorize @review
     if @review.update(review_params)
       respond_to do |format|
-        format.html { redirect_to service_review_path(@review.service, @review), notice: 'Review was successfully updated.' }
-        format.turbo_stream { broadcast_replace_to(@review.service, :review_modal, target: "review_modal_service_#{@review.service.id}", partial: 'reviews/review', locals: { user: current_user, review: @review }) }
+        format.html { redirect_to service_path(@review.service), notice: 'Review was successfully updated.' }
       end
     else
       render :edit, status: :unprocessable_entity
@@ -56,11 +68,10 @@ class ReviewsController < ApplicationController
 
   # DELETE /reviews/:id
   def destroy
+    authorize @review
     @review.destroy
     respond_to do |format|
-      format.html { redirect_to service_reviews_url(@review.service), notice: 'Review was successfully destroyed.' }
-      format.turbo_stream { broadcast_replace_to(@review.service, :review_modal, target: dom_id(@review, :service_modal), html: "<div class='hidden'></div>") }
-      format.turbo_stream { broadcast_replace_to(@review.service, :review, target: dom_id(@review, :service), html: "<div class='hidden'></div>") }
+      format.html { render locals: { review: @review } }
     end
   end
 
@@ -75,6 +86,6 @@ class ReviewsController < ApplicationController
   end
 
   def review_params
-    params.require(:review).permit(:subject, :professionalism, :punctuality, :quality, :communication, :value)
+    params.require(:review).permit(:professionalism, :punctuality, :quality, :communication, :value, :overall_rating, :subject)
   end
 end

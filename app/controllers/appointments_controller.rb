@@ -45,8 +45,15 @@ class AppointmentsController < ApplicationController
   private
 
   def appointment_params
-    params.require(:appointment).permit(:client_id, :description, :duration, :end,
-                                        :freelancer_id, :service_id, :start, :status)
+    params.require(:appointment).permit(:client_id,
+                                        :description,
+                                        :duration,
+                                        :end,
+                                        :freelancer_id,
+                                        :service_id,
+                                        :start,
+                                        :status,
+                                        :is_completed)
   end
 
   def fetch_appointments

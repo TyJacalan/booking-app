@@ -1,0 +1,23 @@
+<%= turbo_frame_tag dom_id(review, :likes_count) do %>
+    <%= render_hover_card do %>
+      <%= hover_card_trigger do %>
+        <% like = review.likes_count > 0 ? 'Likes' : 'Like' %>
+        <% likes_count = review.likes_count > 0 ? review.likes_count : '' %>
+        <%= content_tag :span, "#{likes_count} #{like}", class: "text-sm" %>
+      <% end %>
+      <%= hover_card_content do %>
+        <div>
+          <% users = users_who_liked_review(review) %>
+          <% if users.any? %>
+            <ul>
+              <% users.each do |user| %>
+                <li class="text-sm"><%= user %></li>
+              <% end %>
+            </ul>
+          <% else %>
+            <p>No users have liked on this review.</p>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+<% end %>

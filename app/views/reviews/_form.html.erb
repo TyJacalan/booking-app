@@ -1,0 +1,60 @@
+<%= form_with(model: [@appointment, @review], local: true, data: { turbo: false }) do |form| %>
+    <div class="flex gap-4 p-4">
+      <div class="w-1/2">
+        <div class="field">
+            <div class="flex gap-2 items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="black"><path d="M480-480q-66 0-113-47t-47-113q0-66 47-113t113-47q66 0 113 47t47 113q0 66-47 113t-113 47ZM160-160v-112q0-34 17.5-62.5T224-378q62-31 126-46.5T480-440q66 0 130 15.5T736-378q29 15 46.5 43.5T800-272v112H160Zm80-80h480v-32q0-11-5.5-20T700-306q-54-27-109-40.5T480-360q-56 0-111 13.5T260-306q-9 5-14.5 14t-5.5 20v32Zm240-320q33 0 56.5-23.5T560-640q0-33-23.5-56.5T480-720q-33 0-56.5 23.5T400-640q0 33 23.5 56.5T480-560Zm0-80Zm0 400Z"/></svg>
+                <%= form.label :professionalism, class: "text-base font-semibold" %>
+            </div>
+            <%= render partial: 'reviews/star_rating', locals: { field_name: :professionalism, rating: review.professionalism } %>
+        </div>
+  
+        <div class="field">
+            <div class="flex gap-2 items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="black"><path d="m612-292 56-56-148-148v-184h-80v216l172 172ZM480-80q-83 0-156-31.5T197-197q-54-54-85.5-127T80-480q0-83 31.5-156T197-763q54-54 127-85.5T480-880q83 0 156 31.5T763-763q54 54 85.5 127T880-480q0 83-31.5 156T763-197q-54 54-127 85.5T480-80Zm0-400Zm0 320q133 0 226.5-93.5T800-480q0-133-93.5-226.5T480-800q-133 0-226.5 93.5T160-480q0 133 93.5 226.5T480-160Z"/></svg>
+                <%= form.label :punctuality, class: "text-base font-semibold" %>
+            </div>
+            <%= render partial: 'reviews/star_rating', locals: { field_name: :punctuality, rating: review.punctuality} %>
+        </div>
+  
+        <div class="field">
+            <div class="flex gap-2 items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="black"><path d="m344-60-76-128-144-32 14-148-98-112 98-112-14-148 144-32 76-128 136 58 136-58 76 128 144 32-14 148 98 112-98 112 14 148-144 32-76 128-136-58-136 58Zm34-102 102-44 104 44 56-96 110-26-10-112 74-84-74-86 10-112-110-24-58-96-102 44-104-44-56 96-110 24 10 112-74 86 74 84-10 114 110 24 58 96Zm102-318Zm-42 142 226-226-56-58-170 170-86-84-56 56 142 142Z"/></svg>
+                <%= form.label :quality, class: "text-base font-semibold" %>
+            </div>
+            <%= render partial: 'reviews/star_rating', locals: { field_name: :quality, rating: review.quality } %>
+        </div>
+  
+        <div class="field">
+            <div class="flex gap-2 items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="black"><path d="M798-120q-125 0-247-54.5T329-329Q229-429 174.5-551T120-798q0-18 12-30t30-12h162q14 0 25 9.5t13 22.5l26 140q2 16-1 27t-11 19l-97 98q20 37 47.5 71.5T387-386q31 31 65 57.5t72 48.5l94-94q9-9 23.5-13.5T670-390l138 28q14 4 23 14.5t9 23.5v162q0 18-12 30t-30 12ZM241-600l66-66-17-94h-89q5 41 14 81t26 79Zm358 358q39 17 79.5 27t81.5 13v-88l-94-19-67 67ZM241-600Zm358 358Z"/></svg>
+                <%= form.label :communication, class: "text-base font-semibold" %>
+            </div>
+            <%= render partial: 'reviews/star_rating', locals: { field_name: :communication, rating: review.communication } %>
+        </div>
+  
+        <div class="field">
+            <div class="flex gap-2 items-center">
+                <svg xmlns="http://www.w3.org/2000/svg" height="16px" viewBox="0 -960 960 960" width="16px" fill="black"><path d="M856-390 570-104q-12 12-27 18t-30 6q-15 0-30-6t-27-18L103-457q-11-11-17-25.5T80-513v-287q0-33 23.5-56.5T160-880h287q16 0 31 6.5t26 17.5l352 353q12 12 17.5 27t5.5 30q0 15-5.5 29.5T856-390ZM513-160l286-286-353-354H160v286l353 354ZM260-640q25 0 42.5-17.5T320-700q0-25-17.5-42.5T260-760q-25 0-42.5 17.5T200-700q0 25 17.5 42.5T260-640Zm220 160Z"/></svg>
+                <%= form.label :value, class: "text-base font-semibold"%>
+            </div>
+          <%= render partial: 'reviews/star_rating', locals: { field_name: :value, rating: @review.value } %>
+        </div>
+        
+        <div class="field">
+          <%= form.label :overall_rating, class: "text-base font-semibold" %>
+          <%= render partial: 'reviews/star_rating', locals: { field_name: :overall_rating, rating: @review.overall_rating } %>
+        </div>
+      </div>
+        <div class="w-1/2 flex flex-col justify-center">
+            <div class="w-full">
+                <%= form.label :subject, class: "text-base font-semibold w-full" %>
+                <%= form.text_area :subject, rows: 5, class: "w-full" %>
+            </div>
+            
+            <div class="w-full">
+                <%= form.submit  "Post", class: "w-full bg-[#FACC15] text-black text-base font-medium p-2 rounded" %>
+            </div>
+        </div>
+    </div>
+  <% end %>

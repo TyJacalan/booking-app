@@ -25,6 +25,9 @@ application.register("location", LocationController)
 import PasswordVisibilityController from "./password_visibility_controller"
 application.register("password-visibility", PasswordVisibilityController)
 
+import ReviewController from "./review_controller"
+application.register("review", ReviewController)
+
 import PaymentController from "./payment_controller"
 application.register("payment", PaymentController)
 
@@ -61,5 +64,10 @@ application.register("ui--toast", Ui__ToastController)
 import Ui__TooltipController from "./ui/tooltip_controller"
 application.register("ui--tooltip", Ui__TooltipController)
 
-import select_category_controller from "./select_category_controller"
-application.register("select-category", select_category_controller)
+
+import StarRatingController from "./star_rating_controller"
+application.register("star-rating", StarRatingController)
+
+import location_controller from "./location_controller"
+application.register("location", location_controller)
+

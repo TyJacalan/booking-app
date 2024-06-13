@@ -100,3 +100,28 @@
 #service_reviews_modal_container #reviews_container turbo-frame  {
     width: 100%;
 }
+
+.star-rating {
+    direction: rtl;
+    unicode-bidi: bidi-override;
+  }
+  
+  .star-rating input[type="radio"] {
+    display: none;
+  }
+  
+  .star-rating label {
+    color: #ccc;
+    padding: 0 0.1em;
+    cursor: pointer;
+  }
+  
+  .star-rating label:hover,
+  .star-rating label:hover ~ label {
+    color: #f5c518;
+  }
+  
+
+  .yellow-star {
+    color: #f5c518;
+  }
