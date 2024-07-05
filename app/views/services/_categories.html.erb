@@ -2,10 +2,10 @@
   <% Category.all.each do |category| %>
     <div class="flex flex-col justify-center items-center p-2 transition-transform transform hover:scale-105">
       <span class="block mb-2">
-        <i class="text-2xl p-2 <%= category.icon %>"></i>
+        <i class="text-muted-foreground text-2xl p-2 <%= category.icon %>"></i>
       </span>
       <%= link_to category.title, services_path(q: { categories_title_cont: category.title }), 
-                  class: "text-gray-500 font-semibold text-sm hover:underline text-center", 
+                  class: "text-muted-foreground text-sm hover:underline text-center", 
                   data: { turbo_frame: "services_results" } %>
     </div>
   <% end %>

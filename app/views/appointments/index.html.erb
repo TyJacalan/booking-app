@@ -19,7 +19,7 @@
       <%= render_button 'Clear', as: :link, href: appointments_path, variant: :outline %> 
     </div>
     <% @appointments.each do |appointment| %> 
-      <%= render_card class: 'flex-1 relative flex flex-col min-w-[450px]', id: "appointment_#{appointment.id}" do %>
+      <%= render_card class: 'relative flex flex-col min-w-[450px]', id: "appointment_#{appointment.id}" do %>
         <%= render partial: 'appointment', locals: { appointment: appointment } %>
       <% end %>
     <% end %>
