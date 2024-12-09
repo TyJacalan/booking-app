@@ -2,7 +2,7 @@ class User < ApplicationRecord
   has_many :client_reviews, class_name: 'Review', foreign_key: 'client_id', dependent: :destroy
   has_many :client_comments, class_name: 'Comment', foreign_key: 'client_id', dependent: :destroy
   has_many :freelancer_reviews, class_name: 'Review', foreign_key: 'freelancer_id', dependent: :destroy
-  has_many :client_comments, class_name: 'Comment', foreign_key: 'freelancer_id', dependent: :destroy 
+  has_many :client_comments, class_name: 'Comment', foreign_key: 'freelancer_id', dependent: :destroy
   has_many :client_appointments, class_name: 'Appointment', foreign_key: 'client_id', dependent: :destroy
   has_many :freelancer_appointments, class_name: 'Appointment', foreign_key: 'freelancer_id', dependent: :destroy
   has_many :blocked_dates, dependent: :destroy
@@ -22,9 +22,8 @@ class User < ApplicationRecord
   end
 
   devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :validatable
-
-  # :omniauthable, omniauth_providers: [:google_oauth2]
+         :recoverable, :rememberable, :validatable,
+         :omniauthable, omniauth_providers: [:google_oauth2]
 
   geocoded_by :address
 
@@ -40,13 +39,17 @@ class User < ApplicationRecord
 
   after_validation :geocode, if: -> { address.present? && address_changed? }
 
-  def self.from_omniauth(auth)
-    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      user.email = auth.info.email
-      user.password = Devise.friendly_token[0, 20]
-      user.full_name = auth.info.name
-      user.avatar_url = auth.info.image
-    end
+  # def self.from_omniauth(auth)
+  #   where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+  #     user.email = auth.info.email
+  #     user.password = Devise.friendly_token[0, 20]
+  #     user.full_name = auth.info.name
+  #     user.avatar_url = auth.info.image
+  #   end
+  # end
+
+  def self.from_google(u)
+    create_with(uid: u[:uid], provider: 'google', password: Devise.friendly_token[0, 20]).find_or_create_by!(email: u[:email])
   end
 
   def freelancer?
