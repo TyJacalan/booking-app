@@ -1,9 +1,7 @@
-<%= render_button(class: "bg-gray-200 w-full hover:bg-gray-200/90 text-background") do %>
-  <%= render 'devise/google/logo' %>
+<%= render_button(class: "w-full flex justify-center") do %>
   <% if controller_name == 'sessions' %>
-    <span class="ml-2">Sign in with Google</span>
-    <% else if controller_name == 'registrations' %>
-      <span class="ml-2">Sign up with Google</span>
-    <% end %>
+    <%= image_tag "web_neutral_rd_SI.svg" %>
+  <% elsif controller_name == 'registrations' %>
+    <%= image_tag "web_neutral_rd_SU.svg" %>
   <% end %>
 <% end %>
