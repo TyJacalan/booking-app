@@ -29,7 +29,11 @@ Devise.setup do |config|
   config.omniauth :google_oauth2,
                   Rails.application.credentials.dig(:google_oauth_client_id),
                   Rails.application.credentials.dig(:google_oauth_client_secret),
-                  redirect_uri: 'http://localhost:3000/users/auth/google_oauth2/callback'
+                  redirect_uri: 'http://localhost:3000/users/auth/google_oauth2/callback',
+                  {
+                    scope: 'userinfo.email, userinfo.profile',
+                    prompt: 'select_account'
+                  }
 
   # config.omniauth :google_oauth2, ENV['GOOGLE_OAUTH_CLIENT_ID'], ENV['GOOGLE_OAUTH_CLIENT_SECRET']
 

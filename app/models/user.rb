@@ -39,17 +39,17 @@ class User < ApplicationRecord
 
   after_validation :geocode, if: -> { address.present? && address_changed? }
 
-  # def self.from_omniauth(auth)
-  #   where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-  #     user.email = auth.info.email
-  #     user.password = Devise.friendly_token[0, 20]
-  #     user.full_name = auth.info.name
-  #     user.avatar_url = auth.info.image
-  #   end
-  # end
-
-  def self.from_google(u)
-    create_with(uid: u[:uid], provider: 'google', password: Devise.friendly_token[0, 20]).find_or_create_by!(email: u[:email])
+  def self.from_omniauth(auth)
+    where(provider: auth[:provider], uid: auth[:uid]).first_or_create do |user|
+      user.email = auth[:email]
+      user.password = Devise.friendly_token[0, 20]
+      user.full_name = auth[:name]
+      user.avatar_url = auth[:image]
+    end
+    if auth[:info].nil?
+      Rails.logger.error "Missing info in auth object: #{auth.inspect}"
+      return nil
+    end
   end
 
   def freelancer?
