@@ -2,7 +2,7 @@
 
 class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def google_oauth2
-    user = User.from_google(from_google_params)
+    user = User.from_omniauth(from_google_params)
 
     if user.present?
       sign_out_all_scopes
@@ -17,7 +17,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   def from_google_params
     @from_google_params ||= {
       uid: auth.uid,
-      email: auth.info.email
+      email: auth.info.email,
+      name: auth.info.name,
+      image: auth.info.image,
+      provider: 'google_oauth2'
     }
   end
 
