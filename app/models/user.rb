@@ -46,10 +46,6 @@ class User < ApplicationRecord
       user.full_name = auth[:name]
       user.avatar_url = auth[:image]
     end
-    if auth[:info].nil?
-      Rails.logger.error "Missing info in auth object: #{auth.inspect}"
-      return nil
-    end
   end
 
   def freelancer?
