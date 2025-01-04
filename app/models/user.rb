@@ -40,12 +40,30 @@ class User < ApplicationRecord
   after_validation :geocode, if: -> { address.present? && address_changed? }
 
   def self.from_omniauth(auth)
-    where(provider: auth[:provider], uid: auth[:uid]).first_or_create do |user|
+    where(provider: auth[:provider], uid: auth[:uid]).first_or_initialize.tap do |user|
       user.email = auth[:email]
       user.password = Devise.friendly_token[0, 20]
       user.full_name = auth[:name]
+      user.first_name, user.last_name = split_name(auth[:name])
       user.avatar_url = auth[:image]
+      user.uid = auth[:uid]
+      user.provider = auth[:provider]
+
+      user.role = Role.find_by(name: 'client')
+
+      if user.new_record?
+        unless user.save(validate: false)
+          Rails.logger.error("Error saving user: #{user.errors.full_messages.join(', ')}")
+        end
+      end
     end
+  end
+
+  def self.split_name(full_name)
+    name_parts = full_name.split
+    first_name = name_parts.first || 'Unknown'
+    last_name = name_parts[1..].join(' ') || 'User'
+    [first_name, last_name]
   end
 
   def freelancer?
