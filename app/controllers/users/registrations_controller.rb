@@ -6,21 +6,26 @@ class Users::RegistrationsController < Devise::RegistrationsController
   before_action :set_categories
 
   def new_freelancer
+    unless current_user
+      redirect_to new_user_session_path, alert: 'You must be logged in to become a freelancer'
+      return
+    end
     build_resource({})
     respond_with resource
   end
 
   def create_freelancer
     user = current_user
+    role = Role.find_by(name: 'freelancer')
+    user.role = role
+
     user.assign_attributes(sign_up_params)
     if user.valid?
       user.save!
-      role = Role.find_by(name: 'freelancer')
-      user.update!(role_id: role.id)
       redirect_to root_path, notice: "Welcome to the freelancers' community!"
     else
-      flash[:alert] = user.errors.full_message.join(', ')
-      render :new_freelancer
+      flash.now[:alert] = user.errors.full_messages.join(', ')
+      render :new_freelancer, status: :unprocessable_entity
     end
   rescue ActiveRecord::RecordInvalid => e
     flash[:alert] = e.message
