@@ -5,8 +5,14 @@
 
   <div class="field">
     <%= f.label :biography, required: true %>
-    <%= f.text_area :biography %>
-    <%= f.error_message :biography %>
+    <%= f.text_area :biography, placeholder: 'Tell us about yourself...', required: true %>
+    <small class="form-hint">Type a minimum of 10 and maximum of 500 characters.</small>
+    
+    <% if resource.errors[:biography].any? %>
+      <div class="text-red-500 text-sm">
+        <%= resource.errors.full_messages_for(:biography).join(', ') %>
+      </div>
+    <% end %>
   </div>
 
   <div class="field">
@@ -30,6 +36,7 @@
 
   <div class="field">
     <%= f.label :skills %>
+    <small class="form-hint">Choose at least one.</small>
     <div class="skills-checkboxes">
       <% @categories.each do |category| %>
         <div>
@@ -44,5 +51,6 @@
   <%= f.hidden_field :country, value: 'Philippines' %>
   <div class="actions mt-4">
     <%= f.submit current_user&.role&.name == 'freelancer' ? "Update Profile" : "Join" %>
+    <%= link_to "Cancel", root_path, class: "btn-secondary ml-4" %>
   </div>
 <% end %>
