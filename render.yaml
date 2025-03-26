@@ -1,5 +1,5 @@
 databases:
-  - name: postgresql-db
+  - name: postgresql_db_kgjm
     databaseName: postgresql_db_kgjm
     user: postgresql_db_kgjm_user
     plan: free
